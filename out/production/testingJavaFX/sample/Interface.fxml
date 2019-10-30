@@ -4,11 +4,9 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="646.0" prefWidth="998.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
-      <Button fx:id="button" layoutX="237.0" layoutY="341.0" mnemonicParsing="false" onAction="#cameraStream" text="Start Camera Stream" />
-      <ImageView fx:id="currentFrame" fitHeight="271.0" fitWidth="491.0" layoutX="44.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="button" layoutX="31.0" layoutY="566.0" mnemonicParsing="false" onAction="#cameraStream" prefHeight="55.0" prefWidth="154.0" text="Start Camera Stream" styleClass="image-view"/>
+      <ImageView fx:id="currentFrame" fitHeight="498.0" fitWidth="532.0" layoutX="25.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>
-
-

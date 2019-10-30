@@ -66,7 +66,7 @@ public class Controller {
             this.capture.read(frame);
 
             if (!frame.empty()) {
-                Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2GRAY);
+                //Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2GRAY);
             }
 
         }
@@ -92,11 +92,6 @@ public class Controller {
     {
         Utils.onFXThread(view.imageProperty(), image);
     }
-
-    protected void setClosed()
-    {
-        this.stopAcquisition();
-    }
-
+    
 
 }
