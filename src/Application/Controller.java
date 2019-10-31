@@ -1,17 +1,20 @@
-package sample;
+package Application;
 
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 
-import org.opencv.core.Mat;
+import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
 
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -22,6 +25,8 @@ public class Controller {
     private Button button;
     @FXML
     private ImageView currentFrame;
+    @FXML
+    private CheckBox detections;
     private VideoCapture capture = new VideoCapture();
     private ScheduledExecutorService timer;
     private boolean cameraActive = false;
@@ -67,6 +72,12 @@ public class Controller {
 
             if (!frame.empty()) {
                 //Imgproc.cvtColor(frame, frame, Imgproc.COLOR_BGR2GRAY);
+                if (detections.isSelected()) {
+                    String xmlFile = "haarcascades/haarcascade_frontalface_default.xml";
+                    CascadeClassifier cc = new CascadeClassifier(xmlFile);
+                    detectAndDisplay(frame, cc);
+
+                }
             }
 
         }
@@ -88,10 +99,25 @@ public class Controller {
         }
     }
 
-    private void updateImageView(ImageView view, Image image)
-    {
+    private void updateImageView(ImageView view, Image image) {
         Utils.onFXThread(view.imageProperty(), image);
     }
-    
+
+    public void detectAndDisplay(Mat frame, CascadeClassifier faceCascade) {
+        Mat frameGray = new Mat();
+        Imgproc.cvtColor(frame, frameGray, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.equalizeHist(frameGray, frameGray);
+        MatOfRect faces = new MatOfRect();
+        faceCascade.detectMultiScale(frameGray, faces);
+        List<Rect> listOfFaces = faces.toList();
+        for (Rect face : listOfFaces) {
+            if (face.height < 125 || face.width < 125)
+                continue;
+            Point center = new Point(face.x + face.width / 2, face.y + face.height / 2);
+            Imgproc.ellipse(frame, center, new Size(face.width / 2, face.height / 2), 0, 0, 360,
+                    new Scalar(255, 0, 255));
+        }
+    }
+
 
 }
