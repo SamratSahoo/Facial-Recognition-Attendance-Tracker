@@ -4,6 +4,7 @@ import numpy as np
 import os
 
 
+# Method loads image and encodes for face
 def encodeFace(imageDirectory):
     # Load Images
     image = face_recognition.load_image_file(imageDirectory)
@@ -12,6 +13,7 @@ def encodeFace(imageDirectory):
     return encoding
 
 
+# Method encodes a directory of images and returns the average encoding of the images
 def encodeDirectory(directoryName):
     # Create list for all encodings
     allEncodings = []
@@ -30,6 +32,7 @@ def encodeDirectory(directoryName):
     return sum(allEncodings) / listLength
 
 
+# Will Output to console once
 def checkIfHere(name, nameToCheck):
     if name is nameToCheck:
         with open("AttendanceSheet.txt", 'r') as f:
@@ -45,15 +48,15 @@ video = cv2.VideoCapture(0)
 
 # Encoding Image for Different People
 samratEncoding = encodeDirectory("Samrat")
-caitlinEncoding = encodeFace("People/caitlin.jpg")
-vijayEncoding = encodeFace("People/vijay.jpg")
-cassidyEncoding = encodeFace("People/cassidy.jpg")
-nehaEncoding = encodeFace("People/neha.jpg")
-ananthEncoding = encodeFace("People/ananth.jpg")
-niharikaEncoding = encodeFace("People/niharika.jpg")
-ananthramEncoding = encodeFace("People/ananthram.jpg")
-ryanEncoding = encodeFace("People/ryan.jpg")
-matthewEncoding = encodeFace("People/matthew.jpg")
+caitlinEncoding = encodeDirectory("Caitlin")
+vijayEncoding = encodeDirectory("Vijay")
+cassidyEncoding = encodeDirectory("Cassidy")
+nehaEncoding = encodeDirectory("Neha")
+ananthEncoding = encodeDirectory("Ananth")
+niharikaEncoding = encodeDirectory("Niharika")
+ananthramEncoding = encodeDirectory("Ananthram")
+ryanEncoding = encodeDirectory("Ryan")
+matthewEncoding = encodeDirectory("Matthew")
 
 # List For Face Encodings
 faceEncodingsKnown = [
@@ -87,16 +90,6 @@ faceLocations = []
 faceEncodings = []
 faceNames = []
 processThisFrame = True
-samratHere = True
-caitlinHere = True
-vijayHere = True
-cassidyHere = True
-nehaHere = True
-ananthHere = True
-niharikaHere = True
-ananthramHere = True
-ryanHere = True
-matthewHere = True
 
 file = open("AttendanceSheet.txt", "w")
 
