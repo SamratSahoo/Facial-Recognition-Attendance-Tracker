@@ -1,43 +1,104 @@
-import os
 import cv2
 import face_recognition
 import numpy as np
-import argparse
-import keyboard
+import os
 
 
-# Load Cascade Classifier
-faceCascade = cv2.CascadeClassifier('Cascades/data/haarcascade_frontalface_alt.xml')
+def encodeFace(imageDirectory):
+    # Load Images
+    image = face_recognition.load_image_file(imageDirectory)
+    # Encode Images
+    encoding = face_recognition.face_encodings(image)[0]
+    return encoding
+
+
+def encodeDirectory(directoryName):
+    # Create list for all encodings
+    allEncodings = []
+    # Go through directory of files
+    for filename in os.listdir("People/" + directoryName):
+        # Get amount of files in directory
+        fileAmount = len(next(os.walk("People/" + directoryName)))
+        if filename.endswith(".jpg"):
+            # iterate through files in directory
+            for fileNum in range(0, fileAmount - 1):
+                # Add encodings to list
+                allEncodings.append(encodeFace("People/" + directoryName + "/" + str(fileNum) + ".jpg"))
+    # Turn length of list to prevent integer division
+    listLength = len(allEncodings) * 1.0
+    # Return average of encoded arrays array
+    return sum(allEncodings) / listLength
+
+
+def checkIfHere(name, nameToCheck):
+    if name is nameToCheck:
+        with open("AttendanceSheet.txt", 'r') as f:
+            if nameToCheck in f.read():
+                pass
+            else:
+                with open("AttendanceSheet.txt", 'w') as f2:
+                    f2.write(name + "\n")
+
 
 # Create Webcam
 video = cv2.VideoCapture(0)
 
-# Encoding Image for Samrat Sahoo
-samratImage = face_recognition.load_image_file("samrat.jpg")
-samratEncoding = face_recognition.face_encodings(samratImage)[0]
-
-# Encoding Image for Caitlin Fukumoto
-caitlinImage = face_recognition.load_image_file("caitlin.jpg")
-caitlinEncoding = face_recognition.face_encodings(caitlinImage)[0]
+# Encoding Image for Different People
+samratEncoding = encodeDirectory("Samrat")
+caitlinEncoding = encodeFace("People/caitlin.jpg")
+vijayEncoding = encodeFace("People/vijay.jpg")
+cassidyEncoding = encodeFace("People/cassidy.jpg")
+nehaEncoding = encodeFace("People/neha.jpg")
+ananthEncoding = encodeFace("People/ananth.jpg")
+niharikaEncoding = encodeFace("People/niharika.jpg")
+ananthramEncoding = encodeFace("People/ananthram.jpg")
+ryanEncoding = encodeFace("People/ryan.jpg")
+matthewEncoding = encodeFace("People/matthew.jpg")
 
 # List For Face Encodings
 faceEncodingsKnown = [
     samratEncoding,
-    caitlinEncoding
+    caitlinEncoding,
+    vijayEncoding,
+    cassidyEncoding,
+    nehaEncoding,
+    ananthEncoding,
+    niharikaEncoding,
+    ananthramEncoding,
+    ryanEncoding,
+    matthewEncoding
 ]
 
 # List For Face Names
 faceNamesKnown = [
     "Samrat",
-    "Caitlin"
+    "Caitlin",
+    "Vijay",
+    "Cassidy",
+    "Neha",
+    "Ananth",
+    "Niharika",
+    "Ananthram",
+    "Ryan",
+    "Matthew"
 ]
 
 faceLocations = []
 faceEncodings = []
 faceNames = []
 processThisFrame = True
-samratCounter = 0
-caitlinCounter = 0
+samratHere = True
+caitlinHere = True
+vijayHere = True
+cassidyHere = True
+nehaHere = True
+ananthHere = True
+niharikaHere = True
+ananthramHere = True
+ryanHere = True
+matthewHere = True
+
+file = open("AttendanceSheet.txt", "w")
 
 while True:
     # Open Webcam + Optimize Webcam
@@ -88,14 +149,16 @@ while True:
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
         # Display name in console Once only
-        if samratCounter == 0 and name is 'Samrat':
-            print(name)
-            samratCounter = samratCounter + 1
-
-        if caitlinCounter == 0 and name is 'Caitlin':
-            print(name)
-            caitlinCounter = caitlinCounter + 1
-
+        checkIfHere(name, 'Samrat')
+        checkIfHere(name, 'Caitlin')
+        checkIfHere(name, 'Vijay')
+        checkIfHere(name, 'Cassidy')
+        checkIfHere(name, 'Neha')
+        checkIfHere(name, 'Ananth')
+        checkIfHere(name, 'Niharika')
+        checkIfHere(name, 'Ananthram')
+        checkIfHere(name, 'Ryan')
+        checkIfHere(name, 'Matthew')
 
     # Show Frame
     cv2.imshow('frame', frame)
@@ -106,6 +169,3 @@ while True:
 
 # Upon exiting while loop, close web cam
 video.release()
-
-
-
