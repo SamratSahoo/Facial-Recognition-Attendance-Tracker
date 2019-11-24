@@ -1,35 +1,6 @@
 import cv2
 import face_recognition
 import numpy as np
-import os
-
-
-# Method loads image and encodes for face
-def encodeFace(imageDirectory):
-    # Load Images
-    image = face_recognition.load_image_file(imageDirectory)
-    # Encode Images
-    encoding = face_recognition.face_encodings(image)[0]
-    return encoding
-
-
-# Method encodes a directory of images and returns the average encoding of the images
-def encodeDirectory(directoryName):
-    # Create list for all encodings
-    allEncodings = []
-    # Go through directory of files
-    for filename in os.listdir("People/" + directoryName):
-        # Get amount of files in directory
-        fileAmount = len(next(os.walk("People/" + directoryName)))
-        if filename.endswith(".jpg"):
-            # iterate through files in directory
-            for fileNum in range(0, fileAmount - 1):
-                # Add encodings to list
-                allEncodings.append(encodeFace("People/" + directoryName + "/" + str(fileNum) + ".jpg"))
-    # Turn length of list to prevent integer division
-    listLength = len(allEncodings) * 1.0
-    # Return average of encoded arrays array
-    return sum(allEncodings) / listLength
 
 
 # Will Output to console once
@@ -39,24 +10,25 @@ def checkIfHere(name, nameToCheck):
             if nameToCheck in f.read():
                 pass
             else:
-                with open("AttendanceSheet.txt", 'w') as f2:
+                with open("AttendanceSheet.txt", 'a') as f2:
                     f2.write(name + "\n")
+                    f2.close()
 
 
 # Create Webcam
 video = cv2.VideoCapture(0)
 
-# Encoding Image for Different People
-samratEncoding = encodeDirectory("Samrat")
-caitlinEncoding = encodeDirectory("Caitlin")
-vijayEncoding = encodeDirectory("Vijay")
-cassidyEncoding = encodeDirectory("Cassidy")
-nehaEncoding = encodeDirectory("Neha")
-ananthEncoding = encodeDirectory("Ananth")
-niharikaEncoding = encodeDirectory("Niharika")
-ananthramEncoding = encodeDirectory("Ananthram")
-ryanEncoding = encodeDirectory("Ryan")
-matthewEncoding = encodeDirectory("Matthew")
+# Load saved encodings for Different People
+samratEncoding = np.load("Encodings/SamratEncoding.npy")
+caitlinEncoding = np.load("Encodings/CaitlinEncoding.npy")
+vijayEncoding = np.load("Encodings/VijayEncoding.npy")
+cassidyEncoding = np.load("Encodings/CassidyEncoding.npy")
+nehaEncoding = np.load("Encodings/NehaEncoding.npy")
+ananthEncoding = np.load("Encodings/AnanthEncoding.npy")
+niharikaEncoding = np.load("Encodings/NiharikaEncoding.npy")
+ryanEncoding = np.load("Encodings/RyanEncoding.npy")
+matthewEncoding = np.load("Encodings/MatthewEncoding.npy")
+shrenikEncoding = np.load("Encodings/ShrenikEncoding.npy")
 
 # List For Face Encodings
 faceEncodingsKnown = [
@@ -67,9 +39,9 @@ faceEncodingsKnown = [
     nehaEncoding,
     ananthEncoding,
     niharikaEncoding,
-    ananthramEncoding,
     ryanEncoding,
-    matthewEncoding
+    matthewEncoding,
+    shrenikEncoding
 ]
 
 # List For Face Names
@@ -81,9 +53,9 @@ faceNamesKnown = [
     "Neha",
     "Ananth",
     "Niharika",
-    "Ananthram",
     "Ryan",
-    "Matthew"
+    "Matthew",
+    "Shrenik"
 ]
 
 faceLocations = []
@@ -141,7 +113,7 @@ while True:
         font = cv2.FONT_HERSHEY_DUPLEX
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
-        # Display name in console Once only
+        # Write name in file Once only
         checkIfHere(name, 'Samrat')
         checkIfHere(name, 'Caitlin')
         checkIfHere(name, 'Vijay')
@@ -149,9 +121,9 @@ while True:
         checkIfHere(name, 'Neha')
         checkIfHere(name, 'Ananth')
         checkIfHere(name, 'Niharika')
-        checkIfHere(name, 'Ananthram')
         checkIfHere(name, 'Ryan')
         checkIfHere(name, 'Matthew')
+        checkIfHere(name, 'Shrenik')
 
     # Show Frame
     cv2.imshow('frame', frame)
