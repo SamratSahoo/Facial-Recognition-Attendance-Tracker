@@ -1,6 +1,9 @@
 import face_recognition
 import numpy as np
 import os
+from init import faceNamesKnown, faceEncodingsKnown,encodingNames
+from pathlib2 import Path
+
 
 # Loads & Encode Images
 def encodeFace(imageDirectory):
@@ -29,26 +32,8 @@ def encodeDirectory(directoryName):
     # Return average of encoded arrays array
     return sum(allEncodings) / listLength
 
-# Encode Directories for people
-samratEncoding = encodeDirectory("Samrat")
-caitlinEncoding = encodeDirectory("Caitlin")
-vijayEncoding = encodeDirectory("Vijay")
-cassidyEncoding = encodeDirectory("Cassidy")
-nehaEncoding = encodeDirectory("Neha")
-ananthEncoding = encodeDirectory("Ananth")
-niharikaEncoding = encodeDirectory("Niharika")
-ryanEncoding = encodeDirectory("Ryan")
-matthewEncoding = encodeDirectory("Matthew")
-shrenikEncoding = encodeDirectory("Shrenik")
 
-# Save Encodings into Numpy file
-np.save('Encodings/SamratEncoding', samratEncoding)
-np.save('Encodings/CaitlinEncoding', caitlinEncoding)
-np.save('Encodings/VijayEncoding', vijayEncoding)
-np.save('Encodings/CassidyEncoding', cassidyEncoding)
-np.save('Encodings/NehaEncoding', nehaEncoding)
-np.save('Encodings/AnanthEncoding', ananthEncoding)
-np.save('Encodings/NiharikaEncoding', niharikaEncoding)
-np.save('Encodings/RyanEncoding', ryanEncoding)
-np.save('Encodings/MatthewEncoding', matthewEncoding)
-np.save('Encodings/ShrenikEncoding', shrenikEncoding)
+# Encode Directories for people + Save Encodings
+for x in range(0, len(faceNamesKnown)):
+    faceEncodingsKnown[x] = encodeDirectory(faceNamesKnown[x])
+    np.save('Encodings/' + encodingNames[x], faceEncodingsKnown[x])

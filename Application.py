@@ -1,6 +1,7 @@
 import cv2
 import face_recognition
 import numpy as np
+from init import faceNamesKnown, faceEncodingsKnown, encodingNames
 
 
 # Will Output to console once
@@ -19,51 +20,15 @@ def checkIfHere(name, nameToCheck):
 video = cv2.VideoCapture(0)
 
 # Load saved encodings for Different People
-samratEncoding = np.load("Encodings/SamratEncoding.npy")
-caitlinEncoding = np.load("Encodings/CaitlinEncoding.npy")
-vijayEncoding = np.load("Encodings/VijayEncoding.npy")
-cassidyEncoding = np.load("Encodings/CassidyEncoding.npy")
-nehaEncoding = np.load("Encodings/NehaEncoding.npy")
-ananthEncoding = np.load("Encodings/AnanthEncoding.npy")
-niharikaEncoding = np.load("Encodings/NiharikaEncoding.npy")
-ryanEncoding = np.load("Encodings/RyanEncoding.npy")
-matthewEncoding = np.load("Encodings/MatthewEncoding.npy")
-shrenikEncoding = np.load("Encodings/ShrenikEncoding.npy")
-
-# List For Face Encodings
-faceEncodingsKnown = [
-    samratEncoding,
-    caitlinEncoding,
-    vijayEncoding,
-    cassidyEncoding,
-    nehaEncoding,
-    ananthEncoding,
-    niharikaEncoding,
-    ryanEncoding,
-    matthewEncoding,
-    shrenikEncoding
-]
-
-# List For Face Names
-faceNamesKnown = [
-    "Samrat",
-    "Caitlin",
-    "Vijay",
-    "Cassidy",
-    "Neha",
-    "Ananth",
-    "Niharika",
-    "Ryan",
-    "Matthew",
-    "Shrenik"
-]
+for x in range(0, len(faceEncodingsKnown)):
+    faceEncodingsKnown[x] = np.load("Encodings/" + str(encodingNames[x]))
 
 faceLocations = []
 faceEncodings = []
 faceNames = []
 processThisFrame = True
 
-file = open("AttendanceSheet.txt", "w")
+file = open("AttendanceSheet.txt", "w+")
 
 while True:
     # Open Webcam + Optimize Webcam
@@ -114,16 +79,8 @@ while True:
         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
 
         # Write name in file Once only
-        checkIfHere(name, 'Samrat')
-        checkIfHere(name, 'Caitlin')
-        checkIfHere(name, 'Vijay')
-        checkIfHere(name, 'Cassidy')
-        checkIfHere(name, 'Neha')
-        checkIfHere(name, 'Ananth')
-        checkIfHere(name, 'Niharika')
-        checkIfHere(name, 'Ryan')
-        checkIfHere(name, 'Matthew')
-        checkIfHere(name, 'Shrenik')
+        for x in range(0, len(faceNamesKnown)):
+            checkIfHere(name, faceNamesKnown[x])
 
     # Show Frame
     cv2.imshow('frame', frame)
