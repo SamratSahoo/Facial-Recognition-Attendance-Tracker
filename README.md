@@ -54,6 +54,9 @@ with a connection to the Google Sheets API.
 This is where all the encodings are done. When this python file is run,
 it will encode the images in the saved directory and save the returned encodings
 into numpy file found in the Encodings folder.
+*`init.py`
+This file is used to access all the encoding and name variables that are used universally
+throughout the application
 
 ### Portfolio
 My research and work for this year can be found at my

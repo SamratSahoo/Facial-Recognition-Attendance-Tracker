@@ -2,21 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ed4c392f-c135-471b-8bca-bd95c4285c83" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/init.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Application.py" beforeDir="false" afterPath="$PROJECT_DIR$/Application.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AttendanceSheet.txt" beforeDir="false" afterPath="$PROJECT_DIR$/AttendanceSheet.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EncodingModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/EncodingModel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Encodings/AnanthEncoding.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Encodings/CaitlinEncoding.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Encodings/CassidyEncoding.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Encodings/MatthewEncoding.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Encodings/NehaEncoding.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Encodings/NiharikaEncoding.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Encodings/RyanEncoding.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Encodings/SamratEncoding.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Encodings/ShrenikEncoding.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Encodings/VijayEncoding.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/init.py" beforeDir="false" afterPath="$PROJECT_DIR$/init.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,13 +13,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Application.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-931">
-              <caret line="26" column="72" selection-start-line="26" selection-start-column="72" selection-end-line="26" selection-end-column="72" />
+            <state>
               <folding>
-                <element signature="e#0#9#0" expanded="true" />
+                <element signature="e#5#15#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -41,8 +27,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/init.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="51" column="24" selection-start-line="51" selection-start-column="24" selection-end-line="51" selection-end-column="24" />
+            <state relative-caret-position="-489">
+              <caret line="7" column="20" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="FIRST">
+              <first_editor relative-caret-position="170">
+                <caret line="58" column="26" selection-start-line="58" selection-start-column="26" selection-end-line="58" selection-end-column="26" />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -50,7 +48,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/EncodingModel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
+            <state relative-caret-position="293">
               <caret line="38" column="4" selection-start-line="38" selection-start-column="4" selection-end-line="38" selection-end-column="4" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
@@ -88,11 +86,11 @@
         <option value="$PROJECT_DIR$/createDataset.py" />
         <option value="$PROJECT_DIR$/Testing.py" />
         <option value="$PROJECT_DIR$/AttendanceSheet.txt" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/init.el.py" />
+        <option value="$PROJECT_DIR$/EncodingModel.py" />
         <option value="$PROJECT_DIR$/Application.py" />
         <option value="$PROJECT_DIR$/init.py" />
-        <option value="$PROJECT_DIR$/EncodingModel.py" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -114,11 +112,6 @@
             <path>
               <item name="ISM Original Work" type="b2602c69:ProjectViewProjectNode" />
               <item name="ISM Original Work" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ISM Original Work" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ISM Original Work" type="462c0819:PsiDirectoryNode" />
-              <item name="Encodings" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -298,12 +291,12 @@
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24305004" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24305004" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32978722" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4988086" visible="true" weight="0.27482268" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4988086" visible="true" weight="0.27482268" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.30851063" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -368,16 +361,6 @@
     <entry file="file://$PROJECT_DIR$/People/Vijay/0.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="FIRST">
-          <first_editor relative-caret-position="872">
-            <caret line="65" column="65" lean-forward="true" selection-start-line="65" selection-start-column="65" selection-end-line="65" selection-end-column="65" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Encodings/SamratEncoding.npy">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -390,7 +373,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/EncodingModel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
+        <state relative-caret-position="293">
           <caret line="38" column="4" selection-start-line="38" selection-start-column="4" selection-end-line="38" selection-end-column="4" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
@@ -398,20 +381,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/init.py">
+    <entry file="file://$PROJECT_DIR$/Application.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="51" column="24" selection-start-line="51" selection-start-column="24" selection-end-line="51" selection-end-column="24" />
+        <state>
+          <folding>
+            <element signature="e#5#15#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Application.py">
+    <entry file="file://$PROJECT_DIR$/init.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-931">
-          <caret line="26" column="72" selection-start-line="26" selection-start-column="72" selection-end-line="26" selection-end-column="72" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-489">
+          <caret line="7" column="20" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="170">
+            <caret line="58" column="26" selection-start-line="58" selection-start-column="26" selection-end-line="58" selection-end-column="26" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>

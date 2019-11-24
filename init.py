@@ -24,8 +24,6 @@ faceEncodingsKnown = [
     shrenikEncoding
 ]
 
-
-
 faceNamesKnown = [
     "Samrat",
     "Caitlin",
