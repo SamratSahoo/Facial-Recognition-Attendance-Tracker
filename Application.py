@@ -40,24 +40,27 @@ while True:
 
     # Find face locations and then do facial recognition to it
     if processThisFrame:
-        faceLocations = face_recognition.face_locations(rgbFrame)
+        faceLocations = face_recognition.face_locations(rgbFrame, 2, "hog")
         faceEncodings = face_recognition.face_encodings(rgbFrame, faceLocations)
 
         # make faceNames List empty every frame; refreshes to see if person still there
         faceNames = []
 
-        # Cycle through face encodings to find a match
-        for faceEncoding in faceEncodings:
-            matchFound = face_recognition.compare_faces(faceEncodingsKnown, faceEncoding)
-            name = "Not Found"
+        # Calculate the blur and if blur too high then do not do face detection
+        blurAmount = cv2.Laplacian(frame, cv2.CV_64F).var()
+        if blurAmount > 150:
+            # Cycle through face encodings to find a match
+            for faceEncoding in faceEncodings:
+                matchFound = face_recognition.compare_faces(faceEncodingsKnown, faceEncoding)
+                name = "Not Found"
 
-            faceDistances = face_recognition.face_distance(faceEncodingsKnown, faceEncoding)
-            matchIndex = np.argmin(faceDistances)
-            if matchFound[matchIndex]:
-                name = faceNamesKnown[matchIndex]
+                faceDistances = face_recognition.face_distance(faceEncodingsKnown, faceEncoding)
+                matchIndex = np.argmin(faceDistances)
+                if matchFound[matchIndex]:
+                    name = faceNamesKnown[matchIndex]
 
-            # Add names to faceNames list once found
-            faceNames.append(name)
+                # Add names to faceNames list once found
+                faceNames.append(name)
 
     processThisFrame = not processThisFrame
 

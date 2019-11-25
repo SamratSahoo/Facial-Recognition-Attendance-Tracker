@@ -10,6 +10,8 @@ niharikaEncoding = None
 ryanEncoding = None
 matthewEncoding = None
 shrenikEncoding = None
+ranitEncoding = None
+ishanEncoding = None
 
 faceEncodingsKnown = [
     samratEncoding,
@@ -21,7 +23,9 @@ faceEncodingsKnown = [
     niharikaEncoding,
     ryanEncoding,
     matthewEncoding,
-    shrenikEncoding
+    shrenikEncoding,
+    ranitEncoding,
+    ishanEncoding
 ]
 
 faceNamesKnown = [
@@ -34,7 +38,9 @@ faceNamesKnown = [
     "Niharika",
     "Ryan",
     "Matthew",
-    "Shrenik"
+    "Shrenik",
+    "Ranit",
+    "Ishan"
 ]
 
 encodingNames = [
@@ -47,5 +53,7 @@ encodingNames = [
     'NiharikaEncoding.npy',
     'RyanEncoding.npy',
     'MatthewEncoding.npy',
-    'ShrenikEncoding.npy'
+    'ShrenikEncoding.npy',
+    'RanitEncoding.npy',
+    'IshanEncoding.npy'
 ]
