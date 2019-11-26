@@ -9,7 +9,7 @@ def encodeFace(imageDirectory):
     # Load Images
     image = face_recognition.load_image_file(imageDirectory)
     # Encode Images
-    encoding = face_recognition.face_encodings(image, None, 10)[0]
+    encoding = face_recognition.face_encodings(image, None, 1000)[0]
     return encoding
 
 

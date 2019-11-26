@@ -48,7 +48,7 @@ while True:
 
         # Calculate the blur and if blur too high then do not do face detection
         blurAmount = cv2.Laplacian(frame, cv2.CV_64F).var()
-        if blurAmount > 150:
+        if blurAmount > 125:
             # Cycle through face encodings to find a match
             for faceEncoding in faceEncodings:
                 matchFound = face_recognition.compare_faces(faceEncodingsKnown, faceEncoding)

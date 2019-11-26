@@ -71,6 +71,7 @@ to my research throughout this project.
 * Trey Blankenship [Raytheon]
 * Won Hwa Kim [UT Arlington]
 * Tim Cogan [ams AG]
+* Vijay Nidumolu [Samsung Electronics America]
 
-One last thank you for the Radicubs Robotics Team for 
+One last thank you for the [Radicubs Robotics Team](https://radicubs.wixsite.com/robotics) for 
 helping me test this attendance tracker. 
