@@ -35,6 +35,9 @@ It may be used in the future.
 * `Encodings` 
 This is where all the encodings for the processed images in EncodingsModel.py
 are saved. They are saved as numpy files which are later loaded into Application.py.
+* `Example Executions` 
+This is where the example pictures of Application.py executions can be found. In this folder,
+you can find the actual face recognition occurring through the webcam.
 * `People`
 This folder contains several more directories for the people 
 to be detected and recognized in the application. Within the 
