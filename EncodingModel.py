@@ -1,7 +1,7 @@
 import face_recognition
 import numpy as np
 import os
-from init import faceNamesKnown, faceEncodingsKnown,encodingNames
+from init import faceNamesKnown, faceEncodingsKnown, encodingNames
 
 
 # Loads & Encode Images
@@ -9,7 +9,7 @@ def encodeFace(imageDirectory):
     # Load Images
     image = face_recognition.load_image_file(imageDirectory)
     # Encode Images
-    encoding = face_recognition.face_encodings(image, None, 1000)[0]
+    encoding = face_recognition.face_encodings(image, None, 5)[0]
     return encoding
 
 
