@@ -6,7 +6,7 @@ import os
 from init import faceNamesKnown, faceEncodingsKnown, encodingNames
 
 
-# Will Output to console once
+# Method to make sure output to file only occurs once
 def checkIfHere(name, nameToCheck):
     if name is nameToCheck:
         with open("AttendanceSheet.txt", 'r') as f:
@@ -18,14 +18,40 @@ def checkIfHere(name, nameToCheck):
                     f2.close()
 
 
+# Method to get amounts of files in a certain folder
 def getFolderSize(folderName):
-    folderSize = len(next(os.walk(folderName))) - 1
-    if folderSize < 2:
-        folderSize = 2
-    return folderSize
+    fileList = os.listdir(folderName)
+    numberFiles = len(fileList)
+    return numberFiles
 
 
-if getFolderSize("Encodings/") == 0:
+# Method to adjust to a certain brightness
+def adjustBrightness(img):
+    # Converts frame from RGB to HSV
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    # Splits HSV type into 3 different arrays
+    h, s, v = cv2.split(hsv)
+    # Calculates image's average brightness
+    averageBrightness = np.sum(v) / np.size(v)
+    # Set minimum brightness
+    brightnessThreshold = 125
+    # Calculate how much to increase the brightness
+    brightnessIncrease = brightnessThreshold - int(averageBrightness)
+    # See if average brightness exceeds the threshold
+    if averageBrightness < brightnessThreshold:
+        # Increases brightness
+        lim = 255 - brightnessIncrease
+        v[v > lim] = 255
+        v[v <= lim] += brightnessIncrease
+    # Merge the HSV values back together
+    finalHSV = cv2.merge((h, s, v))
+    # Redetermine image value & Return Image
+    img = cv2.cvtColor(finalHSV, cv2.COLOR_HSV2BGR)
+    return img
+
+
+# Check if there are enough encodings
+if getFolderSize("Encodings/") != len(encodingNames):
     import EncodingModel
 
 # Create Webcam
@@ -47,6 +73,8 @@ while True:
         # Open Webcam + Optimize Webcam
         ret, frame = video.read()
         smallFrame = cv2.resize(frame, (0, 0), fx=.25, fy=.25)
+        smallFrame = adjustBrightness(smallFrame)
+        frame = adjustBrightness(frame)
 
         # Change Webcam to RGB
         rgbFrame = smallFrame[:, :, ::-1]

@@ -44,22 +44,33 @@ to be detected and recognized in the application. Within the
 subdirectories, there the images which are analyzed and converted 
 into an array and compared with the video stream.
 * `Application.py`
-This is the body of the application where the image processing
-and video analysis occurs. Running this file will open up
-a video stream where the you will be able to see a blue box with the person's
-name under the box drawn. Further documentation can be found within
-the program comments.
+This is the application that will be executed if one wants to run the program. It 
+will go through People and determine whether to use FewImageRecognition.py or ManyImageRecognition.py 
+based on the amount of data available
 * `AttendanceSheet.txt`
-This is a text file that is where the names of the people detected
-are outputted. This will likely be replaced in the future
-with a connection to the Google Sheets API.
+This is a text file where the names of the people detected are outputted. This will 
+likely be replaced in the future with a connection to the Google Sheets API.
+* `DeepLearningModel.py`
+This is a Deep learning model that is currently in the works. It will likely
+use Keras/Tensorflow to create face recognition model which will be used with
+ManyImageRecognition.py
 * `EncodingModel.py`
 This is where all the encodings are done. When this python file is run,
 it will encode the images in the saved directory and save the returned encodings
 into numpy file found in the Encodings folder.
+* `FewImageRecognition.py`
+This is where facial recognition with small amounts of data is done. It uses one-shot learning by converting encodings
+from datasets in the People folder. It compares these encodings to the encodings in the webcam and whichever encoding
+is the most similar, it outputs that name. 
+Further documentation can be found within
+the program comments.
 * `init.py`
 This file is used to access all the encoding and name variables that are used universally
 throughout the application
+* `ManyImageRecognition.py`
+This script is called if there are many images in the dataset. It is more accurate than FewImageRecognition.py and 
+uses the Deep learning model found in DeepLearningModel.py
+
 
 ### Portfolio
 My research and work for this year can be found at my

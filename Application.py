@@ -14,7 +14,7 @@ for x in range(0, len(faceNamesKnown)):
         import FewImageRecognition
 
         continue
-
-for x in range(0, len(faceNamesKnown)):
-    if getFolderSize() > 2:
-        import ManyImageRecognition
+    else:
+        for x in range(0, len(faceNamesKnown)):
+            if getFolderSize() > 2:
+                import ManyImageRecognition
