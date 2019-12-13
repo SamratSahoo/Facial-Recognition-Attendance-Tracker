@@ -73,8 +73,8 @@ while True:
         # Open Webcam + Optimize Webcam
         ret, frame = video.read()
         smallFrame = cv2.resize(frame, (0, 0), fx=.25, fy=.25)
-        smallFrame = adjustBrightness(smallFrame)
-        frame = adjustBrightness(frame)
+        # smallFrame = adjustBrightness(smallFrame)
+        # frame = adjustBrightness(frame)
 
         # Change Webcam to RGB
         rgbFrame = smallFrame[:, :, ::-1]
