@@ -43,6 +43,21 @@ faceNamesKnown = [
     "Ishan"
 ]
 
+fullStudentNames = [
+    "Samrat Sahoo",
+    "Caitlin Fukumoto",
+    "Vijay Kartikeyeraja",
+    "Cassidy Wisneski",
+    "Neha Ganipathineedi",
+    "Ananth Vivekanand",
+    "Niharika Sule",
+    "Ryan Herrmann",
+    "Matthew Harris",
+    "Shrenik Porwal",
+    "Ranit Gupta",
+    "Ishan Gupta"
+]
+
 encodingNames = [
     'SamratEncoding.npy',
     'CaitlinEncoding.npy',

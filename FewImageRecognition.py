@@ -3,7 +3,8 @@ import face_recognition
 import numpy as np
 import os
 
-from init import faceNamesKnown, faceEncodingsKnown, encodingNames
+from init import faceNamesKnown, faceEncodingsKnown, encodingNames,fullStudentNames
+from Sheets import *
 
 
 # Method to make sure output to file only occurs once
@@ -55,6 +56,8 @@ if getFolderSize("Encodings/") != len(encodingNames):
     import EncodingModel
 
 # Create Webcam
+# 2 external webcam
+# 0 laptop webcam
 video = cv2.VideoCapture(0)
 
 # Load saved encodings for Different People
@@ -67,6 +70,7 @@ faceNames = []
 processThisFrame = True
 
 file = open("AttendanceSheet.txt", "w+")
+formatPage()
 
 while True:
     try:
@@ -128,6 +132,10 @@ while True:
             for x in range(0, len(faceNamesKnown)):
                 checkIfHere(name, faceNamesKnown[x])
 
+            for x in range(0, len(fullStudentNames)):
+                if name in fullStudentNames[x]:
+                    updatePresentPerson(name)
+
         # Show Frame
         cv2.imshow('frame', frame)
 
@@ -139,3 +147,5 @@ while True:
 
 # Upon exiting while loop, close web cam
 video.release()
+cv2.destroyAllWindows()
+markAbsentUnmarked()
