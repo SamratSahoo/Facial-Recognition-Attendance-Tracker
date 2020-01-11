@@ -23,7 +23,7 @@ The ISM program is a program in which students carry-on skills that not only las
  attendance system uses image datasets to create an
  average encoding of the person. This encoding is 
  then compared with frame encodings from the camera 
- stream Down below is the documentation for each 
+ stream. Down below is the documentation for each 
  part of this application
  
 ### Documentation
@@ -34,7 +34,7 @@ switch to the facial_recognition class it is no longer used.
 It may be used in the future.
 * `Encodings` 
 This is where all the encodings for the processed images in EncodingsModel.py
-are saved. They are saved as numpy files which are later loaded into Application.py.
+are saved. They are saved as numpy files which are later loaded into TransferLearning.py.
 * `Example Executions` 
 This is where the example pictures of Application.py executions can be found. In this folder,
 you can find the actual face recognition occurring through the webcam.
@@ -44,32 +44,28 @@ to be detected and recognized in the application. Within the
 subdirectories, there the images which are analyzed and converted 
 into an array and compared with the video stream.
 * `Application.py`
-This is the application that will be executed if one wants to run the program. It 
-will go through People and determine whether to use FewImageRecognition.py or ManyImageRecognition.py 
-based on the amount of data available
+This is the application that will be executed to run the main body of the program
 * `AttendanceSheet.txt`
 This is a text file where the names of the people detected are outputted. This will 
 likely be replaced in the future with a connection to the Google Sheets API.
-* `DeepLearningModel.py`
-This is a Deep learning model that is currently in the works. It will likely
-use Keras/Tensorflow to create face recognition model which will be used with
-ManyImageRecognition.py
 * `EncodingModel.py`
 This is where all the encodings are done. When this python file is run,
 it will encode the images in the saved directory and save the returned encodings
 into numpy file found in the Encodings folder.
-* `FewImageRecognition.py`
+* `init.py`
+This file is used to access all the encoding and name variables that are used universally
+throughout the application
+* `Interface.py`
+This file is where the graphical user interface for the attendance tracker can be found. It was developed
+using the Kivy python library
+* `Sheets.py`
+This file is where all the google sheets API formatting can be found
+* `TransferLearning.py`
 This is where facial recognition with small amounts of data is done. It uses one-shot learning by converting encodings
 from datasets in the People folder. It compares these encodings to the encodings in the webcam and whichever encoding
 is the most similar, it outputs that name. 
 Further documentation can be found within
 the program comments.
-* `init.py`
-This file is used to access all the encoding and name variables that are used universally
-throughout the application
-* `ManyImageRecognition.py`
-This script is called if there are many images in the dataset. It is more accurate than FewImageRecognition.py and 
-uses the Deep learning model found in DeepLearningModel.py
 
 
 ### Portfolio
@@ -86,6 +82,7 @@ to my research throughout this project.
 * Won Hwa Kim [UT Arlington]
 * Tim Cogan [ams AG]
 * Vijay Nidumolu [Samsung Electronics America]
+* Sehul Viras [Dallas Baptist University & IntelliCentric]
 
 One last thank you for the [Radicubs Robotics Team](https://radicubs.wixsite.com/robotics) for 
 helping me test this attendance tracker. 

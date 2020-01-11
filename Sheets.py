@@ -103,119 +103,65 @@ def formatPage():
     addDate()
 
 
+def getRowNum(personToFind):
+    startCellNum = 9
+    for x in range(0, len(fullStudentNames)):
+        # Find how many to go down from row 9 by comparing names + arrays
+        if fullStudentNames[x].strip() == personToFind.strip():
+            # Update row to go to
+            startCellNum += x
+    return startCellNum
+
+
+def getColumnLetter():
+    # Start column is B
+    cellStartNum = ord('B')
+    # Get date because column will correspond
+    date = datetime.today().strftime('X%m/X%d')
+    date = date.replace('X0', 'X').replace('X', '')
+    columnFound = False
+    # Compare current date to column date
+    while not columnFound:
+        currentCell = str(chr(cellStartNum)) + '8'
+        # If found, return cell column Letter
+        if sheet.acell(currentCell).value == date:
+            return cellStartNum
+        else:
+            cellStartNum += 1
+
+
 def updatePresentPerson(personToFind):
-    def getRowNum():
-        startCellNum = 9
-        for x in range(0, len(fullStudentNames)):
-            if fullStudentNames[x].strip() == personToFind.strip():
-                startCellNum += x
-        return startCellNum
-
-    def getColumnLetter():
-        cellStartNum = ord('B')
-        date = datetime.today().strftime('X%m/X%d')
-        date = date.replace('X0', 'X').replace('X', '')
-        columnFound = False
-        while not columnFound:
-            currentCell = str(chr(cellStartNum)) + '8'
-            if sheet.acell(currentCell).value == date:
-                return cellStartNum
-            else:
-                cellStartNum += 1
-
-    cellToPresent = chr(getColumnLetter()) + str(getRowNum())
+    # Change numerical values to cell value
+    cellToPresent = chr(getColumnLetter()) + str(getRowNum(personToFind))
+    # Mark present
     presentCell(cellToPresent)
 
 
 def updateAbsentPerson(personToFind):
-    def getRowNum():
-        startCellNum = 9
-        for x in range(0, len(fullStudentNames)):
-            if fullStudentNames[x].strip() == personToFind.strip():
-                startCellNum += x
-        return startCellNum
-
-    def getColumnLetter():
-        cellStartNum = ord('B')
-        date = datetime.today().strftime('X%m/X%d')
-        date = date.replace('X0', 'X').replace('X', '')
-        columnFound = False
-        while not columnFound:
-            currentCell = str(chr(cellStartNum)) + '8'
-            if sheet.acell(currentCell).value == date:
-                return cellStartNum
-            else:
-                cellStartNum += 1
-
-    cellToAbsent = chr(getColumnLetter()) + str(getRowNum())
+    # Change numerical values to cell value
+    cellToAbsent = chr(getColumnLetter()) + str(getRowNum(personToFind))
+    # Mark Absent
     absentCell(cellToAbsent)
 
 
 def updateLatePerson(personToFind):
-    def getRowNum():
-        startCellNum = 9
-        for x in range(0, len(fullStudentNames)):
-            if fullStudentNames[x].strip() == personToFind.strip():
-                startCellNum += x
-        return startCellNum
-
-    def getColumnLetter():
-        cellStartNum = ord('B')
-        date = datetime.today().strftime('X%m/X%d')
-        date = date.replace('X0', 'X').replace('X', '')
-        columnFound = False
-        while not columnFound:
-            currentCell = str(chr(cellStartNum)) + '8'
-            if sheet.acell(currentCell).value == date:
-                return cellStartNum
-            else:
-                cellStartNum += 1
-
-    cellToAbsent = chr(getColumnLetter()) + str(getRowNum())
+    # Change numerical values to cell value
+    cellToAbsent = chr(getColumnLetter()) + str(getRowNum(personToFind))
+    # Mark Late
     lateCell(cellToAbsent)
 
 
 def markOnce(name):
-    def getRow():
-        startCellNum = 9
-        for x in range(0, len(fullStudentNames)):
-            if fullStudentNames[x].strip() == name.strip():
-                startCellNum += x
-                break
-        return startCellNum
-
-    def getColumn():
-        cellStartNum = ord('B')
-        date = datetime.today().strftime('X%m/X%d')
-        date = date.replace('X0', 'X').replace('X', '')
-        columnFound = False
-        while not columnFound:
-            currentCell = str(chr(cellStartNum)) + '8'
-            if sheet.acell(currentCell).value == date:
-                return cellStartNum
-            else:
-                cellStartNum += 1
-
-    cellToCheck = str(chr(getColumn())) + str(getRow())
+    # Change numerical values to cell value
+    cellToCheck = str(chr(getColumnLetter())) + str(getRowNum(name))
+    # Return False if cell is not white
     return worksheet.cell(cellToCheck).color != (None, None, None, None)
 
 
 def markAbsentUnmarked():
-    def getColumn():
-        cellStartNum = ord('B')
-        date = datetime.today().strftime('X%m/X%d')
-        date = date.replace('X0', 'X').replace('X', '')
-        columnFound = False
-        while not columnFound:
-            currentCell = str(chr(cellStartNum)) + '8'
-            if sheet.acell(currentCell).value == date:
-                return cellStartNum
-            else:
-                cellStartNum += 1
-
     rowStart = 9
     for x in range(0, len(fullStudentNames)):
-        cellToCheck = str(chr(getColumn())) + str(rowStart)
+        cellToCheck = str(chr(getColumnLetter())) + str(rowStart)
         if worksheet.cell(cellToCheck).color == (None, None, None, None):
             absentCell(cellToCheck)
             rowStart += 1

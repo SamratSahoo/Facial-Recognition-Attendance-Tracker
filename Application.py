@@ -1,5 +1,6 @@
 import os
-from init import faceNamesKnown, faceEncodingsKnown, encodingNames
+from init import *
+from Sheets import *
 
 
 def getFolderSize():
@@ -10,11 +11,6 @@ def getFolderSize():
 
 
 for x in range(0, len(faceNamesKnown)):
+    formatPage()
     if getFolderSize() == 2:
-        import FewImageRecognition
-
-        continue
-    else:
-        for x in range(0, len(faceNamesKnown)):
-            if getFolderSize() > 2:
-                import ManyImageRecognition
+        import TransferLearning
