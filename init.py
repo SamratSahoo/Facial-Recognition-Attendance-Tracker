@@ -13,6 +13,7 @@ cooperEncoding = None
 samratEncoding = None
 josiahEncoding = None
 niharikaEncoding = None
+ananthramEncoding = None
 premithEncoding = None
 yashEncoding = None
 ananthEncoding = None
@@ -32,6 +33,7 @@ faceEncodingsKnown = [
     samratEncoding,
     josiahEncoding,
     niharikaEncoding,
+    ananthramEncoding,
     premithEncoding,
     yashEncoding,
     ananthEncoding,
@@ -52,6 +54,7 @@ faceNamesKnown = [
     "Samrat",
     "Josiah",
     "Niharika",
+    "Ananthram",
     "Premith",
     "Yash",
     "Ananth",
@@ -93,6 +96,7 @@ encodingNames = [
     'SamratEncoding.npy',
     'JosiahEncoding.npy',
     'NiharikaEncoding.npy',
+    "AnanthramEncoding.npy",
     'PremithEncoding.npy',
     'YashEncoding.npy',
     'AnanthEncoding.npy',
