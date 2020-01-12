@@ -3,7 +3,7 @@ import face_recognition
 import numpy as np
 import os
 
-from init import faceNamesKnown, faceEncodingsKnown, encodingNames,fullStudentNames
+from init import faceNamesKnown, faceEncodingsKnown, encodingNames
 from Sheets import *
 
 
@@ -19,7 +19,7 @@ def checkIfHere(name, nameToCheck):
                     f2.close()
 
 
-# Method to get amounts of files in a certain folder
+# Method to get amount of files in a certain folder
 def getFolderSize(folderName):
     fileList = os.listdir(folderName)
     numberFiles = len(fileList)
@@ -56,8 +56,8 @@ if getFolderSize("Encodings/") != len(encodingNames):
     import EncodingModel
 
 # Create Webcam
-# 2 external webcam
 # 0 laptop webcam
+# 2 external webcam
 video = cv2.VideoCapture(0)
 
 # Load saved encodings for Different People
@@ -133,7 +133,7 @@ while True:
 
             for x in range(0, len(fullStudentNames)):
                 if name in fullStudentNames[x]:
-                    updatePresentPerson(name)
+                    updatePresentPerson(fullStudentNames[x])
 
         # Show Frame
         cv2.imshow('frame', frame)

@@ -1,74 +1,100 @@
 # Init file to access all variables
 
-samratEncoding = None
+sierraEncoding = None
 caitlinEncoding = None
-vijayEncoding = None
-cassidyEncoding = None
 nehaEncoding = None
-ananthEncoding = None
-niharikaEncoding = None
-ryanEncoding = None
-matthewEncoding = None
-shrenikEncoding = None
-ranitEncoding = None
 ishanEncoding = None
+ranitEncoding = None
+matthewEncoding = None
+ryanEncoding = None
+vijayEncoding = None
+shrenikEncoding = None
+cooperEncoding = None
+samratEncoding = None
+josiahEncoding = None
+niharikaEncoding = None
+premithEncoding = None
+yashEncoding = None
+ananthEncoding = None
+cassidyEncoding = None
 
 faceEncodingsKnown = [
-    samratEncoding,
+    sierraEncoding,
     caitlinEncoding,
-    vijayEncoding,
-    cassidyEncoding,
     nehaEncoding,
-    ananthEncoding,
-    niharikaEncoding,
-    ryanEncoding,
-    matthewEncoding,
-    shrenikEncoding,
+    ishanEncoding,
     ranitEncoding,
-    ishanEncoding
+    matthewEncoding,
+    ryanEncoding,
+    vijayEncoding,
+    shrenikEncoding,
+    cooperEncoding,
+    samratEncoding,
+    josiahEncoding,
+    niharikaEncoding,
+    premithEncoding,
+    yashEncoding,
+    ananthEncoding,
+    cassidyEncoding
 ]
 
 faceNamesKnown = [
-    "Samrat",
+    "Sierra",
     "Caitlin",
-    "Vijay",
-    "Cassidy",
     "Neha",
-    "Ananth",
-    "Niharika",
-    "Ryan",
-    "Matthew",
-    "Shrenik",
+    "Ishan",
     "Ranit",
-    "Ishan"
+    "Matthew",
+    "Ryan",
+    "Vijay",
+    "Shrenik",
+    "Cooper",
+    "Samrat",
+    "Josiah",
+    "Niharika",
+    "Premith",
+    "Yash",
+    "Ananth",
+    "Cassidy"
 ]
 
 fullStudentNames = [
-    "Samrat Sahoo",
+    "Sierra Biddulph",
     "Caitlin Fukumoto",
-    "Vijay Kartikeyeraja",
-    "Cassidy Wisneski",
-    "Neha Ganipathineedi",
-    "Ananth Vivekanand",
-    "Niharika Sule",
-    "Ryan Herrmann",
-    "Matthew Harris",
-    "Shrenik Porwal",
+    "Neha Ganapathineedi",
+    "Ishan Gupta",
     "Ranit Gupta",
-    "Ishan Gupta"
+    "Matthew Harris",
+    "Ryan Herrmann",
+    "Vijay Karthikeyaraja",
+    "Shrenik Porwal",
+    "Cooper Rogers",
+    "Samrat Sahoo",
+    "Josiah Sims",
+    "Niharika Sule",
+    "Ananthram Tekkalakota",
+    "Premith Tikkani",
+    "Yash Totlani",
+    "Ananth Vivekanand",
+    "Cassidy Wisneski"
 ]
 
 encodingNames = [
-    'SamratEncoding.npy',
+    'SierraEncoding.npy',
     'CaitlinEncoding.npy',
-    'VijayEncoding.npy',
-    'CassidyEncoding.npy',
     'NehaEncoding.npy',
-    'AnanthEncoding.npy',
-    'NiharikaEncoding.npy',
-    'RyanEncoding.npy',
-    'MatthewEncoding.npy',
-    'ShrenikEncoding.npy',
+    'IshanEncoding.npy',
     'RanitEncoding.npy',
-    'IshanEncoding.npy'
+    'MatthewEncoding.npy',
+    'RyanEncoding.npy',
+    'VijayEncoding.npy',
+    'ShrenikEncoding.npy',
+    'CooperEncoding.npy',
+    'SamratEncoding.npy',
+    'JosiahEncoding.npy',
+    'NiharikaEncoding.npy',
+    'PremithEncoding.npy',
+    'YashEncoding.npy',
+    'AnanthEncoding.npy',
+    'CassidyEncoding.npy'
 ]

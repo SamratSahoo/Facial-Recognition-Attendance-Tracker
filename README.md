@@ -59,14 +59,26 @@ throughout the application
 This file is where the graphical user interface for the attendance tracker can be found. It was developed
 using the Kivy python library
 * `Sheets.py`
-This file is where all the google sheets API formatting can be found
+This file is where all the Google Sheets API formatting can be found. Please note for this you will need to obtain your
+own Google Sheets and Google Drive credentials through Google Cloud.
 * `TransferLearning.py`
 This is where facial recognition with small amounts of data is done. It uses one-shot learning by converting encodings
-from datasets in the People folder. It compares these encodings to the encodings in the webcam and whichever encoding
+from datas ets in the People folder. It compares these encodings to the encodings in the webcam and whichever encoding
 is the most similar, it outputs that name. 
 Further documentation can be found within
 the program comments.
 
+### Requirements
+You will need Python 3.6 and the following libraries installed:
+* dlib
+* face_recognition 
+* opencv-python
+* opencv-contrib-python
+* numpy
+* kivy
+* pygsheets
+* gspread-formatting
+* oauth2client
 
 ### Portfolio
 My research and work for this year can be found at my

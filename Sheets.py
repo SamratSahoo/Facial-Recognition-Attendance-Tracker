@@ -154,8 +154,9 @@ def updateLatePerson(personToFind):
 def markOnce(name):
     # Change numerical values to cell value
     cellToCheck = str(chr(getColumnLetter())) + str(getRowNum(name))
-    # Return False if cell is not white
-    return worksheet.cell(cellToCheck).color != (None, None, None, None)
+    # Return False if cell is not white or red
+    return worksheet.cell(cellToCheck).color != (None, None, None, None) or worksheet.cell(cellToCheck).color != (
+        .96, .80, .80, 1.00)
 
 
 def markAbsentUnmarked():
@@ -177,11 +178,11 @@ try:
     creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
     client = gspread.authorize(creds)
     # Opens sheet based on sheet name
-    sheet = client.open("Attendance Tracking").sheet1
+    sheet = client.open("19/20 Attendance").sheet1
 
     # Authorize Pygsheets library
     gc = pygsheets.authorize()
-    worksheet = gc.open('Attendance Tracking').sheet1
+    worksheet = gc.open('19/20 Attendance').sheet1
 
 except Exception as e:
     print(e)
