@@ -95,11 +95,10 @@ def addDate():
 
 
 def formatPage():
-    # If page is already formatted, there is no need to format again
-    if sheet.acell('A1').value == '':
+    # Adds key, student names, and current date
+    if sheet.acell('A1').value != 'KEY':
         addKey()
-        addStudentNames()
-    # Adds Date regardless of current formatting
+    addStudentNames()
     addDate()
 
 
@@ -183,6 +182,6 @@ try:
     # Authorize Pygsheets library
     gc = pygsheets.authorize()
     worksheet = gc.open('19/20 Attendance').sheet1
-
+    formatPage()
 except Exception as e:
     print(e)

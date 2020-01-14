@@ -26,6 +26,11 @@ The ISM program is a program in which students carry-on skills that not only las
  stream. Down below is the documentation for each 
  part of this application
  
+### Navigating Github
+* Commits: This where you can see a short description of the changes I made, the time I made it and the files I changed.
+* Files: Below the commits are where you can find my program files with all of my code/other resources
+* ReadME: The ReadME file is this file! You can find a preface and documentation over the whole project.
+
 ### Documentation
 * `Cascades `
  This is the folder that contains OpenCV haar cascades to 

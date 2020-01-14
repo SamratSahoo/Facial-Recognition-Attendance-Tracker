@@ -2,10 +2,9 @@ import cv2
 import face_recognition
 import numpy as np
 import os
-
 from init import faceNamesKnown, faceEncodingsKnown, encodingNames
 from Sheets import *
-
+import  keyboard
 
 # Method to make sure output to file only occurs once
 def checkIfHere(name, nameToCheck):
@@ -58,7 +57,7 @@ if getFolderSize("Encodings/") != len(encodingNames):
 # Create Webcam
 # 0 laptop webcam
 # 2 external webcam
-video = cv2.VideoCapture(0)
+video = cv2.VideoCapture(2)
 
 # Load saved encodings for Different People
 for x in range(0, len(faceEncodingsKnown)):
@@ -141,6 +140,11 @@ while True:
         # If q is pressed, exit loop
         if cv2.waitKey(20) & 0xFF == ord('q'):
             break
+
+        # Research Showcase cell reset; delete later
+        if cv2.waitKey(20) & 0xFF == ord('r'):
+            resetCell('E19')
+
     except Exception as e:
         print(e)
 
