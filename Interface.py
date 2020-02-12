@@ -1,44 +1,44 @@
 from kivy.app import App
-from kivy.lang import Builder
+from kivy.uix.button import Button
+from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
-import time
+from kivy.uix.image import Image
+from kivy.clock import Clock
+from kivy.graphics.texture import Texture
 
-Builder.load_string('''
-<CameraClick>:
-    orientation: 'vertical'
-    Camera:
-        id: camera
-        resolution: (640, 480)
-        play: False
-    ToggleButton:
-        text: 'Play'
-        on_press: camera.play = not camera.play
-        size_hint_y: None
-        height: '48dp'
-    Button:
-        text: 'Capture'
-        size_hint_y: None
-        height: '48dp'
-        on_press: root.capture()
-''')
+import cv2
 
 
-class CameraClick(BoxLayout):
-    def capture(self):
-        '''
-        Function to capture the images and give them the names
-        according to their captured time and date.
-        '''
-        camera = self.ids['camera']
-        timestr = time.strftime("%Y%m%d_%H%M%S")
-        camera.export_to_png("IMG_{}.png".format(timestr))
-        print("Captured")
-
-
-class TestCamera(App):
+class CamApp(App):
 
     def build(self):
-        return CameraClick()
+        self.img1 = Image()
+        layout = BoxLayout()
+        layout.add_widget(self.img1)
+        layout.add_widget(Button(text='Hello World'))
+
+        # Open CV Capture
+        self.capture = cv2.VideoCapture(0)
+        cv2.namedWindow("CV2 Image")
+        Clock.schedule_interval(self.update, 1.0 / 33.0)
+        return layout
+
+    def update(self, dt):
+        # Read OpenCV Camera
+        ret, frame = self.capture.read()
+        # Show OpenCV
+        cv2.imshow("CV2 Image", frame)
+
+        # Convert Open CV to Kivy Texture
+        buf1 = cv2.flip(frame, 0)
+        buf = buf1.tostring()
+        texture1 = Texture.create(size=(frame.shape[1], frame.shape[0]), colorfmt='bgr')
+        texture1.blit_buffer(buf, colorfmt='bgr', bufferfmt='ubyte')
+
+        # display image from the texture
+        self.img1.texture = texture1
 
 
-TestCamera().run()
+if __name__ == '__main__':
+    CamApp().run()
+    cv2.destroyAllWindows()
