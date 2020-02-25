@@ -4,7 +4,7 @@ from Sheets import *
 
 
 def getFolderSize():
-    folderSize = len(next(os.walk("People/" + str(faceNamesKnown[x])))) - 1
+    folderSize = len(next(os.walk("People Images/" + str(faceNamesKnown[x])))) - 1
     if folderSize < 2:
         folderSize = 2
     return folderSize

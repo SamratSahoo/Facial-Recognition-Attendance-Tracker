@@ -2,9 +2,13 @@ import cv2
 import face_recognition
 import numpy as np
 import os
-from init import faceNamesKnown, faceEncodingsKnown, encodingNames
+from init import *
 from Sheets import *
+from DynamicAddition import *
+import pickle
 
+
+# ================================================ Functions ===========================================================
 
 # Method to make sure output to file only occurs once
 def checkIfHere(name, nameToCheck):
@@ -50,6 +54,8 @@ def adjustBrightness(img):
     return img
 
 
+# ================================================ Set Up ==============================================================
+
 # Check if there are enough encodings
 if getFolderSize("Encodings/") != len(encodingNames):
     import EncodingModel
@@ -67,20 +73,49 @@ faceLocations = []
 faceEncodings = []
 faceNames = []
 processThisFrame = True
+frameFreeze = False
 
 file = open("AttendanceSheet.txt", "w+")
 
+filehandler = open("ObjectInfo", 'w')
+if getFolderSize("Object Information/") != len(People):
+    for x in People:
+        People[x] = Person(faceNamesKnown[x], fullStudentNames[x], encoding=faceEncodingsKnown[x],
+                           image=None, imagePath=None, encodingPath=None)
+        pickle.dump(faceNamesKnown[x], filehandler)
+    #
+for x in range(0, len(People)):
+    pass
+# ============================================== Core Program ==========================================================
+
 while True:
     try:
+        # ============================================== Webcam Optimization ===================================================
         # Open Webcam + Optimize Webcam
         ret, frame = video.read()
-
         smallFrame = cv2.resize(frame, (0, 0), fx=.25, fy=.25)
-        smallFrame = adjustBrightness(smallFrame)
-        frame = adjustBrightness(frame)
+
+        key = cv2.waitKey(1) & 0xff
+
+        if not ret:
+            break
+
+        if key == ord('p'):
+
+            while True:
+
+                key2 = cv2.waitKey(1) or 0xff
+                cv2.imshow('frame', frame)
+
+                if key2 == ord('p'):
+                    break
+
+        if key == 27:
+            break
 
         # Change Webcam to RGB
         rgbFrame = smallFrame[:, :, ::-1]
+        # ============================================== Facial Recognition ====================================================
 
         # Find face locations and then do facial recognition to it
         if processThisFrame:
@@ -108,7 +143,14 @@ while True:
                     # Add names to faceNames list once found
                     faceNames.append(name)
 
+        # ============================================== Dynamic Addition ======================================================
+        #             if name == 'Not Found':
+        #                 pauseCamera()
+        #                 takePicture()
+        #                 encodeFace()
+
         processThisFrame = not processThisFrame
+        # ============================================== Write on Stream =======================================================
 
         for (top, right, bottom, left), name in zip(faceLocations, faceNames):
             # scaling again to correct for previous scaling
@@ -135,8 +177,7 @@ while True:
                 if name in fullStudentNames[x]:
                     updatePresentPerson(fullStudentNames[x])
 
-        # Show Frame
-        cv2.imshow('frame', frame)
+        cv2.imshow('Frame', frame)
 
         # If q is pressed, exit loop
         if cv2.waitKey(20) & 0xFF == ord('q'):
@@ -145,6 +186,7 @@ while True:
     except Exception as e:
         print(e)
 
+# ============================================== Post Program ==========================================================
 # Upon exiting while loop, close web cam
 video.release()
 cv2.destroyAllWindows()

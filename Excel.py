@@ -148,13 +148,12 @@ def updateLatePerson(personToFind):
     # Mark Late
     lateCell(cellToAbsent)
 
-    formatPage()
-    ws.save("AttendanceExcel.xlsx")
-    wb = load_workbook(filename='empty_book.xlsx')
-
 
 try:
     wb = Workbook()
     ws = wb.active
-except:
-    print(Exception)
+    formatPage()
+    wb.save("AttendanceExcel.xlsx")
+
+except Exception as e:
+    print(e)

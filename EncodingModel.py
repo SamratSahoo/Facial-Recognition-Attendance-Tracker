@@ -18,14 +18,14 @@ def encodeDirectory(directoryName):
     # Create list for all encodings
     allEncodings = []
     # Go through directory of files
-    for filename in os.listdir("People/" + directoryName):
+    for filename in os.listdir("People Images/" + directoryName):
         # Get amount of files in directory
-        fileAmount = len(next(os.walk("People/" + directoryName)))
+        fileAmount = len(next(os.walk("People Images/" + directoryName)))
         if filename.endswith(".jpg"):
             # iterate through files in directory
             for fileNum in range(0, fileAmount - 1):
                 # Add encodings to list
-                allEncodings.append(encodeFace("People/" + directoryName + "/" + str(fileNum) + ".jpg"))
+                allEncodings.append(encodeFace("People Images/" + directoryName + "/" + str(fileNum) + ".jpg"))
     # Turn length of list to prevent integer division
     listLength = len(allEncodings) * 1.0
     # Return average of encoded arrays array

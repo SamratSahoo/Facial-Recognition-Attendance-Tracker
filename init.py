@@ -1,24 +1,5 @@
 # Init file to access all variables
 
-sierraEncoding = None
-caitlinEncoding = None
-nehaEncoding = None
-ishanEncoding = None
-ranitEncoding = None
-matthewEncoding = None
-ryanEncoding = None
-vijayEncoding = None
-shrenikEncoding = None
-cooperEncoding = None
-samratEncoding = None
-josiahEncoding = None
-niharikaEncoding = None
-ananthramEncoding = None
-premithEncoding = None
-yashEncoding = None
-ananthEncoding = None
-cassidyEncoding = None
-
 faceEncodingsKnown = [
     sierraEncoding,
     caitlinEncoding,
@@ -38,7 +19,7 @@ faceEncodingsKnown = [
     yashEncoding,
     ananthEncoding,
     cassidyEncoding
-]
+] = None
 
 faceNamesKnown = [
     "Sierra",
@@ -102,3 +83,25 @@ encodingNames = [
     'AnanthEncoding.npy',
     'CassidyEncoding.npy'
 ]
+
+
+People = [
+    SierraBiddulph,
+    CaitlinFukumoto,
+    NehaGanapathineedi,
+    IshanGupta,
+    RanitGupta,
+    MatthewHarris,
+    RyanHerrmann,
+    VijayKarthikeyaraja,
+    ShrenikPorwal,
+    CooperRogers,
+    SamratSahoo,
+    JosiahSims,
+    NiharikaSule,
+    AnanthramTekkalakota,
+    PremithTikkani,
+    YashTotlani,
+    AnanthVivekanand,
+    CassidyWisneski
+] = None
