@@ -13,4 +13,4 @@ def getFolderSize():
 for x in range(0, len(faceNamesKnown)):
     formatPage()
     if getFolderSize() == 2:
-        import TransferLearning
+        pass

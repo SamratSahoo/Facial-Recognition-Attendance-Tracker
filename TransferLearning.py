@@ -1,11 +1,10 @@
+from init import *
+from Sheets import *
+from DynamicAddition import *
 import cv2
 import face_recognition
 import numpy as np
 import os
-from init import *
-from Sheets import *
-from DynamicAddition import *
-import pickle
 
 
 # ================================================ Functions ===========================================================
@@ -54,11 +53,38 @@ def adjustBrightness(img):
     return img
 
 
+def toList(dictionary):
+    listToReturn = list(dictionary.values())
+    index = int(len(listToReturn))
+    listToReturn = listToReturn[:index]
+    return listToReturn
+
+
+def loadLists(textFile):
+    with open(textFile) as file:
+        list = file.readlines()
+        file.close()
+        list = [x[:-1] for x in list]
+    return list
+
+
+def loadDictionary(file, dictionary):
+    with open(file, "rt") as f:
+        for line in f.readlines():
+            dictionary[line.strip()] = None
+
 # ================================================ Set Up ==============================================================
+
+# Convert Txt Files to Lists
+fullStudentNames = loadLists("List Information/Full Student Names")  # List with full Student Names
+faceNamesKnown = loadLists("List Information/Face Names Known")  # List With Face Names
+encodingNames = loadLists("List Information/Encoding Names")  # List With encoding names
+loadDictionary("List Information/Full Student Names", People)  # Dictionary with people objects
+loadDictionary("List Information/Face Names Known", faceEncodingsKnown)  # Dictionary with Encodings
 
 # Check if there are enough encodings
 if getFolderSize("Encodings/") != len(encodingNames):
-    import EncodingModel
+    pass
 
 # Create Webcam
 # 0 laptop webcam
@@ -66,56 +92,33 @@ if getFolderSize("Encodings/") != len(encodingNames):
 video = cv2.VideoCapture(0)
 
 # Load saved encodings for Different People
-for x in range(0, len(faceEncodingsKnown)):
-    faceEncodingsKnown[x] = np.load("Encodings/" + str(encodingNames[x]))
+encodingList = toList(faceEncodingsKnown)
+for x in range(0, int(len(encodingList))):
+    encodingList[x] = np.load("Encodings/" + str(encodingNames[x]))
+
+# Load Object Information
+peopleList = toList(People)
+for x in range(0, len(peopleList)):
+    peopleList[x] = Person(faceNamesKnown[x], fullStudentNames[x], encoding=encodingList[x],
+                           image=None, imagePath=None, encodingPath=None)
 
 faceLocations = []
 faceEncodings = []
 faceNames = []
 processThisFrame = True
-frameFreeze = False
-
 file = open("AttendanceSheet.txt", "w+")
-
-filehandler = open("ObjectInfo", 'w')
-if getFolderSize("Object Information/") != len(People):
-    for x in People:
-        People[x] = Person(faceNamesKnown[x], fullStudentNames[x], encoding=faceEncodingsKnown[x],
-                           image=None, imagePath=None, encodingPath=None)
-        pickle.dump(faceNamesKnown[x], filehandler)
-    #
-for x in range(0, len(People)):
-    pass
 # ============================================== Core Program ==========================================================
 
 while True:
     try:
-        # ============================================== Webcam Optimization ===================================================
+        # ============================================== Webcam Optimization ===========================================
         # Open Webcam + Optimize Webcam
         ret, frame = video.read()
         smallFrame = cv2.resize(frame, (0, 0), fx=.25, fy=.25)
 
-        key = cv2.waitKey(1) & 0xff
-
-        if not ret:
-            break
-
-        if key == ord('p'):
-
-            while True:
-
-                key2 = cv2.waitKey(1) or 0xff
-                cv2.imshow('frame', frame)
-
-                if key2 == ord('p'):
-                    break
-
-        if key == 27:
-            break
-
         # Change Webcam to RGB
         rgbFrame = smallFrame[:, :, ::-1]
-        # ============================================== Facial Recognition ====================================================
+        # ============================================== Facial Recognition ============================================
 
         # Find face locations and then do facial recognition to it
         if processThisFrame:
@@ -124,17 +127,16 @@ while True:
 
             # make faceNames List empty every frame; refreshes to see if person still there
             faceNames = []
-
             # Calculate the blur and if blur too high then do not do face detection
             blurAmount = cv2.Laplacian(frame, cv2.CV_64F).var()
             if blurAmount > 125:
                 # Cycle through face encodings to find a match
                 for faceEncoding in faceEncodings:
-                    matchFound = face_recognition.compare_faces(faceEncodingsKnown, faceEncoding, 0.5)
+                    matchFound = face_recognition.compare_faces(encodingList, faceEncoding, 0.5)
                     name = "Not Found"
 
                     # See how similar or different the faces are
-                    faceDistances = face_recognition.face_distance(faceEncodingsKnown, faceEncoding)
+                    faceDistances = face_recognition.face_distance(encodingList, faceEncoding)
                     # whichever one has a lower variance, take the minimum of that
                     matchIndex = np.argmin(faceDistances)
                     if matchFound[matchIndex]:
@@ -143,14 +145,14 @@ while True:
                     # Add names to faceNames list once found
                     faceNames.append(name)
 
-        # ============================================== Dynamic Addition ======================================================
+        # ============================================== Dynamic Addition ==============================================
         #             if name == 'Not Found':
         #                 pauseCamera()
         #                 takePicture()
         #                 encodeFace()
 
         processThisFrame = not processThisFrame
-        # ============================================== Write on Stream =======================================================
+        # ============================================== Write on Stream ===============================================
 
         for (top, right, bottom, left), name in zip(faceLocations, faceNames):
             # scaling again to correct for previous scaling

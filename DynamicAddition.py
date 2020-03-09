@@ -1,7 +1,7 @@
-import TransferLearning
 import cv2
 import os
 from EncodingModel import *
+
 
 def pauseCamera():
     cv2.waitKey(-100)
