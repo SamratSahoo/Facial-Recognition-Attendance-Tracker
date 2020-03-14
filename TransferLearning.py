@@ -150,9 +150,9 @@ while True:
                     # Add names to faceNames list once found
                     faceNames.append(name)
 
-                    # ============================================== Dynamic Addition ==========================================
+                    # ============================================== Dynamic Addition ==================================
                     if 'Not Found' in faceNames and cv2.waitKey(20) & 0xFF == ord('a'):
-                        runInParallel(pauseCamera(), DynamicAdd(frame))
+                        runInParallel(pauseCamera(), dynamicAdd(frame))
                         fullStudentNames = loadLists(
                             "List Information/Full Student Names")  # List with full Student Names
                         faceNamesKnown = loadLists("List Information/Face Names Known")  # List With Face Names

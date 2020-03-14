@@ -7,7 +7,7 @@ def pauseCamera():
     cv2.waitKey(-100)
 
 
-def DynamicAdd(image):
+def dynamicAdd(image):
     firstName = input("What is your first name:")
     lastName = input("What is your last name:")
     fullName = firstName + " " + lastName
