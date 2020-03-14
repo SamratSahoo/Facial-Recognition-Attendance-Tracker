@@ -5,6 +5,7 @@ import cv2
 import face_recognition
 import numpy as np
 import os
+from multiprocessing import Process
 
 
 # ================================================ Functions ===========================================================
@@ -73,18 +74,27 @@ def loadDictionary(file, dictionary):
         for line in f.readlines():
             dictionary[line.strip()] = None
 
+def runInParallel(*fns):
+  proc = []
+  for fn in fns:
+    p = Process(target=fn)
+    p.start()
+    proc.append(p)
+  for p in proc:
+    p.join()
+
+
 # ================================================ Set Up ==============================================================
 
 # Convert Txt Files to Lists
 fullStudentNames = loadLists("List Information/Full Student Names")  # List with full Student Names
 faceNamesKnown = loadLists("List Information/Face Names Known")  # List With Face Names
 encodingNames = loadLists("List Information/Encoding Names")  # List With encoding names
-loadDictionary("List Information/Full Student Names", People)  # Dictionary with people objects
 loadDictionary("List Information/Face Names Known", faceEncodingsKnown)  # Dictionary with Encodings
 
 # Check if there are enough encodings
 if getFolderSize("Encodings/") != len(encodingNames):
-    pass
+    import EncodingModel
 
 # Create Webcam
 # 0 laptop webcam
@@ -95,12 +105,6 @@ video = cv2.VideoCapture(0)
 encodingList = toList(faceEncodingsKnown)
 for x in range(0, int(len(encodingList))):
     encodingList[x] = np.load("Encodings/" + str(encodingNames[x]))
-
-# Load Object Information
-peopleList = toList(People)
-for x in range(0, len(peopleList)):
-    peopleList[x] = Person(faceNamesKnown[x], fullStudentNames[x], encoding=encodingList[x],
-                           image=None, imagePath=None, encodingPath=None)
 
 faceLocations = []
 faceEncodings = []
@@ -122,14 +126,14 @@ while True:
 
         # Find face locations and then do facial recognition to it
         if processThisFrame:
-            faceLocations = face_recognition.face_locations(rgbFrame, 2, "hog")
+            faceLocations = face_recognition.face_locations(rgbFrame, 1)
             faceEncodings = face_recognition.face_encodings(rgbFrame, faceLocations)
 
             # make faceNames List empty every frame; refreshes to see if person still there
             faceNames = []
             # Calculate the blur and if blur too high then do not do face detection
             blurAmount = cv2.Laplacian(frame, cv2.CV_64F).var()
-            if blurAmount > 125:
+            if blurAmount > 40:
                 # Cycle through face encodings to find a match
                 for faceEncoding in faceEncodings:
                     matchFound = face_recognition.compare_faces(encodingList, faceEncoding, 0.5)
@@ -145,11 +149,20 @@ while True:
                     # Add names to faceNames list once found
                     faceNames.append(name)
 
-        # ============================================== Dynamic Addition ==============================================
-        #             if name == 'Not Found':
-        #                 pauseCamera()
-        #                 takePicture()
-        #                 encodeFace()
+            # ============================================== Dynamic Addition ==========================================
+                    if 'Not Found' in faceNames and cv2.waitKey(20) & 0xFF == ord('a'):
+                        runInParallel(pauseCamera(), DynamicAdd(frame))
+                        fullStudentNames = loadLists("List Information/Full Student Names")  # List with full Student Names
+                        faceNamesKnown = loadLists("List Information/Face Names Known")  # List With Face Names
+                        encodingNames = loadLists("List Information/Encoding Names")  # List With encoding names
+                        loadDictionary("List Information/Face Names Known", faceEncodingsKnown)  # Dictionary with Encodings
+
+                        if getFolderSize("Encodings/") != len(encodingNames):
+                            import EncodingModel
+
+                        encodingList = toList(faceEncodingsKnown)
+                        for x in range(0, int(len(encodingList))):
+                            encodingList[x] = np.load("Encodings/" + str(encodingNames[x]))
 
         processThisFrame = not processThisFrame
         # ============================================== Write on Stream ===============================================
@@ -175,9 +188,9 @@ while True:
             for x in range(0, len(faceNamesKnown)):
                 checkIfHere(name, faceNamesKnown[x])
 
-            for x in range(0, len(fullStudentNames)):
-                if name in fullStudentNames[x]:
-                    updatePresentPerson(fullStudentNames[x])
+            # for x in range(0, len(fullStudentNames)):
+            #     if name in fullStudentNames[x]:
+            #         updatePresentPerson(fullStudentNames[x])
 
         cv2.imshow('Frame', frame)
 

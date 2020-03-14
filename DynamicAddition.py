@@ -1,39 +1,32 @@
 import cv2
 import os
 from EncodingModel import *
-
+import numpy as np
 
 def pauseCamera():
     cv2.waitKey(-100)
 
 
-class Person:
+def DynamicAdd(image):
+    firstName = input("What is your first name:")
+    lastName = input("What is your last name:")
+    fullName = firstName + " " + lastName
+    with open("List Information/Full Student Names", "a") as f:
+        f.write(fullName)
+        f.write("\n")
+        f.close()
 
-    def __init__(self, firstName, fullName, image, encoding, imagePath, encodingPath):
-        self.firstName = firstName
-        self.fullName = fullName
-        self.image = image
-        self.encoding = encoding
-        self.imagePath = imagePath
-        self.encodingPath = encodingPath
+    with open("List Information/Face Names Known", "a") as f:
+        f.write(firstName)
+        f.write("\n")
+        f.close()
+    with open("List Information/Encoding Names", "a") as f:
+        f.write(firstName + "Encoding.npy")
+        f.write("\n")
+        f.close()
 
-    def encodeFace(self):
-        return encodeDirectory(self.encodingPath)
-
-    def saveFace(self):
-        os.mkdir(self.imagePath)
-        cv2.imwrite(os.path.join(self.imagePath, '0.jpg'), self.image)
-        cv2.imwrite(os.path.join(self.imagePath, '1.jpg'), self.image)
-
-    def getImagePath(self):
-        return '/People Images/' + str(self.name)
-
-    def getEncodingPath(self):
-        return '/Encodings/' + str(self.name).replace(" ", "") + 'Encoding.npy'
-
-    def promptPerson(self):
-        self.firstName = input("What is your first name:")
-        self.fullName = self.firstName + " " + input("What is your last name:")
-
-    def takePicture(self, frame):
-        self.image = frame
+    os.makedirs("People Images/" + firstName)
+    cv2.imwrite(os.path.join("People Images/"+ firstName, '0.jpg'), image)
+    cv2.imwrite(os.path.join("People Images/" + firstName, '1.jpg'), image)
+    encoding = encodeDirectory(firstName)
+    np.save('Encodings/' + str(firstName).replace(" ", "") + 'Encoding.npy', encoding)
