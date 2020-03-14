@@ -3,13 +3,14 @@ import os
 from EncodingModel import *
 import numpy as np
 
+
 def pauseCamera():
     cv2.waitKey(-100)
 
 
 def dynamicAdd(image):
-    firstName = input("What is your first name:")
-    lastName = input("What is your last name:")
+    firstName = input("What is your first name: ")
+    lastName = input("What is your last name: ")
     fullName = firstName + " " + lastName
     with open("List Information/Full Student Names", "a") as f:
         f.write(fullName)
@@ -26,7 +27,7 @@ def dynamicAdd(image):
         f.close()
 
     os.makedirs("People Images/" + firstName)
-    cv2.imwrite(os.path.join("People Images/"+ firstName, '0.jpg'), image)
+    cv2.imwrite(os.path.join("People Images/" + firstName, '0.jpg'), image)
     cv2.imwrite(os.path.join("People Images/" + firstName, '1.jpg'), image)
     encoding = encodeDirectory(firstName)
     np.save('Encodings/' + str(firstName).replace(" ", "") + 'Encoding.npy', encoding)

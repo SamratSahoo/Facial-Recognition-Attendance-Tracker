@@ -1,3 +1,5 @@
+import sys
+
 from init import *
 from Sheets import *
 from DynamicAddition import *
@@ -203,7 +205,9 @@ while True:
             break
 
     except Exception as e:
-        print(e)
+        exceptionType, exceptionObject, exceptionThrowback = sys.exc_info()
+        fileName = os.path.split(exceptionThrowback.tb_frame.f_code.co_filename)[1]
+        print(exceptionType, fileName, exceptionThrowback.tb_lineno)
 
 # ============================================== Post Program ==========================================================
 # Upon exiting while loop, close web cam
