@@ -5,6 +5,14 @@ from openpyxl.styles import PatternFill, Font
 from init import *
 
 
+def loadLists(textFile):
+    with open(textFile) as file:
+        list = file.readlines()
+        file.close()
+        list = [x[:-1] for x in list]
+    return list
+
+
 def absentCell(cell):
     # Add Red Color Cell Format
     redFill = PatternFill(start_color='F4CCCC',
@@ -107,12 +115,12 @@ def addDate():
         # Get Current cell location
         currentCell = str(chr(cellStartNum)) + '8'
         # If the date is already there, then you do not need to add another column
-        if ws[currentCell] == date:
+        if ws[currentCell].value == date:
             break
         else:
             # # If cell is not empty, move over one cell horizontally
-            if ws[currentCell] != '':
-                cellStartNum = cellStartNum + 1
+            if ws[currentCell].value != None:
+                cellStartNum += 1
             else:
                 # If cell is empty, write the date
                 ws[currentCell] = date
@@ -150,6 +158,7 @@ def updateLatePerson(personToFind):
 
 
 try:
+    fullStudentNames = loadLists("List Information/Full Student Names")
     wb = Workbook()
     ws = wb.active
     formatPage()

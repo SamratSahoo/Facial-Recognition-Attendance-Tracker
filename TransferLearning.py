@@ -74,14 +74,15 @@ def loadDictionary(file, dictionary):
         for line in f.readlines():
             dictionary[line.strip()] = None
 
+
 def runInParallel(*fns):
-  proc = []
-  for fn in fns:
-    p = Process(target=fn)
-    p.start()
-    proc.append(p)
-  for p in proc:
-    p.join()
+    proc = []
+    for fn in fns:
+        p = Process(target=fn)
+        p.start()
+        proc.append(p)
+    for p in proc:
+        p.join()
 
 
 # ================================================ Set Up ==============================================================
@@ -149,13 +150,15 @@ while True:
                     # Add names to faceNames list once found
                     faceNames.append(name)
 
-            # ============================================== Dynamic Addition ==========================================
+                    # ============================================== Dynamic Addition ==========================================
                     if 'Not Found' in faceNames and cv2.waitKey(20) & 0xFF == ord('a'):
                         runInParallel(pauseCamera(), DynamicAdd(frame))
-                        fullStudentNames = loadLists("List Information/Full Student Names")  # List with full Student Names
+                        fullStudentNames = loadLists(
+                            "List Information/Full Student Names")  # List with full Student Names
                         faceNamesKnown = loadLists("List Information/Face Names Known")  # List With Face Names
                         encodingNames = loadLists("List Information/Encoding Names")  # List With encoding names
-                        loadDictionary("List Information/Face Names Known", faceEncodingsKnown)  # Dictionary with Encodings
+                        loadDictionary("List Information/Face Names Known",
+                                       faceEncodingsKnown)  # Dictionary with Encodings
 
                         if getFolderSize("Encodings/") != len(encodingNames):
                             import EncodingModel
@@ -188,6 +191,7 @@ while True:
             for x in range(0, len(faceNamesKnown)):
                 checkIfHere(name, faceNamesKnown[x])
 
+            # Commented out so frame doesnt lag like crazy; Uncomment for Google Sheets though
             # for x in range(0, len(fullStudentNames)):
             #     if name in fullStudentNames[x]:
             #         updatePresentPerson(fullStudentNames[x])

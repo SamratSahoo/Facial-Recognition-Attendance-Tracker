@@ -8,6 +8,14 @@ from init import fullStudentNames
 from datetime import datetime
 
 
+def loadLists(textFile):
+    with open(textFile) as file:
+        list = file.readlines()
+        file.close()
+        list = [x[:-1] for x in list]
+    return list
+
+
 def absentCell(cell):
     # Add Red Color Cell Format
     format = CellFormat(backgroundColor=Color(.96, .80, .80))
@@ -170,6 +178,7 @@ def markAbsentUnmarked():
 
 
 try:
+    fullStudentNames = loadLists("List Information/Full Student Names")
     # Gets scope of sheet
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/spreadsheets",
              "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
