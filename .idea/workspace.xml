@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ed4c392f-c135-471b-8bca-bd95c4285c83" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AttendanceSheet.txt" beforeDir="false" afterPath="$PROJECT_DIR$/AttendanceSheet.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DynamicAddition.py" beforeDir="false" afterPath="$PROJECT_DIR$/DynamicAddition.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Encodings/NilashreeEncoding.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TransferLearning.py" beforeDir="false" afterPath="$PROJECT_DIR$/TransferLearning.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -41,15 +41,15 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\pksah\Desktop\ISM Original Work\dataset\samrat_sahoo" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Model" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/Output" />
       <recent name="$PROJECT_DIR$/Credentials" />
       <recent name="$PROJECT_DIR$/Object Information" />
-      <recent name="C:\Users\pksah\Desktop\ISM Original Work" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\pksah\Desktop\ISM Original Work\dataset\samrat_sahoo" />
     </key>
   </component>
   <component name="RunManager" selected="Python.TransferLearning">
@@ -87,6 +87,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Excel.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Interface" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="project-python" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Interface.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -138,14 +159,16 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.Sheets" />
-      <item itemvalue="Python.TransferLearning" />
       <item itemvalue="Python.DynamicAddition" />
       <item itemvalue="Python.Excel" />
+      <item itemvalue="Python.Interface" />
+      <item itemvalue="Python.Sheets" />
+      <item itemvalue="Python.TransferLearning" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.TransferLearning" />
+        <item itemvalue="Python.Interface" />
         <item itemvalue="Python.Excel" />
         <item itemvalue="Python.Sheets" />
         <item itemvalue="Python.DynamicAddition" />
@@ -207,22 +230,22 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="743" y="311" width="424" height="487" key="FileChooserDialogImpl/0.27.1920.1053@0.27.1920.1053" timestamp="1584155872964" />
-    <state width="1897" height="258" key="GridCell.Tab.0.bottom" timestamp="1584213292296">
+    <state width="1897" height="258" key="GridCell.Tab.0.bottom" timestamp="1584233030886">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1897" height="258" key="GridCell.Tab.0.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1584213292296" />
-    <state width="1897" height="258" key="GridCell.Tab.0.center" timestamp="1584213292295">
+    <state width="1897" height="258" key="GridCell.Tab.0.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1584233030886" />
+    <state width="1897" height="258" key="GridCell.Tab.0.center" timestamp="1584233030886">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1897" height="258" key="GridCell.Tab.0.center/0.27.1920.1053@0.27.1920.1053" timestamp="1584213292295" />
-    <state width="1897" height="258" key="GridCell.Tab.0.left" timestamp="1584213292295">
+    <state width="1897" height="258" key="GridCell.Tab.0.center/0.27.1920.1053@0.27.1920.1053" timestamp="1584233030886" />
+    <state width="1897" height="258" key="GridCell.Tab.0.left" timestamp="1584233030885">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1897" height="258" key="GridCell.Tab.0.left/0.27.1920.1053@0.27.1920.1053" timestamp="1584213292295" />
-    <state width="1897" height="258" key="GridCell.Tab.0.right" timestamp="1584213292295">
+    <state width="1897" height="258" key="GridCell.Tab.0.left/0.27.1920.1053@0.27.1920.1053" timestamp="1584233030885" />
+    <state width="1897" height="258" key="GridCell.Tab.0.right" timestamp="1584233030886">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1897" height="258" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1584213292295" />
+    <state width="1897" height="258" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1584233030886" />
     <state width="1897" height="342" key="GridCell.Tab.1.bottom" timestamp="1583778718811">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
@@ -243,10 +266,10 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="464" y="188" width="992" height="733" key="SettingsEditor/0.27.1920.1053@0.27.1920.1053" timestamp="1581468073715" />
-    <state x="653" y="381" key="com.intellij.ide.util.TipDialog" timestamp="1584210178372">
+    <state x="653" y="381" key="com.intellij.ide.util.TipDialog" timestamp="1584242625000">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="653" y="381" key="com.intellij.ide.util.TipDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1584210178372" />
+    <state x="653" y="381" key="com.intellij.ide.util.TipDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1584242625000" />
     <state x="765" y="473" width="380" height="163" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1582245410093">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>

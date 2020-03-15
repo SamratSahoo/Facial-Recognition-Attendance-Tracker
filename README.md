@@ -38,6 +38,7 @@ The ISM program is a program in which students carry-on skills that not only las
 | Encodings  | This is where all the encodings for the processed images in EncodingsModel.py are saved. They are saved as numpy files which are later loaded into TransferLearning.py.  |
 | Example Executions  | This is where the example pictures of Application.py executions can be found. In this folder, you can find the actual face recognition occurring through the webcam.|
 | List Information  | This is where all the information that will be loaded into the lists in init.py are saved. This also helps with dynamic addition  |
+| Model | This has the model weights and information (through a Json file) that is used for Liveness detection |
 | People Images  | This folder contains several more directories for the people to be detected and recognized in the application. Within the subdirectories, there the images which are analyzed and converted into an array and compared with the video stream.  |
 | Application.py  | This is the application that will be executed to run the main body of the program |
 | AttendanceSheet.xlsx  | This is the the Excel file to present attendance data visually. |
@@ -47,20 +48,13 @@ The ISM program is a program in which students carry-on skills that not only las
 | Excel.py  | This is where the Excel code to visually present attendance via Microsoft Excel can be found |
 | init.py  | This file is used to access all the encoding and name variables that are used universally throughout the application |
 | Interface.py  | This file is where the graphical user interface for the attendance tracker can be found. It was developed using the Kivy python library |
+| LivenessDetection.py  | This file is where the keras model for liveness detection is stored. |
+| requirements.txt  | This a text file with all necessary requirements to run this project. It can be installed using pip3 install -r requirements.txt |
 | Sheets.py  | This file is where all the Google Sheets API formatting can be found. Please note for this you will need to obtain your own Google Sheets and Google Drive credentials through Google Cloud. |
 | TransferLearning.py  | This is where facial recognition with small amounts of data is done. It uses one-shot learning by converting encodings from data sets in the People folder. It compares these encodings to the encodings in the webcam and whichever encoding is the most similar, it outputs that name. Further documentation can be found within the program comments. |
 
 ### Requirements
-You will need Python 3.6 and the following libraries installed:
-* dlib
-* face_recognition 
-* opencv-python
-* opencv-contrib-python
-* numpy
-* kivy
-* pygsheets
-* gspread-formatting
-* oauth2client
+Requirements can be found in requirements.txt. Use pip3 install -r requirements.txt to install all requirements 
 
 ### Portfolio
 My research and work for this year can be found at my

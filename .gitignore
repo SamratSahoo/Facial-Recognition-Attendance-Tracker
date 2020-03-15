@@ -1,4 +1,6 @@
-*.json
+client_secret.json
+creds.json
+sheets.googleapis.com-python.json
 /venv
 .idea
 __pycache__

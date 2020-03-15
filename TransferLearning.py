@@ -7,9 +7,9 @@ import cv2
 import face_recognition
 import numpy as np
 import os
-from multiprocessing import Process
-
-
+from multiprocessing import Process, Pool
+from LivenessDetection import getModel
+import ray
 # ================================================ Functions ===========================================================
 
 # Method to make sure output to file only occurs once
@@ -86,6 +86,17 @@ def runInParallel(*fns):
     for p in proc:
         p.join()
 
+def getLivenessValue(frame, inputFrames, model):
+    livenessFrame = cv2.resize(frame, (100, 100))
+    livenessFrame = cv2.cvtColor(livenessFrame, cv2.COLOR_BGR2GRAY)
+    inputFrames.append(livenessFrame)
+    input = np.array([inputFrames[-24:]])
+    input = input / 255
+    input = input.reshape(1, 24, 100, 100, 1)
+    pred = model.predict(input)
+    inputFrames = inputFrames[-25:]
+    return pred[0][0]
+
 
 # ================================================ Set Up ==============================================================
 
@@ -94,6 +105,10 @@ fullStudentNames = loadLists("List Information/Full Student Names")  # List with
 faceNamesKnown = loadLists("List Information/Face Names Known")  # List With Face Names
 encodingNames = loadLists("List Information/Encoding Names")  # List With encoding names
 loadDictionary("List Information/Face Names Known", faceEncodingsKnown)  # Dictionary with Encodings
+
+# Load Liveness Model
+model = getModel()
+model.load_weights("Model/model.h5")
 
 # Check if there are enough encodings
 if getFolderSize("Encodings/") != len(encodingNames):
@@ -112,6 +127,7 @@ for x in range(0, int(len(encodingList))):
 faceLocations = []
 faceEncodings = []
 faceNames = []
+inputFrames = []
 processThisFrame = True
 file = open("AttendanceSheet.txt", "w+")
 # ============================================== Core Program ==========================================================
@@ -122,9 +138,9 @@ while True:
         # Open Webcam + Optimize Webcam
         ret, frame = video.read()
         smallFrame = cv2.resize(frame, (0, 0), fx=.25, fy=.25)
-
         # Change Webcam to RGB
         rgbFrame = smallFrame[:, :, ::-1]
+        livenessVal = getLivenessValue(frame, inputFrames, model)
         # ============================================== Facial Recognition ============================================
 
         # Find face locations and then do facial recognition to it
@@ -187,12 +203,16 @@ while True:
 
             # Set label font + draw Text
             font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+            blurAmount = cv2.Laplacian(frame, cv2.CV_64F).var()
+            if livenessVal > 0.80 and blurAmount > 40:
+                cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+            else:
+                cv2.putText(frame, "WARNING: SPOOF DETECTED", (100, 75), font, 1.0, (0, 0, 255), 2)
 
-            # Write name in file Once only
-            for x in range(0, len(faceNamesKnown)):
-                checkIfHere(name, faceNamesKnown[x])
-
+            if livenessVal > .80:
+                # Write name in file Once only
+                for x in range(0, len(faceNamesKnown)):
+                    checkIfHere(name, faceNamesKnown[x])
             # Commented out so frame doesnt lag like crazy; Uncomment for Google Sheets though
             # for x in range(0, len(fullStudentNames)):
             #     if name in fullStudentNames[x]:
@@ -208,6 +228,7 @@ while True:
         exceptionType, exceptionObject, exceptionThrowback = sys.exc_info()
         fileName = os.path.split(exceptionThrowback.tb_frame.f_code.co_filename)[1]
         print(exceptionType, fileName, exceptionThrowback.tb_lineno)
+        print(e)
 
 # ============================================== Post Program ==========================================================
 # Upon exiting while loop, close web cam
