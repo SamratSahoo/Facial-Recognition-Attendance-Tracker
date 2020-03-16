@@ -9,7 +9,7 @@ import numpy as np
 import os
 from multiprocessing import Process, Pool
 from LivenessDetection import getModel
-import ray
+
 # ================================================ Functions ===========================================================
 
 # Method to make sure output to file only occurs once
@@ -86,6 +86,7 @@ def runInParallel(*fns):
     for p in proc:
         p.join()
 
+
 def getLivenessValue(frame, inputFrames, model):
     livenessFrame = cv2.resize(frame, (100, 100))
     livenessFrame = cv2.cvtColor(livenessFrame, cv2.COLOR_BGR2GRAY)
@@ -94,11 +95,15 @@ def getLivenessValue(frame, inputFrames, model):
     input = input / 255
     input = input.reshape(1, 24, 100, 100, 1)
     pred = model.predict(input)
-    inputFrames = inputFrames[-25:]
     return pred[0][0]
 
 
+def doNothing():
+    pass
+
+
 # ================================================ Set Up ==============================================================
+
 
 # Convert Txt Files to Lists
 fullStudentNames = loadLists("List Information/Full Student Names")  # List with full Student Names
@@ -129,9 +134,10 @@ faceEncodings = []
 faceNames = []
 inputFrames = []
 processThisFrame = True
+x - 0
 file = open("AttendanceSheet.txt", "w+")
-# ============================================== Core Program ==========================================================
 
+# ============================================== Core Program ==========================================================
 while True:
     try:
         # ============================================== Webcam Optimization ===========================================
@@ -141,6 +147,7 @@ while True:
         # Change Webcam to RGB
         rgbFrame = smallFrame[:, :, ::-1]
         livenessVal = getLivenessValue(frame, inputFrames, model)
+        x += 1
         # ============================================== Facial Recognition ============================================
 
         # Find face locations and then do facial recognition to it
@@ -185,9 +192,9 @@ while True:
                         for x in range(0, int(len(encodingList))):
                             encodingList[x] = np.load("Encodings/" + str(encodingNames[x]))
 
-        processThisFrame = not processThisFrame
+        processThisFrame = x % 3 == 0
+        # processThisFrame = not processThisFrame
         # ============================================== Write on Stream ===============================================
-
         for (top, right, bottom, left), name in zip(faceLocations, faceNames):
             # scaling again to correct for previous scaling
             top *= 4
@@ -213,6 +220,7 @@ while True:
                 # Write name in file Once only
                 for x in range(0, len(faceNamesKnown)):
                     checkIfHere(name, faceNamesKnown[x])
+
             # Commented out so frame doesnt lag like crazy; Uncomment for Google Sheets though
             # for x in range(0, len(fullStudentNames)):
             #     if name in fullStudentNames[x]:
@@ -234,4 +242,5 @@ while True:
 # Upon exiting while loop, close web cam
 video.release()
 cv2.destroyAllWindows()
+
 markAbsentUnmarked()

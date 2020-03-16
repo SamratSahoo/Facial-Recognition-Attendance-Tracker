@@ -32,6 +32,7 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="cv2.face" />
+          <option value="PIL.ImageTk" />
         </list>
       </option>
     </inspection_tool>
