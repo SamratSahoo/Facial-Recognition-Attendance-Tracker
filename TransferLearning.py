@@ -11,6 +11,9 @@ from multiprocessing import Process, Pool
 from LivenessDetection import getModel
 
 # ================================================ Functions ===========================================================
+global fullStudentNames, faceNamesKnown, encodingNames, model, video, encodingList, faceLocations, faceEncodingsKnown
+global faceEncodings, faceNames, inputFrames, processThisFrame, x, file, smallFrame, rgbFrame, livenessVal, name
+
 
 # Method to make sure output to file only occurs once
 def checkIfHere(name, nameToCheck):
@@ -98,149 +101,170 @@ def getLivenessValue(frame, inputFrames, model):
     return pred[0][0]
 
 
-def doNothing():
-    pass
+def preProcess():
+    global fullStudentNames, faceNamesKnown, encodingNames, model, video, encodingList, faceLocations
+    global faceEncodings, faceNames, inputFrames, processThisFrame, x, file
+
+    fullStudentNames = loadLists("List Information/Full Student Names")  # List with full Student Names
+    faceNamesKnown = loadLists("List Information/Face Names Known")  # List With Face Names
+    encodingNames = loadLists("List Information/Encoding Names")  # List With encoding names
+    loadDictionary("List Information/Face Names Known", faceEncodingsKnown)  # Dictionary with Encodings
+
+    # Load Liveness Model
+    model = getModel()
+    model.load_weights("Model/model.h5")
+
+    # Check if there are enough encodings
+    if getFolderSize("Encodings/") != len(encodingNames):
+        import EncodingModel
+
+    # Create Webcam
+    # 0 laptop webcam
+    # 2 external webcam
+    video = cv2.VideoCapture(0)
+
+    # Load saved encodings for Different People
+    encodingList = toList(faceEncodingsKnown)
+    for x in range(0, int(len(encodingList))):
+        encodingList[x] = np.load("Encodings/" + str(encodingNames[x]))
+
+    faceLocations = []
+    faceEncodings = []
+    faceNames = []
+    inputFrames = []
+    processThisFrame = True
+    x = 0
+    file = open("AttendanceSheet.txt", "w+")
 
 
-# ================================================ Set Up ==============================================================
+def optimizeWebcam(frame):
+    global smallFrame, rgbFrame, livenessVal, inputFrames, model, x
+
+    smallFrame = cv2.resize(frame, (0, 0), fx=.25, fy=.25)
+    # Change Webcam to RGB
+    rgbFrame = smallFrame[:, :, ::-1]
+    livenessVal = getLivenessValue(frame, inputFrames, model)
+    x += 1
 
 
-# Convert Txt Files to Lists
-fullStudentNames = loadLists("List Information/Full Student Names")  # List with full Student Names
-faceNamesKnown = loadLists("List Information/Face Names Known")  # List With Face Names
-encodingNames = loadLists("List Information/Encoding Names")  # List With encoding names
-loadDictionary("List Information/Face Names Known", faceEncodingsKnown)  # Dictionary with Encodings
+def recognizeFaces():
+    global faceLocations, faceEncodings, faceNames, blurAmount, faceEncoding, matchFound, matchIndex
+    global name, faceDistances, encodingList, processThisFrame
 
-# Load Liveness Model
-model = getModel()
-model.load_weights("Model/model.h5")
+    if processThisFrame:
+        faceLocations = face_recognition.face_locations(rgbFrame, 1)
+        faceEncodings = face_recognition.face_encodings(rgbFrame, faceLocations)
 
-# Check if there are enough encodings
-if getFolderSize("Encodings/") != len(encodingNames):
-    import EncodingModel
+        # make faceNames List empty every frame; refreshes to see if person still there
+        faceNames = []
+        # Calculate the blur and if blur too high then do not do face detection
+        blurAmount = cv2.Laplacian(frame, cv2.CV_64F).var()
+        if blurAmount > 40:
+            # Cycle through face encodings to find a match
+            for faceEncoding in faceEncodings:
+                matchFound = face_recognition.compare_faces(encodingList, faceEncoding, 0.5)
+                name = "Not Found"
 
-# Create Webcam
-# 0 laptop webcam
-# 2 external webcam
-video = cv2.VideoCapture(0)
+                # See how similar or different the faces are
+                faceDistances = face_recognition.face_distance(encodingList, faceEncoding)
+                # whichever one has a lower variance, take the minimum of that
+                matchIndex = np.argmin(faceDistances)
+                if matchFound[matchIndex]:
+                    name = faceNamesKnown[matchIndex]
 
-# Load saved encodings for Different People
-encodingList = toList(faceEncodingsKnown)
-for x in range(0, int(len(encodingList))):
-    encodingList[x] = np.load("Encodings/" + str(encodingNames[x]))
+                # Add names to faceNames list once found
+                faceNames.append(name)
 
-faceLocations = []
-faceEncodings = []
-faceNames = []
-inputFrames = []
-processThisFrame = True
-x - 0
-file = open("AttendanceSheet.txt", "w+")
 
-# ============================================== Core Program ==========================================================
-while True:
-    try:
-        # ============================================== Webcam Optimization ===========================================
-        # Open Webcam + Optimize Webcam
-        ret, frame = video.read()
-        smallFrame = cv2.resize(frame, (0, 0), fx=.25, fy=.25)
-        # Change Webcam to RGB
-        rgbFrame = smallFrame[:, :, ::-1]
-        livenessVal = getLivenessValue(frame, inputFrames, model)
-        x += 1
-        # ============================================== Facial Recognition ============================================
+def dynamicallyAdd(frame):
+    global fullStudentNames, faceNamesKnown, encodingNames, faceEncodingsKnown, encodingList, processThisFrame, x
 
-        # Find face locations and then do facial recognition to it
-        if processThisFrame:
-            faceLocations = face_recognition.face_locations(rgbFrame, 1)
-            faceEncodings = face_recognition.face_encodings(rgbFrame, faceLocations)
+    if 'Not Found' in faceNames and cv2.waitKey(20) & 0xFF == ord('a'):
+        runInParallel(pauseCamera(), dynamicAdd(frame))
+        fullStudentNames = loadLists(
+            "List Information/Full Student Names")  # List with full Student Names
+        faceNamesKnown = loadLists("List Information/Face Names Known")  # List With Face Names
+        encodingNames = loadLists("List Information/Encoding Names")  # List With encoding names
+        loadDictionary("List Information/Face Names Known",
+                       faceEncodingsKnown)  # Dictionary with Encodings
 
-            # make faceNames List empty every frame; refreshes to see if person still there
-            faceNames = []
-            # Calculate the blur and if blur too high then do not do face detection
-            blurAmount = cv2.Laplacian(frame, cv2.CV_64F).var()
+        if getFolderSize("Encodings/") != len(encodingNames):
+            import EncodingModel
+
+        encodingList = toList(faceEncodingsKnown)
+        for x in range(0, int(len(encodingList))):
+            encodingList[x] = np.load("Encodings/" + str(encodingNames[x]))
+
+    processThisFrame = x % 3 == 0
+
+
+def writeOnStream(frame):
+    global faceLocations, faceNames, blurAmount, name
+
+    for (top, right, bottom, left), name in zip(faceLocations, faceNames):
+        # scaling again to correct for previous scaling
+        top *= 4
+        right *= 4
+        bottom *= 4
+        left *= 4
+
+        # Draw a Rectangle
+        cv2.rectangle(frame, (left, top), (right, bottom), (255, 0, 0), 2)
+
+        # Draw a label with a name
+        cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (255, 0, 0), cv2.FILLED)
+
+        # Set label font + draw Text
+        font = cv2.FONT_HERSHEY_DUPLEX
+        blurAmount = cv2.Laplacian(frame, cv2.CV_64F).var()
+        if livenessVal > 0.80:
             if blurAmount > 40:
-                # Cycle through face encodings to find a match
-                for faceEncoding in faceEncodings:
-                    matchFound = face_recognition.compare_faces(encodingList, faceEncoding, 0.5)
-                    name = "Not Found"
-
-                    # See how similar or different the faces are
-                    faceDistances = face_recognition.face_distance(encodingList, faceEncoding)
-                    # whichever one has a lower variance, take the minimum of that
-                    matchIndex = np.argmin(faceDistances)
-                    if matchFound[matchIndex]:
-                        name = faceNamesKnown[matchIndex]
-
-                    # Add names to faceNames list once found
-                    faceNames.append(name)
-
-                    # ============================================== Dynamic Addition ==================================
-                    if 'Not Found' in faceNames and cv2.waitKey(20) & 0xFF == ord('a'):
-                        runInParallel(pauseCamera(), dynamicAdd(frame))
-                        fullStudentNames = loadLists(
-                            "List Information/Full Student Names")  # List with full Student Names
-                        faceNamesKnown = loadLists("List Information/Face Names Known")  # List With Face Names
-                        encodingNames = loadLists("List Information/Encoding Names")  # List With encoding names
-                        loadDictionary("List Information/Face Names Known",
-                                       faceEncodingsKnown)  # Dictionary with Encodings
-
-                        if getFolderSize("Encodings/") != len(encodingNames):
-                            import EncodingModel
-
-                        encodingList = toList(faceEncodingsKnown)
-                        for x in range(0, int(len(encodingList))):
-                            encodingList[x] = np.load("Encodings/" + str(encodingNames[x]))
-
-        processThisFrame = x % 3 == 0
-        # processThisFrame = not processThisFrame
-        # ============================================== Write on Stream ===============================================
-        for (top, right, bottom, left), name in zip(faceLocations, faceNames):
-            # scaling again to correct for previous scaling
-            top *= 4
-            right *= 4
-            bottom *= 4
-            left *= 4
-
-            # Draw a Rectangle
-            cv2.rectangle(frame, (left, top), (right, bottom), (255, 0, 0), 2)
-
-            # Draw a label with a name
-            cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (255, 0, 0), cv2.FILLED)
-
-            # Set label font + draw Text
-            font = cv2.FONT_HERSHEY_DUPLEX
-            blurAmount = cv2.Laplacian(frame, cv2.CV_64F).var()
-            if livenessVal > 0.80 and blurAmount > 40:
                 cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-            else:
-                cv2.putText(frame, "WARNING: SPOOF DETECTED", (100, 75), font, 1.0, (0, 0, 255), 2)
+        else:
+            cv2.putText(frame, "WARNING: SPOOF DETECTED", (100, 75), font, 1.0, (0, 0, 255), 2)
 
-            if livenessVal > .80:
-                # Write name in file Once only
-                for x in range(0, len(faceNamesKnown)):
-                    checkIfHere(name, faceNamesKnown[x])
 
-            # Commented out so frame doesnt lag like crazy; Uncomment for Google Sheets though
-            # for x in range(0, len(fullStudentNames)):
-            #     if name in fullStudentNames[x]:
-            #         updatePresentPerson(fullStudentNames[x])
+def writeToFile():
+    global livenessVal, faceNamesKnown, fullStudentNames
 
-        cv2.imshow('Frame', frame)
+    if livenessVal > .80:
+        # Write name in file Once only
+        for x in range(0, len(faceNamesKnown)):
+            checkIfHere(name, faceNamesKnown[x])
 
-        # If q is pressed, exit loop
-        if cv2.waitKey(20) & 0xFF == ord('q'):
-            break
+    # Commented out so frame doesnt lag like crazy; Uncomment for Google Sheets though
+    # for x in range(0, len(fullStudentNames)):
+    #     if name in fullStudentNames[x]:
+    #         updatePresentPerson(fullStudentNames[x])
 
-    except Exception as e:
-        exceptionType, exceptionObject, exceptionThrowback = sys.exc_info()
-        fileName = os.path.split(exceptionThrowback.tb_frame.f_code.co_filename)[1]
-        print(exceptionType, fileName, exceptionThrowback.tb_lineno)
-        print(e)
+
+if __name__ == '__main__':
+    preProcess()
+    while True:
+        try:
+            # Open Webcam + Optimize Webcam
+            ret, frame = video.read()
+            optimizeWebcam(frame)
+            recognizeFaces()
+            dynamicallyAdd(frame)
+            writeOnStream(frame)
+            writeToFile()
+            cv2.imshow('Frame', frame)
+
+            # If q is pressed, exit loop
+            if cv2.waitKey(20) & 0xFF == ord('q'):
+                break
+
+        except Exception as e:
+            exceptionType, exceptionObject, exceptionThrowback = sys.exc_info()
+            fileName = os.path.split(exceptionThrowback.tb_frame.f_code.co_filename)[1]
+            print(exceptionType, fileName, exceptionThrowback.tb_lineno)
+            print(e)
 
 # ============================================== Post Program ==========================================================
 # Upon exiting while loop, close web cam
-video.release()
-cv2.destroyAllWindows()
+    video.release()
+    cv2.destroyAllWindows()
 
-markAbsentUnmarked()
+# Uncomment for Google Sheets
+# markAbsentUnmarked()

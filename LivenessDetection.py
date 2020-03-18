@@ -8,11 +8,10 @@ from keras import backend as K
 
 
 def getModel():
-
     model = Sequential()
     model.add(Conv3D(32, kernel_size=(3, 3, 3),
-                    activation='relu',
-                    input_shape=(24,100,100,1)))
+                     activation='relu',
+                     input_shape=(24, 100, 100, 1)))
     model.add(Conv3D(64, (3, 3, 3), activation='relu'))
     model.add(MaxPooling3D(pool_size=(2, 2, 2)))
     model.add(Conv3D(64, (3, 3, 3), activation='relu'))

@@ -1,25 +1,49 @@
-from flask import Flask, escape, request, render_template, Response
+from flask import render_template, Flask
 import cv2
+from webui import WebUI
+im
 
 app = Flask(__name__)
+ui = WebUI(app, debug=True)
 
 
 @app.route('/')
 @app.route('/index')
-def index():
+def indexPage():
     return render_template('index.html')
 
-@app.route('/dashboard')
-def startApplication():
-    return render_template('dashboard.html')
+
+@app.route('/configure')
+def configurePage():
+    return render_template('configurations.html')
 
 
-@app.route('/exec')
-def hello():
-    while True:
-        print("Meow")
-    return ("None")
+@app.route('/attendance')
+def attendancePage():
+    return render_template('attendance.html')
+
+
+@app.route('/settings')
+def settingsPage():
+    return render_template('settings.html')
+
+
+@app.route('/json')
+def json():
+    return render_template('json.html')
+
+
+# @app.route('/background_process_test')
+# def background_process_test():
+#     video = cv2.VideoCapture(0)
+#     while True:
+#         ret, frame = video.read()
+#         cv2.imshow('Frame', frame)
+#     return ("nothing")
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    try:
+        ui.run()
+    except Exception as e:
+        print(e)
