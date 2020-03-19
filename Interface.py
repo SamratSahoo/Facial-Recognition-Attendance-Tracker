@@ -1,7 +1,6 @@
 from flask import render_template, Flask
 import cv2
 from webui import WebUI
-im
 
 app = Flask(__name__)
 ui = WebUI(app, debug=True)
@@ -31,6 +30,15 @@ def settingsPage():
 @app.route('/json')
 def json():
     return render_template('json.html')
+
+@app.route('/contact')
+def contactPage():
+    return render_template('contact.html')
+
+@app.route('/hello')
+def hello():
+    print("meow")
+    return render_template('configurations.html')
 
 
 # @app.route('/background_process_test')

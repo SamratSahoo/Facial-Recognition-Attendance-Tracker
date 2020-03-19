@@ -1,3 +1,11 @@
+hr.sidebar {
+  border: 1px solid #3282b8;
+  width: 90%;
+  position:relative;
+  top: -90px;
+
+}
+
 body {
   font-family: "Lato", sans-serif;
 }
@@ -9,7 +17,7 @@ body {
   z-index: 1;
   top: 0;
   left: 0;
-  background-color: #36393E;
+  background-color: #1b262c;
   overflow-x: hidden;
   padding-top: 20px;
 }
@@ -17,15 +25,58 @@ body {
 .sidenav a {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
-  font-size: 25px;
+  font-size: 20px;
   color: #818181;
   display: block;
+  position:relative;
+  top: -90px;
 }
 
 .sidenav a:hover {
   color: #25c0f4;
 }
 
+.sidenav-head{
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #818181;
+  display: block;
+  position:relative
+  top:0px !important;
+}
+
+.sidebar-title{
+    text-align:center !important;
+    font-size: 25px !important;
+    left: -8px;
+}
+
+.sidebar-subheader{
+    text-align:center !important;
+    font-size: 100% !important;
+    position:relative;
+    top: -90px;
+    left: -8px;
+
+
+}
+
+.sidebar-title:hover{
+    color: #818181 !important;
+}
+
+.sidebar-subheader:hover{
+    color: #818181 !important;
+}
+
+.sidebar-image{
+    width: 250px !important;
+    height: 250px !important;
+    position: relative;
+    top: -32px;
+    left: -15px;
+}
 .main {
   margin-left: 160px; /* Same as the width of the sidenav */
   font-size: 28px; /* Increased text to enable scrolling */
