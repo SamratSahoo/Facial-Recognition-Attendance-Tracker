@@ -13,66 +13,66 @@ def loadLists(textFile):
     return list
 
 
-def absentCell(cell):
+def absentCell(sheet, cell):
     # Add Red Color Cell Format
     redFill = PatternFill(start_color='F4CCCC',
                           end_color='F4CCCC',
                           fill_type='solid')
-    ws[cell].fill = redFill
+    sheet[cell].fill = redFill
 
 
-def presentCell(cell):
+def presentCell(sheet, cell):
     # Add Green Color Cell Format
     greenFill = PatternFill(start_color='D9EAD3',
                             end_color='D9EAD3',
                             fill_type='solid')
-    ws[cell].fill = greenFill
+    sheet[cell].fill = greenFill
 
 
-def lateCell(cell):
+def lateCell(sheet, cell):
     # Add Yellow Color Cell Format
     yellowFill = PatternFill(start_color='FFF2CC',
                              end_color='FFF2CC',
                              fill_type='solid')
-    ws[cell].fill = yellowFill
+    sheet[cell].fill = yellowFill
 
 
-def resetCell(cell):
+def resetCell(sheet, cell):
     # Add White Color Cell Format
     whiteFill = PatternFill(start_color='FFFFFF',
                             end_color='FFFFFF',
                             fill_type='solid')
-    ws[cell].fill = whiteFill
+    sheet[cell].fill = whiteFill
 
 
-def addKey():
+def addKey(sheet):
     # Reset Top Cells
     for n in range(1, 5):
         cellLocation = 'A' + str(n)
-        resetCell(cellLocation)
+        resetCell(sheet, cellLocation)
 
     # Add Key Colors and Labels
-    presentCell('A2')
-    absentCell('A3')
-    lateCell('A4')
-    ws['A1'] = 'KEY'
-    ws['A1'].font = Font(bold=True)
-    ws['A2'] = 'Present'
-    ws['A2'].font = Font(bold=True)
-    ws['A3'] = 'Absent'
-    ws['A3'].font = Font(bold=True)
-    ws['A4'] = 'Late'
-    ws['A4'].font = Font(bold=True)
+    presentCell(sheet, 'A2')
+    absentCell(sheet, 'A3')
+    lateCell(sheet, 'A4')
+    sheet['A1'] = 'KEY'
+    sheet['A1'].font = Font(bold=True)
+    sheet['A2'] = 'Present'
+    sheet['A2'].font = Font(bold=True)
+    sheet['A3'] = 'Absent'
+    sheet['A3'].font = Font(bold=True)
+    sheet['A4'] = 'Late'
+    sheet['A4'].font = Font(bold=True)
 
 
-def addStudentNames():
+def addStudentNames(sheet):
     # Format and write Student Name subtitle
-    ws['A8'] = 'Student Names'
-    ws['A8'].font = Font(bold=True)
+    sheet['A8'] = 'Student Names'
+    sheet['A8'].font = Font(bold=True)
     # Write student names from init list
     for n in range(0, len(fullStudentNames)):
         cellLocation = 'A' + str(9 + n)
-        ws[cellLocation] = fullStudentNames[n]
+        sheet[cellLocation] = fullStudentNames[n]
 
 
 def getRowNum(personToFind):
@@ -85,7 +85,7 @@ def getRowNum(personToFind):
     return startCellNum
 
 
-def getColumnLetter():
+def getColumnLetter(sheet):
     # Start column is B
     cellStartNum = ord('B')
     # Get date because column will correspond
@@ -96,13 +96,13 @@ def getColumnLetter():
     while not columnFound:
         currentCell = str(chr(cellStartNum)) + '8'
         # If found, return cell column Letter
-        if ws[currentCell] == date:
+        if sheet[currentCell] == date:
             return cellStartNum
         else:
             cellStartNum += 1
 
 
-def addDate():
+def addDate(sheet):
     # Get and format date
     date = datetime.today().strftime('X%m/X%d')
     date = date.replace('X0', 'X').replace('X', '')
@@ -115,25 +115,25 @@ def addDate():
         # Get Current cell location
         currentCell = str(chr(cellStartNum)) + '8'
         # If the date is already there, then you do not need to add another column
-        if ws[currentCell].value == date:
+        if sheet[currentCell].value == date:
             break
         else:
             # # If cell is not empty, move over one cell horizontally
-            if ws[currentCell].value != None:
+            if sheet[currentCell].value != None:
                 cellStartNum += 1
             else:
                 # If cell is empty, write the date
-                ws[currentCell] = date
-                ws[currentCell].font = Font(bold=True)
+                sheet[currentCell] = date
+                sheet[currentCell].font = Font(bold=True)
                 emptyDateCell = True
 
 
-def formatPage():
+def formatPage(sheet):
     # Adds key, student names, and current date
-    if ws['A1'] != 'KEY':
-        addKey()
-    addStudentNames()
-    addDate()
+    if sheet['A1'] != 'KEY':
+        addKey(sheet)
+    addStudentNames(sheet)
+    addDate(sheet)
 
 
 def updatePresentPerson(personToFind):
@@ -161,7 +161,7 @@ try:
     fullStudentNames = loadLists("List Information/Full Student Names")
     wb = Workbook()
     ws = wb.active
-    formatPage()
+    formatPage(ws)
     wb.save("AttendanceExcel.xlsx")
 
 except Exception as e:

@@ -217,7 +217,8 @@ def writeOnStream(frame):
         # Set label font + draw Text
         font = cv2.FONT_HERSHEY_DUPLEX
         blurAmount = cv2.Laplacian(frame, cv2.CV_64F).var()
-        if livenessVal > 0.80:
+        print(livenessVal)
+        if livenessVal > 0.50:
             if blurAmount > 40:
                 cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
         else:
@@ -227,7 +228,7 @@ def writeOnStream(frame):
 def writeToFile():
     global livenessVal, faceNamesKnown, fullStudentNames
 
-    if livenessVal > .80:
+    if livenessVal > .50:
         # Write name in file Once only
         for x in range(0, len(faceNamesKnown)):
             checkIfHere(name, faceNamesKnown[x])
@@ -261,8 +262,8 @@ if __name__ == '__main__':
             print(exceptionType, fileName, exceptionThrowback.tb_lineno)
             print(e)
 
-# ============================================== Post Program ==========================================================
-# Upon exiting while loop, close web cam
+    # ============================================== Post Program ==========================================================
+    # Upon exiting while loop, close web cam
     video.release()
     cv2.destroyAllWindows()
 

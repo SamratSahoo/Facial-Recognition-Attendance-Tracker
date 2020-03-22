@@ -1,9 +1,15 @@
 from flask import render_template, Flask
 import cv2
 from webui import WebUI
+import os
+from shutil import copyfile
+import faulthandler
 
 app = Flask(__name__)
 ui = WebUI(app, debug=True)
+global video, cameraState
+cameraState = True
+video = cv2.VideoCapture(0)
 
 
 @app.route('/')
@@ -27,27 +33,42 @@ def settingsPage():
     return render_template('settings.html')
 
 
-@app.route('/json')
-def json():
-    return render_template('json.html')
-
 @app.route('/contact')
 def contactPage():
     return render_template('contact.html')
 
-@app.route('/hello')
-def hello():
-    print("meow")
-    return render_template('configurations.html')
+
+@app.route('/help')
+def helpPage():
+    return render_template('help.html')
 
 
-# @app.route('/background_process_test')
-# def background_process_test():
-#     video = cv2.VideoCapture(0)
-#     while True:
-#         ret, frame = video.read()
-#         cv2.imshow('Frame', frame)
-#     return ("nothing")
+@app.route('/start-camera')
+def startCamera():
+    # while cameraState:
+    #     _, frame = video.read()
+    #     cv2.imshow("yes", frame)
+    return render_template('index.html')
+
+@app.route('/download-text')
+def downloadText():
+    try:
+        finalPath = os.path.join(os.path.expanduser("~"), "Downloads/AttendanceSheet.txt")
+        copyfile('AttendanceSheet.txt', finalPath)
+    except Exception as e:
+        print(e)
+    return render_template('index.html')
+
+
+@app.route('/download-excel')
+def downloadExcel():
+    try:
+        finalPath = os.path.join(os.path.expanduser("~"), "Downloads/AttendanceExcel.xlsx")
+        copyfile('AttendanceExcel.xlsx', finalPath)
+    except Exception as e:
+        print(e)
+
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
