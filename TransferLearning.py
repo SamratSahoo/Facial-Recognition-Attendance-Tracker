@@ -121,6 +121,7 @@ def preProcess():
     # Create Webcam
     # 0 laptop webcam
     # 2 external webcam
+    # video = cv2.VideoCapture(0)
     video = cv2.VideoCapture(0)
 
     # Load saved encodings for Different People
@@ -195,8 +196,7 @@ def dynamicallyAdd(frame):
         for x in range(0, int(len(encodingList))):
             encodingList[x] = np.load("Encodings/" + str(encodingNames[x]))
 
-    processThisFrame = x % 3 == 0
-
+        processThisFrame = not processThisFrame
 
 def writeOnStream(frame):
     global faceLocations, faceNames, blurAmount, name
@@ -217,7 +217,6 @@ def writeOnStream(frame):
         # Set label font + draw Text
         font = cv2.FONT_HERSHEY_DUPLEX
         blurAmount = cv2.Laplacian(frame, cv2.CV_64F).var()
-        print(livenessVal)
         if livenessVal > 0.50:
             if blurAmount > 40:
                 cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)

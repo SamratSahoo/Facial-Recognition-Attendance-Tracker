@@ -2,20 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ed4c392f-c135-471b-8bca-bd95c4285c83" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/help.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AttendanceExcel.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Excel.py" beforeDir="false" afterPath="$PROJECT_DIR$/Excel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AttendanceSheet.txt" beforeDir="false" afterPath="$PROJECT_DIR$/AttendanceSheet.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Encodings/SamratEncoding.npy" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Interface.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/List Information/Encoding Names" beforeDir="false" afterPath="$PROJECT_DIR$/List Information/Encoding Names" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/List Information/Face Names Known" beforeDir="false" afterPath="$PROJECT_DIR$/List Information/Face Names Known" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/List Information/Full Student Names" beforeDir="false" afterPath="$PROJECT_DIR$/List Information/Full Student Names" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LivenessDetection.py" beforeDir="false" afterPath="$PROJECT_DIR$/LivenessDetection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/People Images/Samrat/0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/People Images/Samrat/1.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/TransferLearning.py" beforeDir="false" afterPath="$PROJECT_DIR$/TransferLearning.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/attendance.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/attendance.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/configurations.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/configurations.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/contact.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/contact.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/json.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/settings.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/settings.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +182,6 @@
         <item itemvalue="Python.TransferLearning" />
         <item itemvalue="Python.Excel" />
         <item itemvalue="Python.Sheets" />
-        <item itemvalue="Python.DynamicAddition" />
       </list>
     </recent_temporary>
   </component>
@@ -233,10 +231,10 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="555" y="215" width="800" height="680" key="#Inspections/0.27.1920.1053@0.27.1920.1053" timestamp="1584539922404" />
-    <state x="530" y="216" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1584852252344">
+    <state x="530" y="216" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1584905425240">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="530" y="216" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1584852252344" />
+    <state x="530" y="216" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1584905425240" />
     <state x="726" y="359" width="557" height="395" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1584766852046">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
@@ -249,22 +247,22 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="743" y="311" width="424" height="487" key="FileChooserDialogImpl/0.27.1920.1053@0.27.1920.1053" timestamp="1584155872964" />
-    <state width="1897" height="244" key="GridCell.Tab.0.bottom" timestamp="1584853188405">
+    <state width="1897" height="244" key="GridCell.Tab.0.bottom" timestamp="1584938775664">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1897" height="244" key="GridCell.Tab.0.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1584853188405" />
-    <state width="1897" height="244" key="GridCell.Tab.0.center" timestamp="1584853188405">
+    <state width="1897" height="244" key="GridCell.Tab.0.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1584938775664" />
+    <state width="1897" height="244" key="GridCell.Tab.0.center" timestamp="1584938775664">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1897" height="244" key="GridCell.Tab.0.center/0.27.1920.1053@0.27.1920.1053" timestamp="1584853188405" />
-    <state width="1897" height="244" key="GridCell.Tab.0.left" timestamp="1584853188404">
+    <state width="1897" height="244" key="GridCell.Tab.0.center/0.27.1920.1053@0.27.1920.1053" timestamp="1584938775664" />
+    <state width="1897" height="244" key="GridCell.Tab.0.left" timestamp="1584938775663">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1897" height="244" key="GridCell.Tab.0.left/0.27.1920.1053@0.27.1920.1053" timestamp="1584853188404" />
-    <state width="1897" height="244" key="GridCell.Tab.0.right" timestamp="1584853188405">
+    <state width="1897" height="244" key="GridCell.Tab.0.left/0.27.1920.1053@0.27.1920.1053" timestamp="1584938775663" />
+    <state width="1897" height="244" key="GridCell.Tab.0.right" timestamp="1584938775664">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state width="1897" height="244" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1584853188405" />
+    <state width="1897" height="244" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1584938775664" />
     <state width="1897" height="342" key="GridCell.Tab.1.bottom" timestamp="1584763736393">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
@@ -289,10 +287,10 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.27.1920.1053@0.27.1920.1053" timestamp="1584568967160" />
-    <state x="653" y="381" key="com.intellij.ide.util.TipDialog" timestamp="1584843649192">
+    <state x="653" y="381" key="com.intellij.ide.util.TipDialog" timestamp="1584888951919">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="653" y="381" key="com.intellij.ide.util.TipDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1584843649192" />
+    <state x="653" y="381" key="com.intellij.ide.util.TipDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1584888951919" />
     <state x="765" y="473" width="380" height="163" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1582245410093">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
@@ -309,10 +307,10 @@
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="652" y="156" width="615" height="795" key="find.popup/0.27.1920.1053@0.27.1920.1053" timestamp="1583769069100" />
-    <state x="623" y="259" width="672" height="678" key="search.everywhere.popup" timestamp="1584851732756">
+    <state x="623" y="259" width="672" height="678" key="search.everywhere.popup" timestamp="1584938186137">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
-    <state x="623" y="259" width="672" height="678" key="search.everywhere.popup/0.27.1920.1053@0.27.1920.1053" timestamp="1584851732756" />
+    <state x="623" y="259" width="672" height="678" key="search.everywhere.popup/0.27.1920.1053@0.27.1920.1053" timestamp="1584938186137" />
     <state x="685" y="468" width="540" height="174" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1582307370895">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>

@@ -1,15 +1,15 @@
-from flask import render_template, Flask
-import cv2
+from flask import render_template, Flask, Response
 from webui import WebUI
+from Camera import VideoCamera
 import os
 from shutil import copyfile
 import faulthandler
 
 app = Flask(__name__)
 ui = WebUI(app, debug=True)
-global video, cameraState
-cameraState = True
-video = cv2.VideoCapture(0)
+
+global cameraState
+cameraState = False
 
 
 @app.route('/')
@@ -43,13 +43,6 @@ def helpPage():
     return render_template('help.html')
 
 
-@app.route('/start-camera')
-def startCamera():
-    # while cameraState:
-    #     _, frame = video.read()
-    #     cv2.imshow("yes", frame)
-    return render_template('index.html')
-
 @app.route('/download-text')
 def downloadText():
     try:
@@ -69,6 +62,32 @@ def downloadExcel():
         print(e)
 
     return render_template('index.html')
+
+
+@app.route('/start-camera')
+def startCamera():
+    global cameraState
+    cameraState = True
+    return render_template('index.html')
+
+
+@app.route('/stop-camera')
+def stopCamera():
+    global cameraState
+    cameraState = False
+    return render_template('index.html')
+
+def gen(camera):
+    while cameraState:
+        frame = camera.getFrame()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(gen(VideoCamera(source=0)),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == '__main__':

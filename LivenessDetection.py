@@ -25,3 +25,8 @@ def getModel():
     model.add(Dense(2, activation='softmax'))
 
     return model
+
+def getModelPred():
+    model = getModel()
+    model.load_weights("Model/model.h5")
+    return model

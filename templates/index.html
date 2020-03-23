@@ -4,7 +4,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}">
     <title>Dashboard</title>
-
 </head>
 <body>
 <div class="sidenav">
@@ -27,12 +26,15 @@
     <hr class="sidebar">
 </div>
 <div class="main">
-    <div class="card"><a class="card-text" href="/start-camera">Start Camera</a></div>
-    <div class="card"><a class="card-text" href="#">Stop Camera</a></div>
-    <div class="card"><a class="card-text" href="#">Add Person to Database</a></div>
-    <div class="card"><a class="card-text" href="/download-excel">Download Spreadsheet</a></div>
-    <div class="card"><a class="card-text" href="/download-text">Download Text File</a></div>
-    <div class="card"><a class="card-text" href="#">Clear Database</a></div>
+    <div><a class="card-text" href="#"><img id="bg" class="card-camera" src="{{ url_for('video_feed') }}"></a></div>
+    <div class="card-small"><a class="card-text" href="/start-camera">Start Camera</a></div>
+    <div class="card-small"><a class="card-text" href="/stop-camera">Stop Camera</a></div>
+    <div class="module"><a class="module-text">Download Attendance Spreadsheet</a></div>
+    <div class="module-2"><a class="module-text">Download Attendance Text Sheet</a></div>
+    <div class="module-3"><a class="module-text">Add Person to Database</a></div>
+    <div class="module-4"><a class="module-text">Clear Database</a></div>
+
+
 </div>
 </body>
 </html>
