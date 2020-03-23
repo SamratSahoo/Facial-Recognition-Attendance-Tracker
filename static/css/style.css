@@ -87,7 +87,7 @@ body {
   overflow: hidden;
 }
 
-.card-small{
+.card-small-1{
   box-shadow: 0 4px 12px 0 rgba(0,0,0,0.7);
   transition: 0.3s;
   border-radius: 5px;
@@ -97,8 +97,25 @@ body {
   margin-right: 3%;
   float:left;
   margin-top: 3%;
-  position:relative;
-  right: -25px;
+  position:absolute;
+  right: 1118px;
+  top: 790px;
+  z-index: -1 !important;
+
+}
+.card-small-2{
+  box-shadow: 0 4px 12px 0 rgba(0,0,0,0.7);
+  transition: 0.3s;
+  border-radius: 5px;
+  width: 23.5%;
+  height: 150px;
+  background-color: #3282b8;
+  margin-right: 3%;
+  float:left;
+  margin-top: 3%;
+  position:absolute;
+  right: 606px;
+  top: 790px;
   z-index: -1 !important;
 
 }
@@ -132,7 +149,9 @@ body {
   margin-left: -45%;
   float:left;
   margin-top: 2%;
-  background
+  position:absolute;
+  right: 628px;
+  top: 10px;
 }
 
 .module{
@@ -141,12 +160,13 @@ body {
     box-shadow: 0 4px 12px 0 rgba(0,0,0,0.7);
     transition: 0.3s;
     border-radius: 5px;
-    width: 43.5%;
+    width: 30.5%;
     height: 200px;
     background-color: #3282b8;
     margin-left: 1.5%;
-    position: relative;
-    top: -750px;
+    position:absolute;
+    right: 37px;
+    top: 49px;
 
 }
 
@@ -156,14 +176,13 @@ body {
     box-shadow: 0 4px 12px 0 rgba(0,0,0,0.7);
     transition: 0.3s;
     border-radius: 5px;
-    width: 43.5%;
+    width: 30.5%;
     height: 200px;
     background-color: #3282b8;
     margin-left: 1.5%;
-    position: relative;
-    top: -700px;
-    top-margin: 2%;
-    right: -858px;
+    position:absolute;
+    right: 37px;
+    top: 300px;
 
 }
 
@@ -173,14 +192,13 @@ body {
     box-shadow: 0 4px 12px 0 rgba(0,0,0,0.7);
     transition: 0.3s;
     border-radius: 5px;
-    width: 43.5%;
+    width: 30.5%;
     height: 200px;
     background-color: #3282b8;
     margin-left: 1.5%;
-    position: relative;
-    top: -450px;
-    right:-131px;
-    top-margin: 2%;
+    position:absolute;
+    right: 37px;
+    top: 550px;
 
 }
 
@@ -190,14 +208,13 @@ body {
     box-shadow: 0 4px 12px 0 rgba(0,0,0,0.7);
     transition: 0.3s;
     border-radius: 5px;
-    width: 43.5%;
+    width: 30.5%;
     height: 200px;
     background-color: #3282b8;
     margin-left: 1.5%;
-    position: relative;
-    top: -400px;
-    right:-860px;
-    top-margin: 2%;
+    position:absolute;
+    right: 37px;
+    top: 800px;
 
 }
 
