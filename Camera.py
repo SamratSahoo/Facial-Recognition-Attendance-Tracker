@@ -56,9 +56,28 @@ class VideoCamera(object):
     def __del__(self):
         self.video.release()
 
+    def additionProcess(self):
+        global encodingList, encodingNames, faceEncodingsKnown
+        global faceNamesKnown, fullStudentNames
+
+        fullStudentNames = loadLists(
+            "List Information/Full Student Names")  # List with full Student Names
+        faceNamesKnown = loadLists("List Information/Face Names Known")  # List With Face Names
+        encodingNames = loadLists("List Information/Encoding Names")  # List With encoding names
+        loadDictionary("List Information/Face Names Known",
+                       faceEncodingsKnown)  # Dictionary with Encodings
+
+        if getFolderSize("Encodings/") != len(encodingNames):
+            import EncodingModel
+
+        encodingList = toList(faceEncodingsKnown)
+        for x in range(0, int(len(encodingList))):
+            encodingList[x] = np.load("Encodings/" + str(encodingNames[x]))
+
     def addFace(self):
         global dynamicState, encodingNames, fullStudentNames, faceNamesKnown, encodingList, frame
-        if 'Not Found' in faceNames and len(faceLocations) > 1:
+        print("hello")
+        if 'Samrat' in faceNames and len(faceLocations) > 1:
             dynamicAdd(frame)
             fullStudentNames = loadLists("List Information/Full Student Names")  # List with full Student Names
             faceNamesKnown = loadLists("List Information/Face Names Known")  # List With Face Names
@@ -72,6 +91,10 @@ class VideoCamera(object):
             for x in range(0, int(len(encodingList))):
                 encodingList[x] = np.load("Encodings/" + str(encodingNames[x]))
             dynamicState = False
+
+    def getRawFrame(self):
+        global frame
+        return frame
 
     def getFrame(self):
         try:
@@ -142,8 +165,3 @@ class VideoCamera(object):
             fileName = os.path.split(exceptionThrowback.tb_frame.f_code.co_filename)[1]
             print(exceptionType, fileName, exceptionThrowback.tb_lineno)
             print(e)
-
-
-def pauseCamera(self):
-    global pauseState
-    pauseState = True

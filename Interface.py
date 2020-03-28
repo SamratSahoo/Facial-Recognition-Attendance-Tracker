@@ -4,15 +4,17 @@ from webui import WebUI
 from Camera import VideoCamera
 import os
 from shutil import copyfile
+from EncodingModel import encodeDirectory
+
+from DynamicAddition import dynamicAdd
 from Excel import markAbsentUnmarkedExcel
-from TransferLearning import runInParallel
 
 app = Flask(__name__)
 ui = WebUI(app, debug=True)
 
 global cameraState, addState
-addState = False
 cameraState = False
+addState = False
 
 
 @app.route('/')
@@ -84,20 +86,29 @@ def stopCamera():
 
 def gen(camera):
     global addState, cameraState
+    framesRaw = []
+    frames = []
     while cameraState:
         frame = camera.getFrame()
-        if addState:
-            camera.addFace()
+        frames.append(frame)
+        framesRaw.append(camera.getRawFrame())
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+        if addState:
+            frameToSave = len(frames) - 1
+            break
+
+    while addState:
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frames[frameToSave] + b'\r\n\r\n')
+        try:
+            dynamicAdd((framesRaw[frameToSave]))
+            camera.additionProcess()
+            cameraState = True
+        except Exception as e:
+            print(e)
 
     markAbsentUnmarkedExcel()
-
-
-@app.route('/video_feed')
-def video_feed():
-    return Response(gen(VideoCamera(source=0)),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route('/add-face')
@@ -105,6 +116,12 @@ def addFace():
     global addState
     addState = True
     return render_template('index.html')
+
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(gen(VideoCamera(source=0)),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == '__main__':

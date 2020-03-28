@@ -26,8 +26,8 @@ def encodeDirectory(directoryName):
             for fileNum in range(0, fileAmount - 1):
                 # Add encodings to list
                 allEncodings.append(encodeFace("People Images/" + directoryName + "/" + str(fileNum) + ".jpg"))
-    # Turn length of list to prevent integer division
-    listLength = len(allEncodings) * 1.0
+    # List Length
+    listLength = len(allEncodings)
     # Return average of encoded arrays array
     return sum(allEncodings) / listLength
 
