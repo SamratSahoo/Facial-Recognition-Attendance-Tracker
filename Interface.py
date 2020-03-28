@@ -11,7 +11,6 @@ app = Flask(__name__)
 ui = WebUI(app, debug=True)
 
 global cameraState, addState
-global addState
 addState = False
 cameraState = False
 

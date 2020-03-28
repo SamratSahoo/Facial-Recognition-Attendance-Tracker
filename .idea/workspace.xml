@@ -2,19 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ed4c392f-c135-471b-8bca-bd95c4285c83" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AttendanceExcel.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/AttendanceSheet.txt" beforeDir="false" afterPath="$PROJECT_DIR$/AttendanceSheet.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Camera.py" beforeDir="false" afterPath="$PROJECT_DIR$/Camera.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Encodings/SamratEncoding.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Excel.py" beforeDir="false" afterPath="$PROJECT_DIR$/Excel.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Interface.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/People Images/Samrat/0.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/People Images/Samrat/1.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TransferLearning.py" beforeDir="false" afterPath="$PROJECT_DIR$/TransferLearning.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/contact.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/contact.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
