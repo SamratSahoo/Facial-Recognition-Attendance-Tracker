@@ -105,8 +105,10 @@ def gen(camera):
             dynamicAdd((framesRaw[frameToSave]))
             camera.additionProcess()
             cameraState = True
+            addState = False
         except Exception as e:
             print(e)
+        break
 
     markAbsentUnmarkedExcel()
 

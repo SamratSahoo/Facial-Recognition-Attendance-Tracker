@@ -93,8 +93,8 @@ class VideoCamera(object):
             dynamicState = False
 
     def getRawFrame(self):
-        global frame
-        return frame
+        _, frameToReturn = self.video.read()
+        return frameToReturn
 
     def getFrame(self):
         try:

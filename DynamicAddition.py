@@ -31,6 +31,5 @@ def dynamicAdd(image):
     cv2.imwrite(os.path.join("People Images/" + firstName, '0.jpg'), image)
     cv2.imwrite(os.path.join("People Images/" + firstName, '1.jpg'), image)
 
-    print(firstName)
     encoding = encodeDirectory(firstName)
     np.save('Encodings/' + str(firstName).replace(" ", "") + 'Encoding.npy', encoding)
