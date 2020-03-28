@@ -1,14 +1,18 @@
+import cv2
 from flask import render_template, Flask, Response
 from webui import WebUI
 from Camera import VideoCamera
 import os
 from shutil import copyfile
-import faulthandler
+from Excel import markAbsentUnmarkedExcel
+from TransferLearning import runInParallel
 
 app = Flask(__name__)
 ui = WebUI(app, debug=True)
 
-global cameraState
+global cameraState, addState
+global addState
+addState = False
 cameraState = False
 
 
@@ -56,8 +60,8 @@ def downloadText():
 @app.route('/download-excel')
 def downloadExcel():
     try:
-        finalPath = os.path.join(os.path.expanduser("~"), "Downloads/AttendanceExcel.xlsx")
-        copyfile('AttendanceExcel.xlsx', finalPath)
+        finalPath = os.path.join(os.path.expanduser("~"), "Downloads/AttendanceExcel.xls")
+        copyfile('AttendanceExcel.xls', finalPath)
     except Exception as e:
         print(e)
 
@@ -75,19 +79,33 @@ def startCamera():
 def stopCamera():
     global cameraState
     cameraState = False
+    markAbsentUnmarkedExcel()
     return render_template('index.html')
 
+
 def gen(camera):
+    global addState, cameraState
     while cameraState:
         frame = camera.getFrame()
+        if addState:
+            camera.addFace()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+    markAbsentUnmarkedExcel()
 
 
 @app.route('/video_feed')
 def video_feed():
     return Response(gen(VideoCamera(source=0)),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@app.route('/add-face')
+def addFace():
+    global addState
+    addState = True
+    return render_template('index.html')
 
 
 if __name__ == '__main__':

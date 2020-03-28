@@ -3,6 +3,7 @@ from datetime import datetime
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import PatternFill, Font
 from init import *
+from xlrd import open_workbook
 
 
 def loadLists(textFile):
@@ -45,7 +46,7 @@ def resetCell(sheet, cell):
     sheet[cell].fill = whiteFill
 
 
-def addKey(sheet):
+def addKeyExcel(sheet):
     # Reset Top Cells
     for n in range(1, 5):
         cellLocation = 'A' + str(n)
@@ -65,7 +66,7 @@ def addKey(sheet):
     sheet['A4'].font = Font(bold=True)
 
 
-def addStudentNames(sheet):
+def addStudentNamesExcel(sheet):
     # Format and write Student Name subtitle
     sheet['A8'] = 'Student Names'
     sheet['A8'].font = Font(bold=True)
@@ -96,13 +97,13 @@ def getColumnLetter(sheet):
     while not columnFound:
         currentCell = str(chr(cellStartNum)) + '8'
         # If found, return cell column Letter
-        if sheet[currentCell] == date:
+        if sheet[currentCell].value == date:
             return cellStartNum
         else:
             cellStartNum += 1
 
 
-def addDate(sheet):
+def addDateExcel(sheet):
     # Get and format date
     date = datetime.today().strftime('X%m/X%d')
     date = date.replace('X0', 'X').replace('X', '')
@@ -128,41 +129,51 @@ def addDate(sheet):
                 emptyDateCell = True
 
 
-def formatPage(sheet):
+def formatPageExcel(sheet):
     # Adds key, student names, and current date
     if sheet['A1'] != 'KEY':
-        addKey(sheet)
-    addStudentNames(sheet)
-    addDate(sheet)
+        addKeyExcel(sheet)
+    addStudentNamesExcel(sheet)
+    addDateExcel(sheet)
 
 
-def updatePresentPerson(personToFind):
+def updatePresentPersonExcel(personToFind):
     # Change numerical values to cell value
-    cellToPresent = chr(getColumnLetter()) + str(getRowNum(personToFind))
+    cellToPresent = chr(getColumnLetter(ws)) + str(getRowNum(personToFind))
     # Mark present
-    presentCell(cellToPresent)
+    presentCell(ws, cellToPresent)
 
 
-def updateAbsentPerson(personToFind):
+def updateAbsentPersonExcel(personToFind):
     # Change numerical values to cell value
-    cellToAbsent = chr(getColumnLetter()) + str(getRowNum(personToFind))
+    cellToAbsent = chr(getColumnLetter(ws)) + str(getRowNum(personToFind))
     # Mark Absent
-    absentCell(cellToAbsent)
+    absentCell(ws, cellToAbsent)
 
 
-def updateLatePerson(personToFind):
+def updateLatePersonExcel(personToFind):
     # Change numerical values to cell value
-    cellToAbsent = chr(getColumnLetter()) + str(getRowNum(personToFind))
+    cellToAbsent = chr(getColumnLetter(ws)) + str(getRowNum(personToFind))
     # Mark Late
-    lateCell(cellToAbsent)
+    lateCell(ws, cellToAbsent)
+
+
+def markAbsentUnmarkedExcel():
+    rowStart = 9
+    for x in range(0, len(fullStudentNames)):
+        cellToCheck = str(chr(getColumnLetter(ws))) + str(rowStart)
+        if str(ws[cellToCheck].fill.start_color.index) not in '00D9EAD3':
+            absentCell(ws, cellToCheck)
+            rowStart += 1
+        else:
+            rowStart += 1
+    wb.save("AttendanceExcel.xls")
 
 
 try:
     fullStudentNames = loadLists("List Information/Full Student Names")
     wb = Workbook()
     ws = wb.active
-    formatPage(ws)
-    wb.save("AttendanceExcel.xlsx")
-
+    formatPageExcel(ws)
 except Exception as e:
     print(e)

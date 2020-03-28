@@ -198,6 +198,7 @@ def dynamicallyAdd(frame):
 
         processThisFrame = not processThisFrame
 
+
 def writeOnStream(frame):
     global faceLocations, faceNames, blurAmount, name
 

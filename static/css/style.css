@@ -1,5 +1,7 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300ita‌​lic,400italic,500,500italic,700,700italic,900italic,900);
-
+/* --------------------------
+:: Tags CSS
+-------------------------- */
 hr.sidebar {
   border: 1px solid #3282b8;
   width: 90%;
@@ -13,6 +15,9 @@ body {
   background-color: #204051;
 }
 
+/* --------------------------
+:: Navigation Bar CSS
+-------------------------- */
 .sidenav {
   height: 100%;
   width: 13%;
@@ -80,6 +85,10 @@ body {
     top: -32px;
     left: -15px;
 }
+
+/* --------------------------
+:: Main Body CSS
+-------------------------- */
 .main {
   margin-left: 250px; /* Same as the width of the sidenav */
   font-size: 28px; /* Increased text to enable scrolling */
@@ -87,6 +96,9 @@ body {
   overflow: hidden;
 }
 
+/* --------------------------
+:: index.html CSS
+-------------------------- */
 .card-small-1{
   box-shadow: 0 4px 12px 0 rgba(0,0,0,0.7);
   transition: 0.3s;
@@ -245,4 +257,140 @@ body {
 
 .module-text:hover{
     color: #1b262c;
+}
+
+/* --------------------------
+:: contact.html CSS
+-------------------------- */
+.contact-mod-text{
+    color: white;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 450px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.contact-mod-text:hover{
+    color: #1b262c;
+}
+.contact-mod-1{
+  box-shadow: 0 4px 12px 0 rgba(0,0,0,0.7);
+  transition: 0.3s;
+  border-radius: 5px;
+  width: 25%;
+  height: 450px;
+  background-color: #3282b8;
+  margin-right: 2%;
+  margin-left: -45%;
+  float:left;
+  margin-top: 2%;
+  position:absolute;
+  right: 1105px;
+  top: 10px;
+}
+
+.contact-mod-2{
+  box-shadow: 0 4px 12px 0 rgba(0,0,0,0.7);
+  transition: 0.3s;
+  border-radius: 5px;
+  width: 25%;
+  height: 450px;
+  background-color: #3282b8;
+  margin-right: 2%;
+  margin-left: -45%;
+  float:left;
+  margin-top: 2%;
+  position:absolute;
+  right: 555px;
+  top: 10px;
+}
+
+.contact-mod-3{
+  box-shadow: 0 4px 12px 0 rgba(0,0,0,0.7);
+  transition: 0.3s;
+  border-radius: 5px;
+  width: 25%;
+  height: 450px;
+  background-color: #3282b8;
+  margin-right: 2%;
+  margin-left: -45%;
+  float:left;
+  margin-top: 2%;
+  position:absolute;
+  right: 5px;
+  top: 10px;
+}
+
+.contact-mod-4{
+  box-shadow: 0 4px 12px 0 rgba(0,0,0,0.7);
+  transition: 0.3s;
+  border-radius: 5px;
+  width: 25%;
+  height: 450px;
+  background-color: #3282b8;
+  margin-right: 2%;
+  margin-left: -45%;
+  float:left;
+  margin-top: 2%;
+  position:absolute;
+  right: 1105px;
+  top: 500px;
+}
+
+.contact-mod-5{
+  box-shadow: 0 4px 12px 0 rgba(0,0,0,0.7);
+  transition: 0.3s;
+  border-radius: 5px;
+  width: 25%;
+  height: 450px;
+  background-color: #3282b8;
+  margin-right: 2%;
+  margin-left: -45%;
+  float:left;
+  margin-top: 2%;
+  position:absolute;
+  right: 555px;
+  top: 500px;
+}
+
+.contact-mod-6{
+  box-shadow: 0 4px 12px 0 rgba(0,0,0,0.7);
+  transition: 0.3s;
+  border-radius: 5px;
+  width: 25%;
+  height: 450px;
+  background-color: #3282b8;
+  margin-right: 2%;
+  margin-left: -45%;
+  float:left;
+  margin-top: 2%;
+  position:absolute;
+  right: 5px;
+  top: 500px;
+}
+
+.contact-mod-1:hover{
+    opacity: 0.6;
+}
+
+.contact-mod-2:hover{
+    opacity: 0.6;
+}
+
+.contact-mod-3:hover{
+    opacity: 0.6;
+}
+
+.contact-mod-4:hover{
+    opacity: 0.6;
+}
+
+.contact-mod-5:hover{
+    opacity: 0.6;
+}
+
+.contact-mod-6:hover{
+    opacity: 0.6;
 }

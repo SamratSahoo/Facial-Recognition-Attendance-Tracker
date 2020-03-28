@@ -3,13 +3,27 @@ import sys
 
 import cv2
 import face_recognition
-from TransferLearning import loadDictionary, loadLists, toList, getLivenessValue
+
+from DynamicAddition import pauseCamera
+from TransferLearning import loadDictionary, loadLists, toList, getLivenessValue, runInParallel, dynamicAdd, \
+    getFolderSize, checkIfHere
 from init import *
 import numpy as np
+from Excel import *
 from LivenessDetection import getModel, getModelPred
 
 ds_factor = 0.6
 face_cascade = cv2.CascadeClassifier("Cascades/data/haarcascade_frontalface_alt2.xml")
+
+global dynamicState
+global pauseState
+dynamicState = False
+pauseState = True
+
+
+def addPerson():
+    global dynamicState
+    dynamicState = True
 
 
 class VideoCamera(object):
@@ -34,7 +48,7 @@ class VideoCamera(object):
             for x in range(0, int(len(encodingList))):
                 encodingList[x] = np.load("Encodings/" + str(encodingNames[x]))
 
-            #model = getModelPred()
+            # model = getModelPred()
 
         except Exception as e:
             print(e)
@@ -42,10 +56,28 @@ class VideoCamera(object):
     def __del__(self):
         self.video.release()
 
+    def addFace(self):
+        global dynamicState, encodingNames, fullStudentNames, faceNamesKnown, encodingList, frame
+        if 'Not Found' in faceNames and len(faceLocations) > 1:
+            dynamicAdd(frame)
+            fullStudentNames = loadLists("List Information/Full Student Names")  # List with full Student Names
+            faceNamesKnown = loadLists("List Information/Face Names Known")  # List With Face Names
+            encodingNames = loadLists("List Information/Encoding Names")  # List With encoding names
+            loadDictionary("List Information/Face Names Known", faceEncodingsKnown)  # Dictionary with Encodings
+
+            if getFolderSize("Encodings/") != len(encodingNames):
+                import EncodingModel
+
+            encodingList = toList(faceEncodingsKnown)
+            for x in range(0, int(len(encodingList))):
+                encodingList[x] = np.load("Encodings/" + str(encodingNames[x]))
+            dynamicState = False
+
     def getFrame(self):
         try:
             global processThisFrame, faceLocations, faceNames, encodingList, faceNamesKnown, fullStudentNames
-            global model, inputFrames
+            global model, inputFrames, frame, dynamicState
+
             success, frame = self.video.read()
             small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
             rgb_small_frame = small_frame[:, :, ::-1]
@@ -54,26 +86,21 @@ class VideoCamera(object):
             if processThisFrame:
                 # Find all the faces and face encodings in the current frame of video
                 faceLocations = face_recognition.face_locations(rgb_small_frame)
-                face_encodings = face_recognition.face_encodings(rgb_small_frame, faceLocations)
+                faceEncodings = face_recognition.face_encodings(rgb_small_frame, faceLocations)
 
                 faceNames = []
                 blurAmount = cv2.Laplacian(frame, cv2.CV_64F).var()
                 if blurAmount > 40:
-                    for face_encoding in face_encodings:
+                    for faceEncoding in faceEncodings:
                         # See if the face is a match for the known face(s)
-                        matches = face_recognition.compare_faces(encodingList, face_encoding)
+                        matchesFound = face_recognition.compare_faces(encodingList, faceEncoding)
                         name = "Unknown"
 
-                        # # If a match was found in known_face_encodings, just use the first one.
-                        # if True in matches:
-                        #     first_match_index = matches.index(True)
-                        #     name = known_face_names[first_match_index]
-
                         # Or instead, use the known face with the smallest distance to the new face
-                        face_distances = face_recognition.face_distance(encodingList, face_encoding)
-                        best_match_index = np.argmin(face_distances)
-                        if matches[best_match_index]:
-                            name = faceNamesKnown[best_match_index]
+                        faceDistances = face_recognition.face_distance(encodingList, faceEncoding)
+                        matchIndex = np.argmin(faceDistances)
+                        if matchesFound[matchIndex]:
+                            name = faceNamesKnown[matchIndex]
 
                         faceNames.append(name)
 
@@ -101,6 +128,13 @@ class VideoCamera(object):
                 else:
                     cv2.putText(frame, "WARNING: SPOOF DETECTED", (100, 75), font, 1.0, (0, 0, 255), 2)
 
+                for x in range(0, len(fullStudentNames)):
+                    if name in fullStudentNames[x]:
+                        updatePresentPersonExcel(fullStudentNames[x])
+
+                for x in range(0, len(faceNamesKnown)):
+                    checkIfHere(name, faceNamesKnown[x])
+
             ret, jpeg = cv2.imencode('.jpg', frame)
             return jpeg.tobytes()
         except Exception as e:
@@ -108,3 +142,8 @@ class VideoCamera(object):
             fileName = os.path.split(exceptionThrowback.tb_frame.f_code.co_filename)[1]
             print(exceptionType, fileName, exceptionThrowback.tb_lineno)
             print(e)
+
+
+def pauseCamera(self):
+    global pauseState
+    pauseState = True
