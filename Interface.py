@@ -1,6 +1,8 @@
 import cv2
-from flask import render_template, Flask, Response
+from flask import render_template, Flask, Response, url_for
 from webui import WebUI
+from werkzeug.utils import redirect
+
 from Camera import VideoCamera
 import os
 from shutil import copyfile
@@ -85,32 +87,32 @@ def stopCamera():
 
 
 def gen(camera):
-    global addState, cameraState
     framesRaw = []
     frames = []
-    while cameraState:
-        frame = camera.getFrame()
-        frames.append(frame)
-        framesRaw.append(camera.getRawFrame())
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-        if addState:
-            frameToSave = len(frames) - 1
-            break
+    while True:
+        global addState, cameraState
+        while cameraState:
+            frame = camera.getFrame()
+            frames.append(frame)
+            framesRaw.append(camera.getRawFrame())
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+            if addState:
+                frameToSave = len(frames) - 1
+                break
 
-    while addState:
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frames[frameToSave] + b'\r\n\r\n')
-        try:
-            dynamicAdd((framesRaw[frameToSave]))
-            camera.additionProcess()
-            cameraState = True
-            addState = False
-        except Exception as e:
-            print(e)
-        break
+        while addState:
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frames[frameToSave] + b'\r\n\r\n')
+            try:
+                dynamicAdd((framesRaw[frameToSave]))
+                camera.additionProcess()
+                cameraState = True
+                addState = False
+            except Exception as e:
+                print(e)
 
-    markAbsentUnmarkedExcel()
+        markAbsentUnmarkedExcel()
 
 
 @app.route('/add-face')
@@ -119,6 +121,11 @@ def addFace():
     addState = True
     return render_template('index.html')
 
+@app.route('/table')
+def generateTable():
+    columns = ['Person Name', 'Time']
+    items = []
+    return render_template('attendance.html', columns=columns, items=items)
 
 @app.route('/video_feed')
 def video_feed():

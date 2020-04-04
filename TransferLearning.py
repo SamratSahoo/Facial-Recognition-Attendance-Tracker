@@ -96,9 +96,11 @@ def getLivenessValue(frame, inputFrames, model):
     inputFrames.append(livenessFrame)
     input = np.array([inputFrames[-24:]])
     input = input / 255
-    input = input.reshape(1, 24, 100, 100, 1)
-    pred = model.predict(input)
-    return pred[0][0]
+    if input.size == 240000:
+        input = input.reshape(1, 24, 100, 100, 1)
+        pred = model.predict(input)
+        return pred[0][0]
+    return 0.51
 
 
 def preProcess():

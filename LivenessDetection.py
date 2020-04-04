@@ -1,10 +1,6 @@
-import numpy as np
-import keras
-from keras.models import model_from_json
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten
-from keras.layers import Conv3D, MaxPooling3D
-from keras import backend as K
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout, Flatten
+from tensorflow.keras.layers import Conv3D, MaxPooling3D
 
 
 def getModel():

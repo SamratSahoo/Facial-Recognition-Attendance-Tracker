@@ -48,7 +48,7 @@ class VideoCamera(object):
             for x in range(0, int(len(encodingList))):
                 encodingList[x] = np.load("Encodings/" + str(encodingNames[x]))
 
-            # model = getModelPred()
+            model = getModelPred()
 
         except Exception as e:
             print(e)
@@ -144,8 +144,8 @@ class VideoCamera(object):
                 cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (255, 0, 0), cv2.FILLED)
                 font = cv2.FONT_HERSHEY_DUPLEX
                 blurAmount = cv2.Laplacian(frame, cv2.CV_64F).var()
-                # livenessVal = getLivenessValue(frame, inputFrames, model)
-                if 0.51 > 0.50:
+                livenessVal = getLivenessValue(frame, inputFrames, model)
+                if livenessVal > 0.50:
                     if blurAmount > 40:
                         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
                 else:
