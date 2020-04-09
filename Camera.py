@@ -11,6 +11,9 @@ from init import *
 import numpy as np
 from Excel import *
 from LivenessDetection import getModel, getModelPred
+import urllib3
+# from Sheets import * # Uncomment to use online/offline mode
+from timeit import default_timer as timer
 
 ds_factor = 0.6
 face_cascade = cv2.CascadeClassifier("Cascades/data/haarcascade_frontalface_alt2.xml")
@@ -26,12 +29,22 @@ def addPerson():
     dynamicState = True
 
 
+def internetCheck():
+    try:
+        response = urllib3.urlopen('http://74.125.228.100', timeout=20)
+        return True
+    except urllib3.URLError as err:
+        pass
+    return False
+
+
+
 class VideoCamera(object):
     def __init__(self, source):
         try:
             self.video = cv2.VideoCapture(source)
             global processThisFrame, faceLocations, faceEncodings, faceNames, encodingList, encodingNames
-            global faceNamesKnown, fullStudentNames, inputFrames, model
+            global faceNamesKnown, fullStudentNames, inputFrames, model, start
 
             # Initialize some variables
             faceLocations = []
@@ -49,6 +62,7 @@ class VideoCamera(object):
                 encodingList[x] = np.load("Encodings/" + str(encodingNames[x]))
 
             model = getModelPred()
+            start = timer()
 
         except Exception as e:
             print(e)
@@ -99,17 +113,19 @@ class VideoCamera(object):
     def getFrame(self):
         try:
             global processThisFrame, faceLocations, faceNames, encodingList, faceNamesKnown, fullStudentNames
-            global model, inputFrames, frame, dynamicState
+            global model, inputFrames, frame, dynamicState, start
 
             success, frame = self.video.read()
-            small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
-            rgb_small_frame = small_frame[:, :, ::-1]
+            smallFrame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+            rgbSmallFrame = smallFrame[:, :, ::-1]
+            end = timer()
+            elapsedTime = end - start
 
             # Only process every other frame of video to save time
             if processThisFrame:
                 # Find all the faces and face encodings in the current frame of video
-                faceLocations = face_recognition.face_locations(rgb_small_frame)
-                faceEncodings = face_recognition.face_encodings(rgb_small_frame, faceLocations)
+                faceLocations = face_recognition.face_locations(rgbSmallFrame)
+                faceEncodings = face_recognition.face_encodings(rgbSmallFrame, faceLocations)
 
                 faceNames = []
                 blurAmount = cv2.Laplacian(frame, cv2.CV_64F).var()
@@ -151,9 +167,25 @@ class VideoCamera(object):
                 else:
                     cv2.putText(frame, "WARNING: SPOOF DETECTED", (100, 75), font, 1.0, (0, 0, 255), 2)
 
-                for x in range(0, len(fullStudentNames)):
-                    if name in fullStudentNames[x]:
-                        updatePresentPersonExcel(fullStudentNames[x])
+                # Online/Offline Mode
+                if internetCheck:
+                    for x in range(0, len(fullStudentNames)):
+                        if name in fullStudentNames[x]:
+                            # Check if they are late
+                            if elapsedTime > 300:
+                                updateLatePersonExcel(fullStudentNames[x])
+                                # updateLatePerson() # Uncomment to use online/offline mode
+                            else:
+                                updatePresentPersonExcel(fullStudentNames[x])
+                                # updatePresentPerson() # Uncomment to use online/offline mode
+                else:
+                    for x in range(0, len(fullStudentNames)):
+                        if name in fullStudentNames[x]:
+                            # Check if they are late
+                            if elapsedTime > 300:
+                                updateLatePersonExcel(fullStudentNames[x])
+                            else:
+                                updatePresentPersonExcel(fullStudentNames[x])
 
                 for x in range(0, len(faceNamesKnown)):
                     checkIfHere(name, faceNamesKnown[x])
