@@ -15,65 +15,82 @@ import urllib3
 # from Sheets import * # Uncomment to use online/offline mode
 from timeit import default_timer as timer
 
-ds_factor = 0.6
-face_cascade = cv2.CascadeClassifier("Cascades/data/haarcascade_frontalface_alt2.xml")
-
+# Global Variables
 global dynamicState
 global pauseState
 dynamicState = False
 pauseState = True
 
 
+# Dynamic Addition Variable
 def addPerson():
     global dynamicState
     dynamicState = True
 
 
+# Check Internet Function
 def internetCheck():
     try:
+        # Check if you can visit this url
         response = urllib3.urlopen('http://74.125.228.100', timeout=20)
+        # Return true if you can
         return True
     except urllib3.URLError as err:
         pass
+    # Return False Otherwise
     return False
 
 
-
+# To make a video camera Object
 class VideoCamera(object):
+    # initializations of a Videocamera
     def __init__(self, source):
         try:
+            # Video capture
             self.video = cv2.VideoCapture(source)
+
+            # Some global variables
             global processThisFrame, faceLocations, faceEncodings, faceNames, encodingList, encodingNames
             global faceNamesKnown, fullStudentNames, inputFrames, model, start
 
-            # Initialize some variables
+            # Initialize variables
             faceLocations = []
             faceEncodings = []
             faceNames = []
             inputFrames = []
             processThisFrame = True
 
+            # Load List information
             fullStudentNames = loadLists("List Information/Full Student Names")  # List with full Student Names
             faceNamesKnown = loadLists("List Information/Face Names Known")  # List With Face Names
             encodingNames = loadLists("List Information/Encoding Names")  # List With encoding names
             loadDictionary("List Information/Face Names Known", faceEncodingsKnown)  # Dictionary with Encodings
             encodingList = toList(faceEncodingsKnown)
+            # Load encodings
             for x in range(0, int(len(encodingList))):
                 encodingList[x] = np.load("Encodings/" + str(encodingNames[x]))
 
+            # Load Liveness Model
             model = getModelPred()
+
+            # Start Late timer
             start = timer()
 
         except Exception as e:
             print(e)
 
     def __del__(self):
+        # Delete Video Capture
         self.video.release()
 
+    # Dynamic Addition After-Function
     def additionProcess(self):
+
+        # Some global variables
         global encodingList, encodingNames, faceEncodingsKnown
         global faceNamesKnown, fullStudentNames
 
+        # Load Lists Again
         fullStudentNames = loadLists(
             "List Information/Full Student Names")  # List with full Student Names
         faceNamesKnown = loadLists("List Information/Face Names Known")  # List With Face Names
@@ -81,44 +98,64 @@ class VideoCamera(object):
         loadDictionary("List Information/Face Names Known",
                        faceEncodingsKnown)  # Dictionary with Encodings
 
+        # Run Encoding Model if necessary
         if getFolderSize("Encodings/") != len(encodingNames):
             import EncodingModel
 
+        # Reload Encodings
         encodingList = toList(faceEncodingsKnown)
         for x in range(0, int(len(encodingList))):
             encodingList[x] = np.load("Encodings/" + str(encodingNames[x]))
 
+    # Dyanic Addition Core Function
     def addFace(self):
+
+        # Some global variables
         global dynamicState, encodingNames, fullStudentNames, faceNamesKnown, encodingList, frame
-        print("hello")
-        if 'Samrat' in faceNames and len(faceLocations) > 1:
+
+        # Only run Dynamic Addition if a face is found and is unknown
+        if 'Unknown' in faceNames and len(faceLocations) > 1:
+            # Run dynamic core addition
             dynamicAdd(frame)
+
+            # Relaod Lists
             fullStudentNames = loadLists("List Information/Full Student Names")  # List with full Student Names
             faceNamesKnown = loadLists("List Information/Face Names Known")  # List With Face Names
             encodingNames = loadLists("List Information/Encoding Names")  # List With encoding names
             loadDictionary("List Information/Face Names Known", faceEncodingsKnown)  # Dictionary with Encodings
 
+            # Run Encoding Model as necessary
             if getFolderSize("Encodings/") != len(encodingNames):
                 import EncodingModel
 
+            # Reload Enecodings
             encodingList = toList(faceEncodingsKnown)
             for x in range(0, int(len(encodingList))):
                 encodingList[x] = np.load("Encodings/" + str(encodingNames[x]))
+
+            # Turn off dynamic addition once done
             dynamicState = False
 
     def getRawFrame(self):
+        # Returns the raw frame
         _, frameToReturn = self.video.read()
         return frameToReturn
 
     def getFrame(self):
         try:
+            # Some global variables
             global processThisFrame, faceLocations, faceNames, encodingList, faceNamesKnown, fullStudentNames
             global model, inputFrames, frame, dynamicState, start
 
+            # Read OpenCV video
             success, frame = self.video.read()
+            # Resize as necessary
             smallFrame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+            # Change Colors as necessary
             rgbSmallFrame = smallFrame[:, :, ::-1]
+            # End time for Late feature
             end = timer()
+            # Calculate time spent
             elapsedTime = end - start
 
             # Only process every other frame of video to save time
@@ -127,7 +164,10 @@ class VideoCamera(object):
                 faceLocations = face_recognition.face_locations(rgbSmallFrame)
                 faceEncodings = face_recognition.face_encodings(rgbSmallFrame, faceLocations)
 
+                # Empty Face names for every iteration
                 faceNames = []
+
+                # Calculate Blur; if its too blurry it won't do facial recognition
                 blurAmount = cv2.Laplacian(frame, cv2.CV_64F).var()
                 if blurAmount > 40:
                     for faceEncoding in faceEncodings:
@@ -140,9 +180,9 @@ class VideoCamera(object):
                         matchIndex = np.argmin(faceDistances)
                         if matchesFound[matchIndex]:
                             name = faceNamesKnown[matchIndex]
-
+                        # Add name to the faceNames array
                         faceNames.append(name)
-
+            # Process every other frame
             processThisFrame = not processThisFrame
 
             # Display the results
@@ -159,40 +199,47 @@ class VideoCamera(object):
                 # Draw a label with a name below the face
                 cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (255, 0, 0), cv2.FILLED)
                 font = cv2.FONT_HERSHEY_DUPLEX
+                # Recalculate blur
                 blurAmount = cv2.Laplacian(frame, cv2.CV_64F).var()
+                # Calculate liveness amount
                 livenessVal = getLivenessValue(frame, inputFrames, model)
-                if livenessVal > 0.50:
+
+                # if liveness is over 95% then continue recognition
+                if livenessVal > 0.95:
+                    # Blur must be over 40 in order to accurately recognize a face
                     if blurAmount > 40:
                         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+                        # Online/Offline Mode
+                        if internetCheck:
+                            for x in range(0, len(fullStudentNames)):
+                                if name in fullStudentNames[x]:
+                                    # Check if they are late
+                                    if elapsedTime > 300:
+                                        updateLatePersonExcel(fullStudentNames[x])
+                                        # updateLatePerson() # Uncomment to use online/offline mode (GSheets)
+                                    else:
+                                        updatePresentPersonExcel(fullStudentNames[x])
+                                        # updatePresentPerson() # Uncomment to use online/offline mode (GSheets)
+                        else:
+                            for x in range(0, len(fullStudentNames)):
+                                if name in fullStudentNames[x]:
+                                    # Check if they are late
+                                    if elapsedTime > 300:
+                                        updateLatePersonExcel(fullStudentNames[x])
+                                    else:
+                                        updatePresentPersonExcel(fullStudentNames[x])
+
+                        for x in range(0, len(faceNamesKnown)):
+                            checkIfHere(name, faceNamesKnown[x])
                 else:
+                    # Do not mark anyone if its a spoof
                     cv2.putText(frame, "WARNING: SPOOF DETECTED", (100, 75), font, 1.0, (0, 0, 255), 2)
 
-                # Online/Offline Mode
-                if internetCheck:
-                    for x in range(0, len(fullStudentNames)):
-                        if name in fullStudentNames[x]:
-                            # Check if they are late
-                            if elapsedTime > 300:
-                                updateLatePersonExcel(fullStudentNames[x])
-                                # updateLatePerson() # Uncomment to use online/offline mode
-                            else:
-                                updatePresentPersonExcel(fullStudentNames[x])
-                                # updatePresentPerson() # Uncomment to use online/offline mode
-                else:
-                    for x in range(0, len(fullStudentNames)):
-                        if name in fullStudentNames[x]:
-                            # Check if they are late
-                            if elapsedTime > 300:
-                                updateLatePersonExcel(fullStudentNames[x])
-                            else:
-                                updatePresentPersonExcel(fullStudentNames[x])
-
-                for x in range(0, len(faceNamesKnown)):
-                    checkIfHere(name, faceNamesKnown[x])
-
+            # Encode frame so it can be displayed on a webpage
             ret, jpeg = cv2.imencode('.jpg', frame)
             return jpeg.tobytes()
         except Exception as e:
+            # Enceptions to get file + line numbers errors are on
             exceptionType, exceptionObject, exceptionThrowback = sys.exc_info()
             fileName = os.path.split(exceptionThrowback.tb_frame.f_code.co_filename)[1]
             print(exceptionType, fileName, exceptionThrowback.tb_lineno)

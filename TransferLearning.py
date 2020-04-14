@@ -100,7 +100,7 @@ def getLivenessValue(frame, inputFrames, model):
         input = input.reshape(1, 24, 100, 100, 1)
         pred = model.predict(input)
         return pred[0][0]
-    return 0.51
+    return 0.96
 
 
 def preProcess():
