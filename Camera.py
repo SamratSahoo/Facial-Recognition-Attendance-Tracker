@@ -11,7 +11,7 @@ from init import *
 import numpy as np
 from Excel import *
 from LivenessDetection import getModel, getModelPred
-import urllib3
+import socket
 # from Sheets import * # Uncomment to use online/offline mode
 from timeit import default_timer as timer
 
@@ -31,13 +31,12 @@ def addPerson():
 # Check Internet Function
 def internetCheck():
     try:
-        # Check if you can visit this url
-        response = urllib3.urlopen('http://74.125.228.100', timeout=20)
-        # Return true if you can
+        # connect to the host -- tells us if the host is actually
+        # reachable
+        socket.create_connection(("www.google.com", 80))
         return True
-    except urllib3.URLError as err:
+    except OSError:
         pass
-    # Return False Otherwise
     return False
 
 
@@ -51,7 +50,7 @@ class VideoCamera(object):
 
             # Some global variables
             global processThisFrame, faceLocations, faceEncodings, faceNames, encodingList, encodingNames
-            global faceNamesKnown, fullStudentNames, inputFrames, model, start
+            global faceNamesKnown, fullStudentNames, inputFrames, model, start, internetCheck
 
             # Initialize variables
             faceLocations = []
@@ -75,6 +74,9 @@ class VideoCamera(object):
 
             # Start Late timer
             start = timer()
+
+            # Internet Check
+            internetCheck = internetCheck()
 
         except Exception as e:
             print(e)
@@ -145,7 +147,7 @@ class VideoCamera(object):
         try:
             # Some global variables
             global processThisFrame, faceLocations, faceNames, encodingList, faceNamesKnown, fullStudentNames
-            global model, inputFrames, frame, dynamicState, start
+            global model, inputFrames, frame, dynamicState, start, internetCheck
 
             # Read OpenCV video
             success, frame = self.video.read()
@@ -211,6 +213,7 @@ class VideoCamera(object):
                         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
                         # Online/Offline Mode
                         if internetCheck:
+                            print("Connected")
                             for x in range(0, len(fullStudentNames)):
                                 if name in fullStudentNames[x]:
                                     # Check if they are late
@@ -221,6 +224,7 @@ class VideoCamera(object):
                                         updatePresentPersonExcel(fullStudentNames[x])
                                         # updatePresentPerson() # Uncomment to use online/offline mode (GSheets)
                         else:
+                            print("Disconnected")
                             for x in range(0, len(fullStudentNames)):
                                 if name in fullStudentNames[x]:
                                     # Check if they are late

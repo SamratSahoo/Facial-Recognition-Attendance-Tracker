@@ -1,8 +1,9 @@
+import sys
+
 import cv2
 from flask import render_template, Flask, Response, url_for
-from webui import WebUI
 from werkzeug.utils import redirect
-
+from flaskwebgui import FlaskUI
 from Camera import VideoCamera
 import os
 from shutil import copyfile
@@ -12,7 +13,7 @@ from DynamicAddition import dynamicAdd
 from Excel import markAbsentUnmarkedExcel
 
 app = Flask(__name__)
-ui = WebUI(app, debug=True)
+ui = FlaskUI(app)
 
 global cameraState, addState
 cameraState = False
@@ -121,11 +122,13 @@ def addFace():
     addState = True
     return render_template('index.html')
 
+
 @app.route('/table')
 def generateTable():
     columns = ['Person Name', 'Time']
     items = []
     return render_template('attendance.html', columns=columns, items=items)
+
 
 @app.route('/video_feed')
 def video_feed():

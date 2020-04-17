@@ -1,7 +1,7 @@
 import sys
 
 from init import *
-from Sheets import *
+# from Sheets import *
 from DynamicAddition import *
 import cv2
 import face_recognition
