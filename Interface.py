@@ -1,19 +1,15 @@
 import sys
-
 import cv2
 from flask import render_template, Flask, Response, url_for
 from werkzeug.utils import redirect
-from flaskwebgui import FlaskUI
+from pyfladesk import init_gui
 from Camera import VideoCamera
 import os
 from shutil import copyfile
-from EncodingModel import encodeDirectory
-
 from DynamicAddition import dynamicAdd
 from Excel import markAbsentUnmarkedExcel
 
 app = Flask(__name__)
-ui = FlaskUI(app)
 
 global cameraState, addState
 cameraState = False
@@ -138,6 +134,6 @@ def video_feed():
 
 if __name__ == '__main__':
     try:
-        ui.run()
+        init_gui(app)
     except Exception as e:
         print(e)

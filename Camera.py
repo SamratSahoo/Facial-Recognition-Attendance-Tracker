@@ -152,9 +152,11 @@ class VideoCamera(object):
             # Read OpenCV video
             success, frame = self.video.read()
             # Resize as necessary
-            smallFrame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+            print(success)
+            if success:
+                smallFrame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
             # Change Colors as necessary
-            rgbSmallFrame = smallFrame[:, :, ::-1]
+                rgbSmallFrame = smallFrame[:, :, ::-1]
             # End time for Late feature
             end = timer()
             # Calculate time spent
@@ -213,7 +215,6 @@ class VideoCamera(object):
                         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
                         # Online/Offline Mode
                         if internetCheck:
-                            print("Connected")
                             for x in range(0, len(fullStudentNames)):
                                 if name in fullStudentNames[x]:
                                     # Check if they are late
@@ -224,7 +225,6 @@ class VideoCamera(object):
                                         updatePresentPersonExcel(fullStudentNames[x])
                                         # updatePresentPerson() # Uncomment to use online/offline mode (GSheets)
                         else:
-                            print("Disconnected")
                             for x in range(0, len(fullStudentNames)):
                                 if name in fullStudentNames[x]:
                                     # Check if they are late
