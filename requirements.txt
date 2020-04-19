@@ -95,7 +95,6 @@ tf-estimator-nightly==1.14.0.dev2019060501
 uritemplate==3.0.1
 urllib3==1.25.9
 webencodings==0.5.1
-WebUI==0.2.0
 Werkzeug==0.15.3
 wrapt==1.12.1
 xlrd==1.2.0
