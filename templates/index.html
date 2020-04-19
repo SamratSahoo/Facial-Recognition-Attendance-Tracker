@@ -9,37 +9,37 @@
 </head>
 
 <body>
-    <div class="sidenav">
-        <div class="sidenav-head">
-            <a class="sidebar-title sidenav-head" style="top:0px;"><b>Facial Recognition Based Attendance
-                    Tracker</b></a>
-            <img src="{{ url_for('static',filename='img/sidebarImage.png') }}" class="sidebar-image">
-            <a class="sidebar-subheader"><b>Developed By Samrat Sahoo</b></a>
-        </div>
-        <a href="/index">Dashboard</a>
-        <hr class="sidebar">
-        <a href="/configure">Configure Tracker</a>
-        <hr class="sidebar">
-        <a href="/attendance">Attendance List</a>
-        <hr class="sidebar">
-        <a href="/settings">Settings</a>
-        <hr class="sidebar">
-        <a href="/help">Help</a>
-        <hr class="sidebar">
-        <a href="/contact">Contact</a>
-        <hr class="sidebar">
+<div class="sidenav">
+    <div class="sidenav-head">
+        <a class="sidebar-title sidenav-head" style="top:0px;"><b>Facial Recognition Based Attendance
+            Tracker</b></a>
+        <img src="{{ url_for('static',filename='img/sidebarImage.png') }}" class="sidebar-image">
+        <a class="sidebar-subheader"><b>Developed By Samrat Sahoo</b></a>
     </div>
-    <div class="main">
-        <div><a class="card-text" href="#"><img id="bg" class="card-camera" src="{{ url_for('video_feed') }}"></a></div>
-        <div class="card-small-1"><a class="card-text" href="/start-camera">Start Camera</a></div>
-        <div class="card-small-2"><a class="card-text" href="/stop-camera">Stop Camera</a></div>
-        <div class="module"><a class="module-text" href="/download-excel">Download Attendance Spreadsheet</a></div>
-        <div class="module-2"><a class="module-text" href="/download-text">Download Attendance Text File</a></div>
-        <div class="module-3"><a class="module-text" href="/add-face">Add Person to Database</a></div>
-        <div class="module-4"><a class="module-text">Clear Database</a></div>
+    <a href="/index">Dashboard</a>
+    <hr class="sidebar">
+    <!--a href="/configure">Configure Tracker</a>
+    <hr class="sidebar">
+    <a href="/attendance">Attendance List</a>
+    <hr class="sidebar">
+    <a href="/settings">Settings</a>
+    <hr class="sidebar">
+    <a href="/help">Help</a>
+    <hr class="sidebar"-->
+    <a href="/contact">Contact</a>
+    <hr class="sidebar">
+</div>
+<div class="main">
+    <div><a class="card-text" href="#"><img id="bg" class="card-camera" src="{{ url_for('video_feed') }}"></a></div>
+    <div class="card-small-1"><a class="card-text" href="/start-camera">Start Camera</a></div>
+    <div class="card-small-2"><a class="card-text" href="/stop-camera">Stop Camera</a></div>
+    <div class="module"><a class="module-text" href="/download-excel">Download Attendance Spreadsheet</a></div>
+    <div class="module-2"><a class="module-text" href="/download-text">Download Attendance Text File</a></div>
+    <div class="module-3"><a class="module-text" href="/add-face">Add Person to Database</a></div>
+    <div class="module-4"><a class="module-text" href="/online-mode">Online Mode</a></div>
 
 
-    </div>
+</div>
 </body>
 
 </html>

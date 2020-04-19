@@ -14,9 +14,10 @@ from Excel import markAbsentUnmarkedExcel
 app = Flask(__name__)
 ui = WebUI(app, debug=True)
 
-global cameraState, addState, frames, framesRaw
+global cameraState, addState, frames, framesRaw, onlineState
 cameraState = False
 addState = False
+onlineState = False
 framesRaw = []
 frames = []
 
@@ -89,7 +90,7 @@ def stopCamera():
 
 
 def gen(camera):
-    global addState, cameraState, frames, framesRaw
+    global addState, cameraState, frames, framesRaw, onlineState
     while cameraState or addState:
         if not addState:
             global frames, framesRaw
@@ -97,7 +98,7 @@ def gen(camera):
             frames.append(frame)
             framesRaw.append(camera.getRawFrame())
             yield (b'--frame\r\n'
-                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
         if addState:
             frameToSave = len(frames) - 1
             print(frameToSave)
@@ -115,6 +116,10 @@ def gen(camera):
                 print(e)
             break
 
+        if onlineState:
+            camera.goOnline()
+            onlineState = False
+
     markAbsentUnmarkedExcel()
 
 
@@ -122,6 +127,13 @@ def gen(camera):
 def addFace():
     global addState
     addState = True
+    return render_template('index.html')
+
+
+@app.route('/online-mode')
+def onlineMode():
+    global onlineState
+    onlineState = True
     return render_template('index.html')
 
 

@@ -18,8 +18,10 @@ from timeit import default_timer as timer
 # Global Variables
 global dynamicState
 global pauseState
+global onlineMode
 dynamicState = False
 pauseState = True
+onlineMode = False
 
 
 # Dynamic Addition Variable
@@ -143,16 +145,20 @@ class VideoCamera(object):
         _, frameToReturn = self.video.read()
         return frameToReturn
 
+    def goOnline(self):
+        global onlineMode
+        onlineMode = not onlineMode
+
     def getFrame(self):
         try:
             # Some global variables
             global processThisFrame, faceLocations, faceNames, encodingList, faceNamesKnown, fullStudentNames
-            global model, inputFrames, frame, dynamicState, start, internetCheck
+            global model, inputFrames, frame, dynamicState, start, internetCheck, onlineMode
 
             # Read OpenCV video
             success, frame = self.video.read()
             # Resize as necessary
-            smallFrame = cv2.resize(frame, (0,0), fx=0.25, fy=0.25)
+            smallFrame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
             # Change Colors as necessary
             rgbSmallFrame = smallFrame[:, :, ::-1]
             # End time for Late feature
@@ -212,7 +218,7 @@ class VideoCamera(object):
                     if blurAmount > 40:
                         cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
                         # Online/Offline Mode
-                        if internetCheck:
+                        if internetCheck and onlineMode:
                             for x in range(0, len(fullStudentNames)):
                                 if name in fullStudentNames[x]:
                                     # Check if they are late
