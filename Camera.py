@@ -152,10 +152,9 @@ class VideoCamera(object):
             # Read OpenCV video
             success, frame = self.video.read()
             # Resize as necessary
-            if success:
-                smallFrame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+            smallFrame = cv2.resize(frame, (0,0), fx=0.25, fy=0.25)
             # Change Colors as necessary
-                rgbSmallFrame = smallFrame[:, :, ::-1]
+            rgbSmallFrame = smallFrame[:, :, ::-1]
             # End time for Late feature
             end = timer()
             # Calculate time spent

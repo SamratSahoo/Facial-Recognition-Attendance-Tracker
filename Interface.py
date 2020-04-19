@@ -1,20 +1,24 @@
 import sys
+
 import cv2
-from flask import render_template, Flask, Response, url_for
-from werkzeug.utils import redirect
+from flask import render_template, Flask, Response
 from webui import WebUI
 from Camera import VideoCamera
 import os
 from shutil import copyfile
+from EncodingModel import encodeDirectory
+
 from DynamicAddition import dynamicAdd
 from Excel import markAbsentUnmarkedExcel
 
 app = Flask(__name__)
-ui = WebUI(app)
+ui = WebUI(app, debug=True)
 
-global cameraState, addState
+global cameraState, addState, frames, framesRaw
 cameraState = False
 addState = False
+framesRaw = []
+frames = []
 
 
 @app.route('/')
@@ -85,21 +89,18 @@ def stopCamera():
 
 
 def gen(camera):
-    framesRaw = []
-    frames = []
-    while True:
-        global addState, cameraState
-        while cameraState:
+    global addState, cameraState, frames, framesRaw
+    while cameraState or addState:
+        if not addState:
+            global frames, framesRaw
             frame = camera.getFrame()
             frames.append(frame)
             framesRaw.append(camera.getRawFrame())
             yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-            if addState:
-                frameToSave = len(frames) - 1
-                break
-
-        while addState:
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+        if addState:
+            frameToSave = len(frames) - 1
+            print(frameToSave)
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frames[frameToSave] + b'\r\n\r\n')
             try:
@@ -108,9 +109,13 @@ def gen(camera):
                 cameraState = True
                 addState = False
             except Exception as e:
+                exceptionType, exceptionObject, exceptionThrowback = sys.exc_info()
+                fileName = os.path.split(exceptionThrowback.tb_frame.f_code.co_filename)[1]
+                print(exceptionType, fileName, exceptionThrowback.tb_lineno)
                 print(e)
+            break
 
-        markAbsentUnmarkedExcel()
+    markAbsentUnmarkedExcel()
 
 
 @app.route('/add-face')
@@ -120,23 +125,14 @@ def addFace():
     return render_template('index.html')
 
 
-@app.route('/table')
-def generateTable():
-    columns = ['Person Name', 'Time']
-    items = []
-    return render_template('attendance.html', columns=columns, items=items)
-
-
 @app.route('/video_feed')
 def video_feed():
-    return Response(gen(VideoCamera(source=2)),
+    return Response(gen(VideoCamera(source=-1)),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == '__main__':
     try:
-        print("hello 1")
         ui.run()
-        print("hello 2")
     except Exception as e:
         print(e)
