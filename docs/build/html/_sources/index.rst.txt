@@ -1,0 +1,14 @@
+Facial Recognition Attendance Tracker Documentation
+====================================================
+
+Table of Contents
+^^^^^^^^^^^^^^^^^
+.. toctree::
+   :maxdepth: 2
+
+   Overview
+   Setup
+   Directories
+   Files
+   Troubleshooting
+   Contact
