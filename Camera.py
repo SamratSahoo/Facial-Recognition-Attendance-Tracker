@@ -152,7 +152,6 @@ class VideoCamera(object):
             # Read OpenCV video
             success, frame = self.video.read()
             # Resize as necessary
-            print(success)
             if success:
                 smallFrame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
             # Change Colors as necessary

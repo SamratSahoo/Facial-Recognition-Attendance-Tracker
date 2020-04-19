@@ -2,7 +2,7 @@ import sys
 import cv2
 from flask import render_template, Flask, Response, url_for
 from werkzeug.utils import redirect
-from pyfladesk import init_gui
+from webui import WebUI
 from Camera import VideoCamera
 import os
 from shutil import copyfile
@@ -10,6 +10,7 @@ from DynamicAddition import dynamicAdd
 from Excel import markAbsentUnmarkedExcel
 
 app = Flask(__name__)
+ui = WebUI(app)
 
 global cameraState, addState
 cameraState = False
@@ -128,12 +129,14 @@ def generateTable():
 
 @app.route('/video_feed')
 def video_feed():
-    return Response(gen(VideoCamera(source=0)),
+    return Response(gen(VideoCamera(source=2)),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == '__main__':
     try:
-        init_gui(app)
+        print("hello 1")
+        ui.run()
+        print("hello 2")
     except Exception as e:
         print(e)
