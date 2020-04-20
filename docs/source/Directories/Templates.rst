@@ -1,2 +1,2 @@
-Templates Folder
+Templates
 =================

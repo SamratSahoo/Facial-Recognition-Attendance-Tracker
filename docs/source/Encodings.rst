@@ -1,2 +1,0 @@
-Encodings Folder
-===============

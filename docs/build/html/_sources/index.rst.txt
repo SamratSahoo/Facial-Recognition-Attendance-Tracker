@@ -4,20 +4,11 @@ Facial Recognition Attendance Tracker Documentation
 Table of Contents
 ^^^^^^^^^^^^^^^^^
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
 
    Setup
    Features
    Directories
-   Cascades
-      Docs
-      Encodings
-      ExampleExec
-      ListInfo
-      Model
-      People Images
-      Static
-      Templates
    Files
    Troubleshooting
    Contact

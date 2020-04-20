@@ -1,2 +1,2 @@
-List Information Folder
+List Information
 =======================

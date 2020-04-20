@@ -1,2 +1,2 @@
-Example Executions Folder
+Example Executions
 =========================

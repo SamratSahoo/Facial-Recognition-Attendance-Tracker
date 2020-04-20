@@ -1,2 +1,2 @@
-Static Folder
+Model
 ===============
