@@ -81,9 +81,12 @@ html_theme = 'default'
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
+html_logo = 'logo.png'
 html_theme_options = {
     'collapse_navigation': False,
-    'navigation_depth': -1
+    'navigation_depth': -1,
+    'logo_only': True,
+    'display_version': False
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
