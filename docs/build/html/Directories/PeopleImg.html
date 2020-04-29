@@ -43,6 +43,14 @@
             
   <div class="section" id="people-images-folder">
 <h1>People Images Folder<a class="headerlink" href="#people-images-folder" title="Permalink to this headline">¶</a></h1>
+<p>The People images folder is the local database of photos for each person. Within the People Images folder you will see subdirectories
+of each of the names found in <code class="docutils literal notranslate"><span class="pre">List</span> <span class="pre">Information/Face</span> <span class="pre">Names</span> <span class="pre">Known</span></code> and each subdirectory holds the respective photos of that person. Within
+each person subdirectory you will see 2 photos, <code class="docutils literal notranslate"><span class="pre">0.jpg,</span> <span class="pre">1.jpg</span></code></p>
+<div class="section" id="jpg-file-names-explained">
+<h2>JPG File Names Explained<a class="headerlink" href="#jpg-file-names-explained" title="Permalink to this headline">¶</a></h2>
+<p>The JPG files are named <code class="docutils literal notranslate"><span class="pre">0.jpg,</span> <span class="pre">1.jpg</span></code> respectively because within <code class="docutils literal notranslate"><span class="pre">EncodingModel.py</span></code> we have a method called <code class="docutils literal notranslate"><span class="pre">encodeDirectory()</span></code>
+which requires at least 2 images to process and outputs an embeeding to <code class="docutils literal notranslate"><span class="pre">Encodings/</span></code>. The <code class="docutils literal notranslate"><span class="pre">0.jpg,</span> <span class="pre">1.jpg</span></code> are the two files that it processes.</p>
+</div>
 </div>
 
 
@@ -54,6 +62,14 @@
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/logo.png" alt="Logo"/>
             </a></p>
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">People Images Folder</a><ul>
+<li><a class="reference internal" href="#jpg-file-names-explained">JPG File Names Explained</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="Model.html"
                         title="previous chapter">Model</a></p>

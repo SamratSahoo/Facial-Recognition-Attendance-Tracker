@@ -1,7 +1,7 @@
 Encodings
 ===============
 In software development, taking into account the runtime is easily one of the most important aspects of developing a powerful
-program. In this project, the Encodings directory serves as one of the key features to reduce runtime. The Encodings directory
+program. In this project, the Encodings directory serves as one of the key features to reduce runtime. The ``Encodings`` directory
 houses several files such as ``SamratEncoding.npy``. This is a numpy file in what is known as an embedding.
 
 Purpose in Facial Recognition Process

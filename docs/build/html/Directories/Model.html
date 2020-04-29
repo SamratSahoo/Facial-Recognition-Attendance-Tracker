@@ -43,6 +43,14 @@
             
   <div class="section" id="model">
 <h1>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h1>
+<p>The Model directory holds the machine learning models that are used for liveness detection. Within the directory there are 2 files:
+the H5 model file and the Json model file.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">model.h5</span></code>: This file holds the actual distribution of data for the model. It is then run through Keras using the <code class="docutils literal notranslate"><span class="pre">LivenessModel.py</span></code> to process this data into usable information</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model.json</span></code>: This is a file that also holds model information with the necessary requirements to process the model. This file is actually readable to humans.</p></li>
+</ul>
+</div></blockquote>
 </div>
 
 
