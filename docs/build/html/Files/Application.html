@@ -53,16 +53,17 @@ but now has been abandoned.</p>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>os: Necessary to access file systems</p></li>
-<li><p>init: Necessary to access the arrays</p></li>
-<li><p>Sheets: Necessary to access the formatPage() method that is later used</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">os</span></code>: Necessary to access file systems</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">init</span></code>: Necessary to access the arrays</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sheets</span></code>: Necessary to access the formatPage() method that is later used</p></li>
 </ul>
 </div>
 <div class="section" id="functions">
 <h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">getFolderSize()</span></code> function makes sure there are at least 2 images in each subdirectory in the <code class="docutils literal notranslate"><span class="pre">PeopleImages/</span></code> directory before proceeding with the application.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">getFolderSize()</span></code> function makes sure there are at least 2 different people in the <code class="docutils literal notranslate"><span class="pre">People</span> <span class="pre">Images/</span></code> directory before proceeding with the application. If there are less than 2 people
+it will bypass that and make sure the application runs anyways</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">getFolderSize</span><span class="p">():</span>
- <span class="n">folderSize</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="s2">&quot;People/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">faceNamesKnown</span><span class="p">[</span><span class="n">x</span><span class="p">]))))</span> <span class="o">-</span> <span class="mi">1</span>
+ <span class="n">folderSize</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="s2">&quot;People Images/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">faceNamesKnown</span><span class="p">[</span><span class="n">x</span><span class="p">]))))</span> <span class="o">-</span> <span class="mi">1</span>
  <span class="k">if</span> <span class="n">folderSize</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
      <span class="n">folderSize</span> <span class="o">=</span> <span class="mi">2</span>
  <span class="k">return</span> <span class="n">folderSize</span>
@@ -74,8 +75,8 @@ but now has been abandoned.</p>
 <p>The main method will run <code class="docutils literal notranslate"><span class="pre">TransferLearning.py</span></code> if all of the folders have the correct amount of images.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
  <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">faceNamesKnown</span><span class="p">)):</span>
+     <span class="n">formatPage</span><span class="p">()</span>
      <span class="k">if</span> <span class="n">getFolderSize</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-         <span class="n">formatPage</span><span class="p">()</span>
          <span class="kn">import</span> <span class="nn">TransferLearning</span>
 </pre></div>
 </div>

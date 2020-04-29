@@ -1,6 +1,6 @@
 import os
-from init import *
-# from Sheets import *
+from init import faceNamesKnown, faceEncodingsKnown, encodingNames
+from Sheets import *
 
 
 def getFolderSize():
@@ -10,7 +10,8 @@ def getFolderSize():
     return folderSize
 
 
-for x in range(0, len(faceNamesKnown)):
-    formatPage()
-    if getFolderSize() == 2:
-        pass
+if __name__ == '__main__':
+    for x in range(0, len(faceNamesKnown)):
+        if getFolderSize() == 2:
+            formatPage()
+            import TransferLearning

@@ -43,6 +43,159 @@
             
   <div class="section" id="camera-py">
 <h1>Camera.py<a class="headerlink" href="#camera-py" title="Permalink to this headline">¶</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">Camera.py</span></code> file serves to be the connection between the HTML dashboard and the OpenCV camera. The Camera.py file controls
+all the camera functions.</p>
+<div class="section" id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">face_recognition</span>
+<span class="kn">from</span> <span class="nn">TransferLearning</span> <span class="kn">import</span> <span class="n">loadDictionary</span><span class="p">,</span> <span class="n">loadLists</span><span class="p">,</span> <span class="n">toList</span><span class="p">,</span> <span class="n">getLivenessValue</span><span class="p">,</span> <span class="n">runInParallel</span><span class="p">,</span> <span class="n">dynamicAdd</span><span class="p">,</span> \
+    <span class="n">getFolderSize</span><span class="p">,</span> <span class="n">checkIfHere</span>
+<span class="kn">from</span> <span class="nn">init</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">Excel</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">LivenessDetection</span> <span class="kn">import</span> <span class="n">getModel</span><span class="p">,</span> <span class="n">getModelPred</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">from</span> <span class="nn">Sheets</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">timeit</span> <span class="kn">import</span> <span class="n">default_timer</span> <span class="k">as</span> <span class="n">timer</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">os</span></code>: Necessary to access file systems</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sys</span></code>: Necessary to access the operating system</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cv2</span></code>: Necessary to access computer vision tools</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">face_recognition</span></code>: Necessary to access face recognition tools</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TransferLearning</span></code>: Necessary to access helper methods in original program</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">init</span></code>: Necessary to access the arrays</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code>: Necessary to access Linear Algebra functions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Excel</span></code>: Necessary to access Microsoft Excel methods</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LivenessDetection</span></code>: Necessary to access the Liveness Detection models</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">socket</span></code>: Necessary to check internet connection</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sheets</span></code>: Necessary to access Google Sheets methods</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timeit</span></code>: Necessary to take times</p></li>
+</ul>
+</div>
+<div class="section" id="feature-control-variables">
+<h2>Feature Control Variables<a class="headerlink" href="#feature-control-variables" title="Permalink to this headline">¶</a></h2>
+<p>These variables serve to control different features related to the camera</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">global</span> <span class="n">dynamicState</span>
+<span class="k">global</span> <span class="n">pauseState</span>
+<span class="k">global</span> <span class="n">onlineMode</span>
+<span class="n">dynamicState</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">pauseState</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">onlineMode</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dynamicState</span></code>: Controls whether you want to add a new person or not</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pauseState</span></code>: Controls whether the camera will be paused or not</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">onlineState</span></code>: Controls whether to use google sheets or excel</p></li>
+</ul>
+</div>
+<div class="section" id="static-functions">
+<h2>Static Functions<a class="headerlink" href="#static-functions" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">addPerson()</span></code> toggles the <code class="docutils literal notranslate"><span class="pre">dynamicState</span></code> variable from True to False and vice versa.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">addPerson</span><span class="p">():</span>
+ <span class="k">global</span> <span class="n">dynamicState</span>
+ <span class="n">dynamicState</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">internetCheck()</span></code> function will use the socket class and try to create a connection with Google.com. If it fails, it will throw an Exception and return False.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">internetCheck</span><span class="p">():</span>
+ <span class="k">try</span><span class="p">:</span>
+     <span class="n">socket</span><span class="o">.</span><span class="n">create_connection</span><span class="p">((</span><span class="s2">&quot;www.google.com&quot;</span><span class="p">,</span> <span class="mi">80</span><span class="p">))</span>
+     <span class="k">return</span> <span class="kc">True</span>
+ <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+     <span class="k">pass</span>
+ <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="objects">
+<h2>Objects<a class="headerlink" href="#objects" title="Permalink to this headline">¶</a></h2>
+<p>The VideoCamera Object initializes with several starting variable amounts including initial arrays, liveness models, timestamps, encodings, and internet connections.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+ <span class="k">try</span><span class="p">:</span>
+     <span class="c1"># Call on OpenCV Video Capture</span>
+     <span class="bp">self</span><span class="o">.</span><span class="n">video</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+
+     <span class="c1"># Some global variables</span>
+     <span class="k">global</span> <span class="n">processThisFrame</span><span class="p">,</span> <span class="n">faceLocations</span><span class="p">,</span> <span class="n">faceEncodings</span><span class="p">,</span> <span class="n">faceNames</span><span class="p">,</span> <span class="n">encodingList</span><span class="p">,</span> <span class="n">encodingNames</span>
+     <span class="k">global</span> <span class="n">faceNamesKnown</span><span class="p">,</span> <span class="n">fullStudentNames</span><span class="p">,</span> <span class="n">inputFrames</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">internetCheck</span>
+
+     <span class="c1"># Initialize variables</span>
+     <span class="n">faceLocations</span> <span class="o">=</span> <span class="p">[]</span>
+     <span class="n">faceEncodings</span> <span class="o">=</span> <span class="p">[]</span>
+     <span class="n">faceNames</span> <span class="o">=</span> <span class="p">[]</span>
+     <span class="n">inputFrames</span> <span class="o">=</span> <span class="p">[]</span>
+     <span class="n">processThisFrame</span> <span class="o">=</span> <span class="kc">True</span>
+
+     <span class="c1"># Load List information</span>
+     <span class="n">fullStudentNames</span> <span class="o">=</span> <span class="n">loadLists</span><span class="p">(</span><span class="s2">&quot;List Information/Full Student Names&quot;</span><span class="p">)</span>  <span class="c1"># List with full Student Names</span>
+     <span class="n">faceNamesKnown</span> <span class="o">=</span> <span class="n">loadLists</span><span class="p">(</span><span class="s2">&quot;List Information/Face Names Known&quot;</span><span class="p">)</span>  <span class="c1"># List With Face Names</span>
+     <span class="n">encodingNames</span> <span class="o">=</span> <span class="n">loadLists</span><span class="p">(</span><span class="s2">&quot;List Information/Encoding Names&quot;</span><span class="p">)</span>  <span class="c1"># List With encoding names</span>
+     <span class="n">loadDictionary</span><span class="p">(</span><span class="s2">&quot;List Information/Face Names Known&quot;</span><span class="p">,</span> <span class="n">faceEncodingsKnown</span><span class="p">)</span>  <span class="c1"># Dictionary with Encodings</span>
+     <span class="n">encodingList</span> <span class="o">=</span> <span class="n">toList</span><span class="p">(</span><span class="n">faceEncodingsKnown</span><span class="p">)</span>
+
+     <span class="c1"># Load encodings</span>
+     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">encodingList</span><span class="p">))):</span>
+         <span class="n">encodingList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;Encodings/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">encodingNames</span><span class="p">[</span><span class="n">x</span><span class="p">]))</span>
+
+     <span class="c1"># Load Liveness Model</span>
+     <span class="n">model</span> <span class="o">=</span> <span class="n">getModelPred</span><span class="p">()</span>
+
+     <span class="c1"># Start Late timer</span>
+     <span class="n">start</span> <span class="o">=</span> <span class="n">timer</span><span class="p">()</span>
+
+     <span class="c1"># Internet Check</span>
+     <span class="n">internetCheck</span> <span class="o">=</span> <span class="n">internetCheck</span><span class="p">()</span>
+
+ <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+     <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When it is destroyed, it deletes the camera.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># Delete Video Capture</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">video</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="object-functions">
+<h2>Object Functions<a class="headerlink" href="#object-functions" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">addFace()</span></code> function will apply the <code class="docutils literal notranslate"><span class="pre">dynamicAdd()</span></code> from <code class="docutils literal notranslate"><span class="pre">TransferLearning.py</span></code> if and only if a face is found and it is Unknown. It will then reload all of the arrays and encodings, At the end, it will turn the <code class="docutils literal notranslate"><span class="pre">dynamicState</span></code> variable to False.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">addFace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+    <span class="c1"># Some global variables</span>
+    <span class="k">global</span> <span class="n">dynamicState</span><span class="p">,</span> <span class="n">encodingNames</span><span class="p">,</span> <span class="n">fullStudentNames</span><span class="p">,</span> <span class="n">faceNamesKnown</span><span class="p">,</span> <span class="n">encodingList</span><span class="p">,</span> <span class="n">frame</span>
+
+    <span class="c1"># Only run Dynamic Addition if a face is found and is unknown</span>
+    <span class="k">if</span> <span class="s1">&#39;Unknown&#39;</span> <span class="ow">in</span> <span class="n">faceNames</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">faceLocations</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># Run dynamic core addition</span>
+        <span class="n">dynamicAdd</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+
+        <span class="c1"># Relaod Lists</span>
+        <span class="n">fullStudentNames</span> <span class="o">=</span> <span class="n">loadLists</span><span class="p">(</span><span class="s2">&quot;List Information/Full Student Names&quot;</span><span class="p">)</span>  <span class="c1"># List with full Student Names</span>
+        <span class="n">faceNamesKnown</span> <span class="o">=</span> <span class="n">loadLists</span><span class="p">(</span><span class="s2">&quot;List Information/Face Names Known&quot;</span><span class="p">)</span>  <span class="c1"># List With Face Names</span>
+        <span class="n">encodingNames</span> <span class="o">=</span> <span class="n">loadLists</span><span class="p">(</span><span class="s2">&quot;List Information/Encoding Names&quot;</span><span class="p">)</span>  <span class="c1"># List With encoding names</span>
+        <span class="n">loadDictionary</span><span class="p">(</span><span class="s2">&quot;List Information/Face Names Known&quot;</span><span class="p">,</span> <span class="n">faceEncodingsKnown</span><span class="p">)</span>  <span class="c1"># Dictionary with Encodings</span>
+
+        <span class="c1"># Run Encoding Model as necessary</span>
+        <span class="k">if</span> <span class="n">getFolderSize</span><span class="p">(</span><span class="s2">&quot;Encodings/&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">encodingNames</span><span class="p">):</span>
+            <span class="kn">import</span> <span class="nn">EncodingModel</span>
+
+        <span class="c1"># Reload Enecodings</span>
+        <span class="n">encodingList</span> <span class="o">=</span> <span class="n">toList</span><span class="p">(</span><span class="n">faceEncodingsKnown</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">encodingList</span><span class="p">))):</span>
+            <span class="n">encodingList</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;Encodings/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">encodingNames</span><span class="p">[</span><span class="n">x</span><span class="p">]))</span>
+
+        <span class="c1"># Turn off dynamic addition once done</span>
+        <span class="n">dynamicState</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -54,6 +207,18 @@
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/logo.png" alt="Logo"/>
             </a></p>
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Camera.py</a><ul>
+<li><a class="reference internal" href="#imports">Imports</a></li>
+<li><a class="reference internal" href="#feature-control-variables">Feature Control Variables</a></li>
+<li><a class="reference internal" href="#static-functions">Static Functions</a></li>
+<li><a class="reference internal" href="#objects">Objects</a></li>
+<li><a class="reference internal" href="#object-functions">Object Functions</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="AttendanceSheet.html"
                         title="previous chapter">AttendanceSheet.txt</a></p>

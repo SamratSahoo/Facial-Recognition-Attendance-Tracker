@@ -4,7 +4,6 @@ import sys
 import cv2
 import face_recognition
 
-from DynamicAddition import pauseCamera
 from TransferLearning import loadDictionary, loadLists, toList, getLivenessValue, runInParallel, dynamicAdd, \
     getFolderSize, checkIfHere
 from init import *
