@@ -43,6 +43,17 @@
             
   <div class="section" id="encodings">
 <h1>Encodings<a class="headerlink" href="#encodings" title="Permalink to this headline">¶</a></h1>
+<p>In software development, taking into account the runtime is easily one of the most important aspects of developing a powerful
+program. In this project, the Encodings directory serves as one of the key features to reduce runtime. The Encodings directory
+houses several files such as <code class="docutils literal notranslate"><span class="pre">SamratEncoding.npy</span></code>. This is a numpy file in what is known as an embedding.</p>
+<div class="section" id="purpose-in-facial-recognition-process">
+<h2>Purpose in Facial Recognition Process<a class="headerlink" href="#purpose-in-facial-recognition-process" title="Permalink to this headline">¶</a></h2>
+<p>In the image pre-processing state, it is necessary to convert raw images to usable data for the computer.
+In order to do that, we convert the images into numpy arrays using the Histogram of Oriented Gradients algorithm.
+These files hold numpy arrays for the information of the person so that the computer would not have to recalculate these arrays
+every time the program is run. This drastically reduced runtime from 10 minutes to to 10 seconds. This was a major improvement
+from the original program design that had to recalculate data over and over again.</p>
+</div>
 </div>
 
 
@@ -54,6 +65,14 @@
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/logo.png" alt="Logo"/>
             </a></p>
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Encodings</a><ul>
+<li><a class="reference internal" href="#purpose-in-facial-recognition-process">Purpose in Facial Recognition Process</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="Docs.html"
                         title="previous chapter">Docs</a></p>
