@@ -43,6 +43,58 @@
             
   <div class="section" id="encodingmodel-py">
 <h1>EncodingModel.py<a class="headerlink" href="#encodingmodel-py" title="Permalink to this headline">¶</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">EncodingModel.py</span></code> File serves as the core for the encoding process. This allows images to be converted into usable data for the computer to use.</p>
+<div class="section" id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">face_recognition</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">init</span> <span class="kn">import</span> <span class="n">faceNamesKnown</span><span class="p">,</span> <span class="n">faceEncodingsKnown</span><span class="p">,</span> <span class="n">encodingNames</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">encodeFace()</span></code> method takes in an image path and return an encoding after having analyzed the image.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">encodeFace</span><span class="p">(</span><span class="n">imageDirectory</span><span class="p">):</span>
+    <span class="c1"># Load Images</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">face_recognition</span><span class="o">.</span><span class="n">load_image_file</span><span class="p">(</span><span class="n">imageDirectory</span><span class="p">)</span>
+    <span class="c1"># Encode Images</span>
+    <span class="n">encoding</span> <span class="o">=</span> <span class="n">face_recognition</span><span class="o">.</span><span class="n">face_encodings</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">5</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">encoding</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">encodeDirectory()</span></code> method takes in a directory of images and returns an average encoding after having analyzed the multiple images. It takes advantage of the <code class="docutils literal notranslate"><span class="pre">encodeFace()</span></code>
+method to encode several images. It then adds up the encodings and takes the average of all of the encodings.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Method encodes a directory of images and returns the average encoding of the images</span>
+<span class="k">def</span> <span class="nf">encodeDirectory</span><span class="p">(</span><span class="n">directoryName</span><span class="p">):</span>
+    <span class="c1"># Create list for all encodings</span>
+    <span class="n">allEncodings</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Go through directory of files</span>
+    <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;People Images/&quot;</span> <span class="o">+</span> <span class="n">directoryName</span><span class="p">):</span>
+        <span class="c1"># Get amount of files in directory</span>
+        <span class="n">fileAmount</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="s2">&quot;People Images/&quot;</span> <span class="o">+</span> <span class="n">directoryName</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.jpg&quot;</span><span class="p">):</span>
+            <span class="c1"># iterate through files in directory</span>
+            <span class="k">for</span> <span class="n">fileNum</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">fileAmount</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="c1"># Add encodings to list</span>
+                <span class="n">allEncodings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">encodeFace</span><span class="p">(</span><span class="s2">&quot;People Images/&quot;</span> <span class="o">+</span> <span class="n">directoryName</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">fileNum</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.jpg&quot;</span><span class="p">))</span>
+    <span class="c1"># List Length</span>
+    <span class="n">listLength</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">allEncodings</span><span class="p">)</span>
+    <span class="c1"># Return average of encoded arrays array</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">allEncodings</span><span class="p">)</span> <span class="o">/</span> <span class="n">listLength</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="main-method">
+<h2>Main Method<a class="headerlink" href="#main-method" title="Permalink to this headline">¶</a></h2>
+<p>The main method will encode every directory in the <code class="docutils literal notranslate"><span class="pre">People</span> <span class="pre">Images</span></code> folder and save the files for each respective person in the <code class="docutils literal notranslate"><span class="pre">Encodings</span></code> folder.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">faceNamesKnown</span><span class="p">)):</span>
+    <span class="n">faceEncodingsKnown</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">encodeDirectory</span><span class="p">(</span><span class="n">faceNamesKnown</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;Encodings/&#39;</span> <span class="o">+</span> <span class="n">encodingNames</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">faceEncodingsKnown</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -54,6 +106,16 @@
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/logo.png" alt="Logo"/>
             </a></p>
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">EncodingModel.py</a><ul>
+<li><a class="reference internal" href="#imports">Imports</a></li>
+<li><a class="reference internal" href="#methods">Methods</a></li>
+<li><a class="reference internal" href="#main-method">Main Method</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="DynamicAddition.html"
                         title="previous chapter">DynamicAddition.py</a></p>

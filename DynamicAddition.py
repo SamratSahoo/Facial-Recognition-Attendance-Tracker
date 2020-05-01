@@ -1,5 +1,4 @@
 import cv2
-import os
 from EncodingModel import *
 import numpy as np
 
