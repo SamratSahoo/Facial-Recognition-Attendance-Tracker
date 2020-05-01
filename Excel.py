@@ -1,9 +1,8 @@
 from datetime import datetime
 
-from openpyxl import Workbook, load_workbook
+from openpyxl import Workbook
 from openpyxl.styles import PatternFill, Font
 from init import *
-from xlrd import open_workbook
 
 
 def loadLists(textFile):
