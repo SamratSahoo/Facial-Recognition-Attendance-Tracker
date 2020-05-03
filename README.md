@@ -1,4 +1,4 @@
-# ISM-Original-Work
+# ISM-Final-Product
 ### Program Preface
  This project was made for the Independent Study 
  Mentorship Program. The Independent Study Mentorship 
@@ -55,3 +55,8 @@ to my research throughout this project.
 
 One last thank you for the [Radicubs Robotics Team](https://radicubs.wixsite.com/robotics) for 
 helping me test this attendance tracker. 
+
+### Final Product
+<p align="center">
+    <img src="https://github.com/SamratSahoo/StudyBuddy/blob/master/docs/source/Files/InterfacePic.png"/>
+</p>
