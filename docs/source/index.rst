@@ -19,6 +19,10 @@ Throughout the course of the program, students carry-out a year-long research st
 
 The ISM program is a program in which students carry-on skills that not only last for the year, but for life. ISM gives an early and in-depth introduction to the students' respective career fields and professional world. Coming out of this program, students are better equipped to handle the reality of the professional world while having become significantly more knowledgeable of their respective passions. The ISM program serves as the foundation for the success of individuals in the professional world.
 
+Project Preface
+---------------
+This attendance system uses image data sets to create an average encoding of the person. This encoding is then compared with frame encodings from the camera stream. The respective encoding with the least variance is the chosen face that is recorded.
+
 Acknowledgements
 ----------------
 I would just like to give a special thank you to `Adam Geitgey <https://github.com/ageitgey>`_ for the creation of his face_recognition class.
