@@ -58,5 +58,5 @@ helping me test this attendance tracker.
 
 ### Final Product
 <p align="center">
-    <img src="https://github.com/SamratSahoo/StudyBuddy/blob/master/docs/source/Files/InterfacePic.png"/>
+    <img src="https://github.com/SamratSahoo/Facial-Recognition-Attendance-Tracker/blob/master/docs/source/Files/InterfacePic.png"/>
 </p>
