@@ -7,10 +7,8 @@ Table of Contents
    :maxdepth: 2
 
    Setup
-   Features
    Directories
    Files
-   Troubleshooting
    Contact
 
 About the ISM Program

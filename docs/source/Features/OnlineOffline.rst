@@ -1,2 +1,0 @@
-Online & Offline Modes
-======================
