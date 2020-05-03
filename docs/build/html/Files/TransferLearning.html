@@ -16,7 +16,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Miscellaneous Files" href="Miscellaneous.html" />
+    <link rel="next" title="Troubleshooting" href="../Troubleshooting.html" />
     <link rel="prev" title="Sheets.py" href="Sheets.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -26,7 +26,7 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="Miscellaneous.html" title="Miscellaneous Files"
+          <a href="../Troubleshooting.html" title="Troubleshooting"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="Sheets.html" title="Sheets.py"
@@ -43,6 +43,181 @@
             
   <div class="section" id="transferlearning-py">
 <h1>TransferLearning.py<a class="headerlink" href="#transferlearning-py" title="Permalink to this headline">¶</a></h1>
+<p>The TransferLearning.py file has been abandoned. However, many methods within <code class="docutils literal notranslate"><span class="pre">TransferLearning.py</span></code> are used in other modules. <code class="docutils literal notranslate"><span class="pre">TransferLearning.py</span></code> used to be the original core file until the switch to <code class="docutils literal notranslate"><span class="pre">Interface.py</span></code>.</p>
+<div class="section" id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">init</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">Sheets</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">DynamicAddition</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">face_recognition</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Process</span>
+<span class="kn">from</span> <span class="nn">LivenessDetection</span> <span class="kn">import</span> <span class="n">getModel</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">os</span></code>: Necessary to access file systems</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sys</span></code>: Necessary to access the operating system</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cv2</span></code>: Necessary to access computer vision tools</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">face_recognition</span></code>: Necessary to access face recognition tools</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">init</span></code>: Necessary to access the arrays</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code>: Necessary to access Linear Algebra functions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LivenessDetection</span></code>: Necessary to access the Liveness Detection models</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sheets</span></code>: Necessary to access Google Sheets methods</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DynamicAddition</span></code>: Necessary to access DynamicAddition method</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">multiprocessing</span></code>: Necessary to run multiple methods at once</p></li>
+</ul>
+</div>
+<div class="section" id="variables">
+<h2>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">TransferLearning.py</span></code> takes advantage of global variables in order to modularize the complete file. Below are all the global variables in <code class="docutils literal notranslate"><span class="pre">TransferLearning.py</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">global</span> <span class="n">fullStudentNames</span><span class="p">,</span> <span class="n">faceNamesKnown</span><span class="p">,</span> <span class="n">encodingNames</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">video</span><span class="p">,</span> <span class="n">encodingList</span><span class="p">,</span> <span class="n">faceLocations</span><span class="p">,</span> <span class="n">faceEncodingsKnown</span>
+<span class="k">global</span> <span class="n">faceEncodings</span><span class="p">,</span> <span class="n">faceNames</span><span class="p">,</span> <span class="n">inputFrames</span><span class="p">,</span> <span class="n">processThisFrame</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">smallFrame</span><span class="p">,</span> <span class="n">rgbFrame</span><span class="p">,</span> <span class="n">livenessVal</span><span class="p">,</span> <span class="n">name</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">checkIfHere()</span></code> method makes sure that each name found in the frame only appears once.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">checkIfHere</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">nameToCheck</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="n">nameToCheck</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;AttendanceSheet.txt&quot;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">nameToCheck</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">():</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;AttendanceSheet.txt&quot;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f2</span><span class="p">:</span>
+                    <span class="n">f2</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">f2</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">getFolderSize()</span></code> method returns the folder size of a given folder.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Method to get amount of files in a certain folder</span>
+<span class="k">def</span> <span class="nf">getFolderSize</span><span class="p">(</span><span class="n">folderName</span><span class="p">):</span>
+    <span class="n">fileList</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">folderName</span><span class="p">)</span>
+    <span class="n">numberFiles</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fileList</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">numberFiles</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">adjustBrightness()</span></code> method takes advantage of HSV values in order to adjust the brightness when the frame is too dark.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Method to adjust to a certain brightness</span>
+<span class="k">def</span> <span class="nf">adjustBrightness</span><span class="p">(</span><span class="n">img</span><span class="p">):</span>
+    <span class="c1"># Converts frame from RGB to HSV</span>
+    <span class="n">hsv</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2HSV</span><span class="p">)</span>
+    <span class="c1"># Splits HSV type into 3 different arrays</span>
+    <span class="n">h</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">hsv</span><span class="p">)</span>
+    <span class="c1"># Calculates image&#39;s average brightness</span>
+    <span class="n">averageBrightness</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="c1"># Set minimum brightness</span>
+    <span class="n">brightnessThreshold</span> <span class="o">=</span> <span class="mi">125</span>
+    <span class="c1"># Calculate how much to increase the brightness</span>
+    <span class="n">brightnessIncrease</span> <span class="o">=</span> <span class="n">brightnessThreshold</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">averageBrightness</span><span class="p">)</span>
+    <span class="c1"># See if average brightness exceeds the threshold</span>
+    <span class="k">if</span> <span class="n">averageBrightness</span> <span class="o">&lt;</span> <span class="n">brightnessThreshold</span><span class="p">:</span>
+        <span class="c1"># Increases brightness</span>
+        <span class="n">lim</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">-</span> <span class="n">brightnessIncrease</span>
+        <span class="n">v</span><span class="p">[</span><span class="n">v</span> <span class="o">&gt;</span> <span class="n">lim</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span>
+        <span class="n">v</span><span class="p">[</span><span class="n">v</span> <span class="o">&lt;=</span> <span class="n">lim</span><span class="p">]</span> <span class="o">+=</span> <span class="n">brightnessIncrease</span>
+    <span class="c1"># Merge the HSV values back together</span>
+    <span class="n">finalHSV</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">merge</span><span class="p">((</span><span class="n">h</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+    <span class="c1"># Redetermine image value &amp; Return Image</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">finalHSV</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_HSV2BGR</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">img</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">toList()</span></code> method, <code class="docutils literal notranslate"><span class="pre">loadLists()</span></code>, and <code class="docutils literal notranslate"><span class="pre">loadDictionary()</span></code> methods are used in order to manipulate the text files in <code class="docutils literal notranslate"><span class="pre">List</span> <span class="pre">Information/</span></code> and load all the arrays with the
+correct information.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">toList</span><span class="p">(</span><span class="n">dictionary</span><span class="p">):</span>
+    <span class="n">listToReturn</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dictionary</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">listToReturn</span><span class="p">))</span>
+    <span class="n">listToReturn</span> <span class="o">=</span> <span class="n">listToReturn</span><span class="p">[:</span><span class="n">index</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">listToReturn</span>
+
+
+<span class="k">def</span> <span class="nf">loadLists</span><span class="p">(</span><span class="n">textFile</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">textFile</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="nb">list</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">list</span>
+
+
+<span class="k">def</span> <span class="nf">loadDictionary</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+            <span class="n">dictionary</span><span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">runInParallel()</span></code> method allows us to run function in parallel. It is most notably used for dynamic addition.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">runInParallel</span><span class="p">(</span><span class="o">*</span><span class="n">fns</span><span class="p">):</span>
+    <span class="n">proc</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">fns</span><span class="p">:</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">fn</span><span class="p">)</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">proc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">proc</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">getLivenessValue()</span></code> method manipulates the matrices of the last 24 frames and is able to return a liveness value from 0 to 1. The higher the value the more live the
+frame is.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">getLivenessValue</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">inputFrames</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="n">livenessFrame</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+    <span class="n">livenessFrame</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">livenessFrame</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+    <span class="n">inputFrames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">livenessFrame</span><span class="p">)</span>
+    <span class="nb">input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">inputFrames</span><span class="p">[</span><span class="o">-</span><span class="mi">24</span><span class="p">:]])</span>
+    <span class="nb">input</span> <span class="o">=</span> <span class="nb">input</span> <span class="o">/</span> <span class="mi">255</span>
+    <span class="k">if</span> <span class="nb">input</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">240000</span><span class="p">:</span>
+        <span class="nb">input</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pred</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="mf">0.96</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="omitted-method-documentation">
+<h2>Omitted Method Documentation<a class="headerlink" href="#omitted-method-documentation" title="Permalink to this headline">¶</a></h2>
+<p>Due to similarities in <code class="docutils literal notranslate"><span class="pre">TransferLearning.py</span></code> and <code class="docutils literal notranslate"><span class="pre">Camera.py</span></code>, documentation for the <code class="docutils literal notranslate"><span class="pre">preProcess()</span></code>, <code class="docutils literal notranslate"><span class="pre">optimizeWebcam()</span></code>, <code class="docutils literal notranslate"><span class="pre">recognizeFaces()</span></code>, <code class="docutils literal notranslate"><span class="pre">dynamicallyAdd()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">writeOnStream()</span></code>, and <code class="docutils literal notranslate"><span class="pre">writeToFile()</span></code> methods have been omitted in this page and have instead have their documentations on the <code class="docutils literal notranslate"><span class="pre">Camera.py</span></code> documentation. This allows
+for the brevity of documentation.</p>
+</div>
+<div class="section" id="main-method">
+<h2>Main Method<a class="headerlink" href="#main-method" title="Permalink to this headline">¶</a></h2>
+<p>The main method here combines several of the methods in order to to put together the complete application. When <code class="docutils literal notranslate"><span class="pre">q</span></code> is pressed, the application will end.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">preProcess</span><span class="p">()</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Open Webcam + Optimize Webcam</span>
+            <span class="n">ret</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">optimizeWebcam</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+            <span class="n">recognizeFaces</span><span class="p">()</span>
+            <span class="n">dynamicallyAdd</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+            <span class="n">writeOnStream</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+            <span class="n">writeToFile</span><span class="p">()</span>
+            <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s1">&#39;Frame&#39;</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
+
+            <span class="c1"># If q is pressed, exit loop</span>
+            <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span> <span class="o">==</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">):</span>
+                <span class="k">break</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">exceptionType</span><span class="p">,</span> <span class="n">exceptionObject</span><span class="p">,</span> <span class="n">exceptionThrowback</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+            <span class="n">fileName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">exceptionThrowback</span><span class="o">.</span><span class="n">tb_frame</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_filename</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">exceptionType</span><span class="p">,</span> <span class="n">fileName</span><span class="p">,</span> <span class="n">exceptionThrowback</span><span class="o">.</span><span class="n">tb_lineno</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="c1"># ============================================== Post Program ==========================================================</span>
+    <span class="c1"># Upon exiting while loop, close web cam</span>
+    <span class="n">video</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+
+<span class="n">markAbsentUnmarked</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -54,12 +229,24 @@
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/logo.png" alt="Logo"/>
             </a></p>
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">TransferLearning.py</a><ul>
+<li><a class="reference internal" href="#imports">Imports</a></li>
+<li><a class="reference internal" href="#variables">Variables</a></li>
+<li><a class="reference internal" href="#methods">Methods</a></li>
+<li><a class="reference internal" href="#omitted-method-documentation">Omitted Method Documentation</a></li>
+<li><a class="reference internal" href="#main-method">Main Method</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="Sheets.html"
                         title="previous chapter">Sheets.py</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="Miscellaneous.html"
-                        title="next chapter">Miscellaneous Files</a></p>
+  <p class="topless"><a href="../Troubleshooting.html"
+                        title="next chapter">Troubleshooting</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -88,7 +275,7 @@
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="Miscellaneous.html" title="Miscellaneous Files"
+          <a href="../Troubleshooting.html" title="Troubleshooting"
              >next</a> |</li>
         <li class="right" >
           <a href="Sheets.html" title="Sheets.py"

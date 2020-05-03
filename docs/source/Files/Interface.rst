@@ -22,7 +22,7 @@ Imports
 * ``Camera``: Necessary to access Camera Object and functions
 * ``os``: Necessary to access file systems
 * ``shutil``: Necessary to be able to copy files
-* ``DynamicAddition``: Necessary to access DynamicAddition method
+* ``DynamicAddition``: Necessary to access DynamicAddition methods
 * ``Excel``: Necessary to access Microsoft Excel methods
 
 Variables
@@ -218,3 +218,7 @@ The main method in ``Interface.py`` launches the Dashboard through using the ``r
             ui.run()
         except Exception as e:
             print(e)
+
+.. image:: InterfacePic.png
+  :width: 400
+  :align: center

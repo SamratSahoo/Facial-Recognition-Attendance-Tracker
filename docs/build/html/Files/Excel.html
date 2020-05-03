@@ -43,7 +43,7 @@
             
   <div class="section" id="excel-py">
 <h1>Excel.py<a class="headerlink" href="#excel-py" title="Permalink to this headline">¶</a></h1>
-<p>The Excel.py file controls the outputs to a Microsoft Excel sheet. There are several helper methods in <code class="docutils literal notranslate"><span class="pre">Excel.py</span></code> that make outputting possible.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Excel.py</span></code> file controls the outputs to a Microsoft Excel sheet. There are several helper methods in <code class="docutils literal notranslate"><span class="pre">Excel.py</span></code> that make outputting possible.</p>
 <div class="section" id="imports">
 <h2>Imports<a class="headerlink" href="#imports" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
@@ -203,7 +203,7 @@
     <span class="n">addDateExcel</span><span class="p">(</span><span class="n">sheet</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">updatePresentPersonExcel()</span></code> method updates an excel sheet pased on the person’s name.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">updatePresentPersonExcel()</span></code> method updates an excel sheet passed on the person’s name.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">updatePresentPersonExcel</span><span class="p">(</span><span class="n">personToFind</span><span class="p">):</span>
     <span class="c1"># Change numerical values to cell value</span>
     <span class="n">cellToPresent</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">getColumnLetter</span><span class="p">(</span><span class="n">ws</span><span class="p">))</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">getRowNum</span><span class="p">(</span><span class="n">personToFind</span><span class="p">))</span>
@@ -211,7 +211,7 @@
     <span class="n">presentCell</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">cellToPresent</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">updateAbsentPersonExcel()</span></code> method updates an excel sheet pased on the person’s name.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">updateAbsentPersonExcel()</span></code> method updates an excel sheet passed on the person’s name.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">updateAbsentPersonExcel</span><span class="p">(</span><span class="n">personToFind</span><span class="p">):</span>
     <span class="c1"># Change numerical values to cell value</span>
     <span class="n">cellToAbsent</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">getColumnLetter</span><span class="p">(</span><span class="n">ws</span><span class="p">))</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">getRowNum</span><span class="p">(</span><span class="n">personToFind</span><span class="p">))</span>
@@ -219,7 +219,7 @@
     <span class="n">absentCell</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">cellToAbsent</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">updateLatePersonExcel()</span></code> method updates an excel sheet pased on the person’s name.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">updateLatePersonExcel()</span></code> method updates an excel sheet passed on the person’s name.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">updateLatePersonExcel</span><span class="p">(</span><span class="n">personToFind</span><span class="p">):</span>
     <span class="c1"># Change numerical values to cell value</span>
     <span class="n">cellToAbsent</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">getColumnLetter</span><span class="p">(</span><span class="n">ws</span><span class="p">))</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">getRowNum</span><span class="p">(</span><span class="n">personToFind</span><span class="p">))</span>

@@ -1,13 +1,9 @@
 import sys
-
-import cv2
 from flask import render_template, Flask, Response
 from webui import WebUI
 from Camera import VideoCamera
 import os
 from shutil import copyfile
-from EncodingModel import encodeDirectory
-
 from DynamicAddition import dynamicAdd
 from Excel import markAbsentUnmarkedExcel
 
@@ -101,7 +97,6 @@ def gen(camera):
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
         if addState:
             frameToSave = len(frames) - 1
-            print(frameToSave)
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frames[frameToSave] + b'\r\n\r\n')
             try:

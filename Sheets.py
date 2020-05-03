@@ -3,7 +3,6 @@ import pygsheets
 from oauth2client.service_account import ServiceAccountCredentials
 from gspread_formatting import *
 import datetime
-
 from init import fullStudentNames
 from datetime import datetime
 

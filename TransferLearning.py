@@ -1,5 +1,4 @@
 import sys
-
 from init import *
 # from Sheets import *
 from DynamicAddition import *
@@ -7,7 +6,7 @@ import cv2
 import face_recognition
 import numpy as np
 import os
-from multiprocessing import Process, Pool
+from multiprocessing import Process
 from LivenessDetection import getModel
 
 # ================================================ Functions ===========================================================

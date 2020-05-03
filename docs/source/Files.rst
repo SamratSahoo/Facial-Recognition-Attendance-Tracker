@@ -19,4 +19,3 @@ File List
    Files/LivenessDetection
    Files/Sheets
    Files/TransferLearning
-   Files/Miscellaneous

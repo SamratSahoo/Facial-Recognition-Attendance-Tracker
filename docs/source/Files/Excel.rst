@@ -1,6 +1,6 @@
 Excel.py
 ==============
-The Excel.py file controls the outputs to a Microsoft Excel sheet. There are several helper methods in ``Excel.py`` that make outputting possible.
+The ``Excel.py`` file controls the outputs to a Microsoft Excel sheet. There are several helper methods in ``Excel.py`` that make outputting possible.
 
 Imports
 -------
@@ -184,7 +184,7 @@ The ``formatPageExcel()`` method formats the page as needed if it has already no
         addStudentNamesExcel(sheet)
         addDateExcel(sheet)
 
-The ``updatePresentPersonExcel()`` method updates an excel sheet pased on the person's name.
+The ``updatePresentPersonExcel()`` method updates an excel sheet passed on the person's name.
 
 .. code-block:: python
 
@@ -194,7 +194,7 @@ The ``updatePresentPersonExcel()`` method updates an excel sheet pased on the pe
         # Mark present
         presentCell(ws, cellToPresent)
 
-The ``updateAbsentPersonExcel()`` method updates an excel sheet pased on the person's name.
+The ``updateAbsentPersonExcel()`` method updates an excel sheet passed on the person's name.
 
 .. code-block:: python
 
@@ -205,7 +205,7 @@ The ``updateAbsentPersonExcel()`` method updates an excel sheet pased on the per
         absentCell(ws, cellToAbsent)
 
 
-The ``updateLatePersonExcel()`` method updates an excel sheet pased on the person's name.
+The ``updateLatePersonExcel()`` method updates an excel sheet passed on the person's name.
 
 .. code-block:: python
 
