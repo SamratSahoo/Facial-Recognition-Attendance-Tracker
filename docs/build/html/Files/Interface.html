@@ -43,6 +43,204 @@
             
   <div class="section" id="interface-py">
 <h1>Interface.py<a class="headerlink" href="#interface-py" title="Permalink to this headline">¶</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">Interface.py</span></code> file controls the complete backend for this project. This includes all of the interface button bindings.</p>
+<div class="section" id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">Response</span>
+<span class="kn">from</span> <span class="nn">webui</span> <span class="kn">import</span> <span class="n">WebUI</span>
+<span class="kn">from</span> <span class="nn">Camera</span> <span class="kn">import</span> <span class="n">VideoCamera</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">shutil</span> <span class="kn">import</span> <span class="n">copyfile</span>
+<span class="kn">from</span> <span class="nn">DynamicAddition</span> <span class="kn">import</span> <span class="n">dynamicAdd</span>
+<span class="kn">from</span> <span class="nn">Excel</span> <span class="kn">import</span> <span class="n">markAbsentUnmarkedExcel</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">sys</span></code>: Necessary to access the operating system</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flask</span></code>: Necessary to access Python Backend to Web Application Front End</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">webui</span></code>: Necessary to turn the flask web app to a desktop interface</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Camera</span></code>: Necessary to access Camera Object and functions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">os</span></code>: Necessary to access file systems</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">shutil</span></code>: Necessary to be able to copy files</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DynamicAddition</span></code>: Necessary to access DynamicAddition method</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Excel</span></code>: Necessary to access Microsoft Excel methods</p></li>
+</ul>
+</div>
+<div class="section" id="variables">
+<h2>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">app</span></code> variable declares that the HTML, CSS, and JS is to be used for a flask web application. The <code class="docutils literal notranslate"><span class="pre">ui</span></code> variable converts the app to a desktop app.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">ui</span> <span class="o">=</span> <span class="n">WebUI</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>These global variables are used to control states of different features or store certain values.
+.. code-block:: python</p>
+<blockquote>
+<div><p>global cameraState, addState, frames, framesRaw, onlineState
+cameraState = False
+addState = False
+onlineState = False
+framesRaw = []
+frames = []</p>
+</div></blockquote>
+</div>
+<div class="section" id="page-access-methods">
+<h2>Page Access Methods<a class="headerlink" href="#page-access-methods" title="Permalink to this headline">¶</a></h2>
+<p>These methods are all used to access different pages or tabs within the Interface.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/index&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">indexPage</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/configure&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">configurePage</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;configurations.html&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/attendance&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">attendancePage</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;attendance.html&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/settings&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">settingsPage</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;settings.html&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/contact&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">contactPage</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;contact.html&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/help&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">helpPage</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;help.html&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">downloadText()</span></code> method and <code class="docutils literal notranslate"><span class="pre">downloadExcel()</span></code> method, are both there to make a copy of the text file or Excel file into the user’s downloads directory.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/download-text&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">downloadText</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">finalPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">),</span> <span class="s2">&quot;Downloads/AttendanceSheet.txt&quot;</span><span class="p">)</span>
+        <span class="n">copyfile</span><span class="p">(</span><span class="s1">&#39;AttendanceSheet.txt&#39;</span><span class="p">,</span> <span class="n">finalPath</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/download-excel&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">downloadExcel</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">finalPath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">),</span> <span class="s2">&quot;Downloads/AttendanceExcel.xls&quot;</span><span class="p">)</span>
+        <span class="n">copyfile</span><span class="p">(</span><span class="s1">&#39;AttendanceExcel.xls&#39;</span><span class="p">,</span> <span class="n">finalPath</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">startCamera()</span></code> and <code class="docutils literal notranslate"><span class="pre">stopCamera()</span></code> methods are used to toggle the camera on and off based on the button pressed. If the Start Camera button is pressed, <code class="docutils literal notranslate"><span class="pre">startCamera()</span></code> is called and <code class="docutils literal notranslate"><span class="pre">cameraState</span></code> will be <code class="docutils literal notranslate"><span class="pre">True</span></code>
+but if the Stop Camera button is pressed, <code class="docutils literal notranslate"><span class="pre">stopCamera()</span></code> is called and <code class="docutils literal notranslate"><span class="pre">cameraState</span></code> will be <code class="docutils literal notranslate"><span class="pre">False</span></code> and the camera will turn off.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/start-camera&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">startCamera</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">cameraState</span>
+    <span class="n">cameraState</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/stop-camera&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">stopCamera</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">cameraState</span>
+    <span class="n">cameraState</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">markAbsentUnmarkedExcel</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">gen()</span></code> method is the core method for <code class="docutils literal notranslate"><span class="pre">Interface.py</span></code>. It first calls the values global variables.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gen</span><span class="p">(</span><span class="n">camera</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">addState</span><span class="p">,</span> <span class="n">cameraState</span><span class="p">,</span> <span class="n">frames</span><span class="p">,</span> <span class="n">framesRaw</span><span class="p">,</span> <span class="n">onlineState</span>
+</pre></div>
+</div>
+<p>If the application is not set to dynamically add a face, it will get a raw frame and converted frames using the object methods in <code class="docutils literal notranslate"><span class="pre">Camera.py</span></code>. It will append
+raw frames to the <code class="docutils literal notranslate"><span class="pre">framesRaw</span></code> array and output the converted frames onto the Interface.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="n">cameraState</span> <span class="ow">or</span> <span class="n">addState</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">addState</span><span class="p">:</span>
+        <span class="k">global</span> <span class="n">frames</span><span class="p">,</span> <span class="n">framesRaw</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">camera</span><span class="o">.</span><span class="n">getFrame</span><span class="p">()</span>
+        <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+        <span class="n">framesRaw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">camera</span><span class="o">.</span><span class="n">getRawFrame</span><span class="p">())</span>
+        <span class="k">yield</span> <span class="p">(</span><span class="sa">b</span><span class="s1">&#39;--frame</span><span class="se">\r\n</span><span class="s1">&#39;</span>
+               <span class="sa">b</span><span class="s1">&#39;Content-Type: image/jpeg</span><span class="se">\r\n\r\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">frame</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\r\n\r\n</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If it is in the state to dynamically add a face, it will get the last frame that was displayed before the dynamic add button was pressed and freeze it on that frame. It will then
+process that frame through the dynamic add method. After it finishes, it will return back to camera mode and exit dynamic add mode.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">addState</span><span class="p">:</span>
+    <span class="n">frameToSave</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">yield</span> <span class="p">(</span><span class="sa">b</span><span class="s1">&#39;--frame</span><span class="se">\r\n</span><span class="s1">&#39;</span>
+           <span class="sa">b</span><span class="s1">&#39;Content-Type: image/jpeg</span><span class="se">\r\n\r\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">frames</span><span class="p">[</span><span class="n">frameToSave</span><span class="p">]</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\r\n\r\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">dynamicAdd</span><span class="p">((</span><span class="n">framesRaw</span><span class="p">[</span><span class="n">frameToSave</span><span class="p">]))</span>
+        <span class="n">camera</span><span class="o">.</span><span class="n">additionProcess</span><span class="p">()</span>
+        <span class="n">cameraState</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">addState</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">exceptionType</span><span class="p">,</span> <span class="n">exceptionObject</span><span class="p">,</span> <span class="n">exceptionThrowback</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+        <span class="n">fileName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">exceptionThrowback</span><span class="o">.</span><span class="n">tb_frame</span><span class="o">.</span><span class="n">f_code</span><span class="o">.</span><span class="n">co_filename</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">exceptionType</span><span class="p">,</span> <span class="n">fileName</span><span class="p">,</span> <span class="n">exceptionThrowback</span><span class="o">.</span><span class="n">tb_lineno</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+    <span class="k">break</span>
+</pre></div>
+</div>
+<p>If the online mode button is pressed, the application will switch to the Google Sheets output</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">onlineState</span><span class="p">:</span>
+    <span class="n">camera</span><span class="o">.</span><span class="n">goOnline</span><span class="p">()</span>
+    <span class="n">onlineState</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p>Finally every time the camera mode and dynamic add mode is exited, it will mark everyone who was not present as absent.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">markAbsentUnmarkedExcel</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">addFace()</span></code> method and <code class="docutils literal notranslate"><span class="pre">onlineMode()</span></code> method are both used to toggle booleans that control the modes the application is in.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/add-face&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">addFace</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">addState</span>
+    <span class="n">addState</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/online-mode&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">onlineMode</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">onlineState</span>
+    <span class="n">onlineState</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">video_feed()</span></code> method simply places the video feed into the web based dashboard.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/video_feed&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">video_feed</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">gen</span><span class="p">(</span><span class="n">VideoCamera</span><span class="p">(</span><span class="n">source</span><span class="o">=-</span><span class="mi">1</span><span class="p">)),</span>
+                    <span class="n">mimetype</span><span class="o">=</span><span class="s1">&#39;multipart/x-mixed-replace; boundary=frame&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="main-method">
+<h2>Main Method<a class="headerlink" href="#main-method" title="Permalink to this headline">¶</a></h2>
+<p>The main method in <code class="docutils literal notranslate"><span class="pre">Interface.py</span></code> launches the Dashboard through using the <code class="docutils literal notranslate"><span class="pre">run()</span></code> method on the ui object.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ui</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -54,6 +252,18 @@
             <p class="logo"><a href="../index.html">
               <img class="logo" src="../_static/logo.png" alt="Logo"/>
             </a></p>
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Interface.py</a><ul>
+<li><a class="reference internal" href="#imports">Imports</a></li>
+<li><a class="reference internal" href="#variables">Variables</a></li>
+<li><a class="reference internal" href="#page-access-methods">Page Access Methods</a></li>
+<li><a class="reference internal" href="#methods">Methods</a></li>
+<li><a class="reference internal" href="#main-method">Main Method</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="init.html"
                         title="previous chapter">init.py</a></p>
