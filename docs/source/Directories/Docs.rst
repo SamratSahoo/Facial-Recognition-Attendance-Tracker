@@ -1,6 +1,6 @@
 Docs
 ===============
-The ``docs`` folder has oen sole purpose: to house the documentation of this project. The HTML files that make up the documentation
+The ``docs`` folder has one sole purpose: to house the documentation of this project. The HTML files that make up the documentation
 can be found in the Docs folder. Within the ``docs`` folder there are 2 subdirectories along with 2 batch files.
 
 Build Subdirectory
